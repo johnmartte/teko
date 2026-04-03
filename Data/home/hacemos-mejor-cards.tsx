@@ -1,0 +1,32 @@
+import Image from "next/image";
+import Branding from "@/public/IllustrationBranding.svg";
+import Aplicaciones from "@/public/Aplicaciones.svg";
+import AplicacionesMoviles from "@/public/Container.svg";
+import Sistemas from "@/public/SistemaAutomatico.svg"
+
+export const data_hacemos_mejor_cards = [
+  {
+    titulo: "Branding & Identidad Visual",
+    descripcion:
+      "Creamos marcas memorables con estrategia, storytelling y sistemas de diseño que conectan con tu audiencia.",
+    image: <Image className="w-full" src={Branding} alt="" />,
+  },
+  {
+    titulo: "Aplicaciones Móviles",
+    descripcion:
+      "Apps nativas e híbridas para iOS y Android con interfaces intuitivas y experiencia premium.",
+    image: <Image className="w-full" src={AplicacionesMoviles} alt="" />,
+  },
+  {
+    titulo: "Diseño & Desarrollo Web",
+    descripcion:
+      "Sitios y plataformas web de alto rendimiento con UX centrado en conversión y tecnología moderna.",
+    image: <Image className="w-full" src={Aplicaciones} alt="" />,
+  },
+  {
+    titulo: "Sistemas & Automatización",
+    descripcion:
+      "Software empresarial a medida — CRM, ERP, integraciones y automatización que escala con tu negocio.",
+    image: <Image className="w-full" src={Sistemas} alt="" />,
+  },
+];
