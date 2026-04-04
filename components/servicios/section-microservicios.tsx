@@ -14,7 +14,7 @@ export default function SectionMicroservicios() {
 
             <div className="relative z-10 w-full max-w-6xl rounded-3xl md:rounded-[2.5rem] bg-linear-to-br from-[#eaf4ff] to-white/60 p-6 sm:p-8 md:p-14 shadow-sm backdrop-blur-md">
                 {/* Encabezado */}
-                <div className="mb-8 flex items-center gap-4">
+                <div className="mb-8 flex flex-wrap items-center gap-4">
                     <div className="flex flex-col items-center justify-center rounded-2xl bg-cyan-100 px-3 py-4 min-w-14">
 
                         <span className="text-2xl font-extrabold leading-none text-cyan-600">
