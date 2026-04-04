@@ -65,7 +65,7 @@ export default function Header() {
           isMobileMenuOpen ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
         }`}
       >
-        <div className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.2)] px-6 py-6">
+        <div className=" px-6 py-6">
           <nav className="flex flex-col gap-1">
             {[
               { href: "/servicios", label: "Servicios" },
