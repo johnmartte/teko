@@ -9,7 +9,7 @@ const oldStandardTT = Old_Standard_TT({
 
 export default function SectionHero() {
   return (
-    <section className="flex justify-center items-center bg-linear-to-b from-blue-600 via-blue-400 to-blue-100 min-h-screen">
+    <section className="flex justify-center items-center bg-linear-to-b from-blue-600 via-blue-400 to-blue-100 min-h-screen ">
       <div className="absolute w-full h-full border z-30 flex flex-col overflow-hidden">
         <svg
           width="2440"
@@ -38,15 +38,15 @@ export default function SectionHero() {
           </defs>
         </svg>
       </div>
-      <div className="flex flex-col gap-4 justify-center items-center z-50">
+      <div className="flex flex-col gap-6 justify-center items-center z-40 px-4 md:px-8 max-w-7xl mx-auto text-center">
         <div>
           <h1
             className={cn(
-              "mx-auto max-w-5xl text-center  text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl lg:text-8xl",
+              "mx-auto max-w-[90%] sm:max-w-5xl text-4xl sm:text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl lg:text-8xl",
               oldStandardTT.className,
             )}
           >
-            Construimos productos <br /> digitales que{" "}
+            Construimos productos <br className="hidden sm:block" /> digitales que{" "}
             <span className={cn("italic text-[#0055ff] font-light")}>
               transforman
             </span>{" "}
@@ -57,16 +57,16 @@ export default function SectionHero() {
             .
           </h1>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
           {/* Botón Principal (Volumen) */}
-          <Button className="h-auto rounded-full bg-[#588afe] px-8 py-4 text-xl font-bold text-white shadow-[inset_0px_-4px_8px_rgba(0,0,0,0.15)] hover:bg-[#4b78e6]">
+          <Button className="h-auto w-full sm:w-auto rounded-full bg-[#588afe] px-8 py-4 text-lg md:text-xl font-bold text-white shadow-[inset_0px_-4px_8px_rgba(0,0,0,0.15)] hover:bg-[#4b78e6]">
             Agenda una cita
           </Button>
 
           {/* Botón Secundario (Efecto Cristal / Glassmorphism) */}
           <Button
             variant="outline"
-            className="h-auto rounded-full border border-white/50 bg-white/20 px-8 py-4 text-xl font-medium text-[#0055ff] shadow-[inset_0px_2px_8px_rgba(255,255,255,0.8)] backdrop-blur-sm hover:bg-white/30 hover:text-[#0055ff]"
+            className="h-auto w-full sm:w-auto rounded-full border border-white/50 bg-white/20 px-8 py-4 text-lg md:text-xl font-medium text-[#0055ff] shadow-[inset_0px_2px_8px_rgba(255,255,255,0.8)] backdrop-blur-sm hover:bg-white/30 hover:text-[#0055ff]"
           >
             Ver planes
           </Button>

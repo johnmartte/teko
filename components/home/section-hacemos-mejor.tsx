@@ -5,23 +5,29 @@ import { Card, CardHeader, CardContent } from "../ui/card";
 
 export default function SectionHacemosMejor() {
   return (
-    <section className="py-24 px-6 md:px-12 flex flex-col gap-5">
-      <div className="flex flex-col items-start w-full">
-        <h2 className="mb-4 text-5xl font-extrabold tracking-tight text-gray-950 md:text-6xl">
-          Lo que hacemos mejor
-        </h2>
-        <p className="text-lg font-light text-gray-600 leading-relaxed max-w-2xl ">
-          Un ecosistema completo de servicios digitales para llevar tu negocio
-          al siguiente nivel. La transformación digital de tu negocio empieza en
-          TEKO.
-        </p>
-      </div>
-      <div className="flex justify-end">
-        <Button variant={"outline"} className={"p-5 rounded-full"}>
-          Ver todos los servicios <ArrowRight />
+    <section className="flex flex-col gap-10 py-16 px-6 md:py-24 md:px-12">
+      
+      {/* Encabezado y Botón adaptables */}
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end w-full">
+        <div className="flex flex-col items-start max-w-2xl">
+          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-950 md:text-5xl lg:text-6xl">
+            Lo que hacemos mejor
+          </h2>
+          <p className="text-base font-light leading-relaxed text-gray-600 md:text-lg">
+            Un ecosistema completo de servicios digitales para llevar tu negocio
+            al siguiente nivel. La transformación digital de tu negocio empieza en
+            TEKO.
+          </p>
+        </div>
+        
+        {/* En móvil ocupa todo el ancho, en desktop se ajusta a su contenido */}
+        <Button variant={"outline"} className="w-full rounded-full p-5 sm:w-auto">
+          Ver todos los servicios <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
-      <div className="grid grid-cols-4 gap-3">
+
+      {/* Grid responsivo */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {data_hacemos_mejor_cards.map((card, index) => (
           <Card
             key={index}
@@ -41,6 +47,7 @@ export default function SectionHacemosMejor() {
           </Card>
         ))}
       </div>
+      
     </section>
   );
 }
