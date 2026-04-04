@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function ServicesHero() {
     return (
-        <section className="bg-white px-6 pt-24 pb-16 md:px-12 md:pt-32">
+        <section className="bg-white px-4 md:px-6 pt-24 pb-16 md:pt-32">
             <div className="mx-auto max-w-7xl">
 
                 {/* Enlace Volver */}
@@ -26,7 +26,7 @@ export default function ServicesHero() {
                     </div>
 
                     {/* Título */}
-                    <h1 className="mb-6 text-5xl font-extrabold tracking-tight text-[#0f172a] md:text-6xl lg:text-[4.5rem] lg:leading-tight">
+                    <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#0f172a] lg:text-6xl lg:leading-tight">
                         Todos nuestros servicios
                     </h1>
 

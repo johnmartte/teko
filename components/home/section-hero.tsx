@@ -10,7 +10,7 @@ const oldStandardTT = Old_Standard_TT({
 export default function SectionHero() {
   return (
     <section className="flex justify-center items-center bg-linear-to-b from-blue-600 via-blue-400 to-blue-100 min-h-screen ">
-      <div className="absolute w-full h-full border z-30 flex flex-col overflow-hidden">
+      <div className="absolute w-full h-full z-30 flex flex-col overflow-hidden max-w-full">
         <svg
           width="2440"
           height="1000"

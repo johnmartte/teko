@@ -42,7 +42,7 @@ export default function SectionAhorraTiempo() {
         </div>
 
         {/* Columna Derecha: Cuadrícula de Iconos */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-5">
+        <div className="grid grid-cols-2 xs:grid-cols-3 gap-3 sm:gap-5">
           {icons.map((Icon, index) => (
             <div
               key={index}

@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed left-0 top-0 z-50 w-full px-5 py-4 transition-all duration-500 ${
+      className={`fixed left-0 top-0 z-50 w-full px-4 md:px-5 py-4 transition-all duration-500 ${
         isScrolled
           ? "bg-blue-500 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
           : "bg-white/0 backdrop-blur-sx "
@@ -30,7 +30,7 @@ export default function Header() {
       <div className="flex items-center justify-between">
         {/* Logo */}
         <div>
-          <Image src={LogoTeko} alt="Logo TEKO" />
+          <Image src={LogoTeko} alt="Logo TEKO" width={100} height={32} />
         </div>
 
         {/* Desktop Nav */}

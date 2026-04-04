@@ -22,7 +22,7 @@ export function SectionServicios({
 }: ServiceSectionProps) {
   return (
     <section className={cn("py-16  md:py-24 ", sectionBg)}>
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl px-8 sm:px-6 md:px-0">
         {/* Encabezado */}
         <div className="mb-10 flex items-center gap-4">
           {/* Número con fondo circular de color */}
@@ -55,8 +55,8 @@ export function SectionServicios({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="-left-4 md:-left-6" />
-          <CarouselNext className="-right-4 md:-right-6" />
+          <CarouselPrevious className="left-2 md:-left-6" />
+          <CarouselNext className="right-2 md:-right-6" />
         </Carousel>
       </div>
     </section>

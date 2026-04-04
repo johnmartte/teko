@@ -90,11 +90,11 @@ const WorkflowStep = ({ step }: { step: (typeof workflowSteps)[0] }) => {
 export default function SectionNuestroProcesoTrabajo() {
   return (
     <div className="bg-white">
-      <section className="py-24 px-6 md:px-12">
+      <section className="py-24 px-4 md:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           {/* Encabezado */}
           <div className="max-w-4xl mx-auto mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-extrabold tracking-tight text-gray-950 md:text-6xl">
+            <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-950">
               Nuestro proceso de trabajo
             </h2>
             <p className="text-lg font-light text-gray-600 leading-relaxed max-w-2xl mx-auto">
@@ -109,6 +109,9 @@ export default function SectionNuestroProcesoTrabajo() {
             <div className="absolute top-12 left-0 right-0 hidden md:block">
               <div className="h-0.5 bg-[#00d7f2]/15 rounded-full w-full mx-auto max-w-[calc(100%-120px)]"></div>
             </div>
+
+            {/* Conector vertical — solo móvil */}
+            <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-[#00d7f2]/20 block md:hidden" />
 
             {/* Cuadrícula de Pasos */}
             <div className="grid grid-cols-1 gap-y-16 sm:grid-cols-2 md:grid-cols-5 md:gap-x-12 relative z-10">
