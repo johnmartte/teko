@@ -1,4 +1,15 @@
-import { Globe, Layers, Palette, Code2, Plug, Wrench, Cloud, GitBranch, MessageSquare } from "lucide-react";
+import {
+  Globe,
+  Layers,
+  Palette,
+  Code2,
+  Plug,
+  Wrench,
+  Cloud,
+  GitBranch,
+  MessageSquare,
+  Presentation,
+} from "lucide-react";
 import type { ServiceSectionProps } from "@/shared/types";
 
 export const serviciosSections: ServiceSectionProps[] = [
@@ -6,9 +17,9 @@ export const serviciosSections: ServiceSectionProps[] = [
     phase: "01",
     phaseLabel: "FASE",
     title: "Diseño & Branding",
-    accentBg: "bg-violet-100",
-    accentText: "text-violet-600",
-    sectionBg: "bg-slate-50",
+    accentBg: "bg-[#eef2ff]",
+    accentText: "text-[#6366f1]",
+    sectionBg: "bg-[#f0f4f8]",
     cards: [
       {
         icon: <Palette size={18} />,
@@ -28,14 +39,20 @@ export const serviciosSections: ServiceSectionProps[] = [
         title: "Landing Pages & Sitios Web",
         description: `- Diseño visual orientado a conversión\n- Maquetas Figma listas para desarrollo\n- Responsive y mobile-first`,
       },
+      {
+        icon: <Presentation size={18} />,
+        badge: "Pitch",
+        title: "Presentaciones & Pitch Decks",
+        description: `- Pitch para inversionistas y clientes\n- Catálogos y portafolios digitales\n- Presentaciones de marca corporativa`,
+      },
     ],
   },
   {
     phase: "02",
     phaseLabel: "FASE",
     title: "Desarrollo Web & Software",
-    accentBg: "bg-blue-100",
-    accentText: "text-blue-600",
+    accentBg: "bg-[#eff6ff]",
+    accentText: "text-[#3b82f6]",
     sectionBg: "bg-white",
     cards: [
       {
@@ -62,9 +79,9 @@ export const serviciosSections: ServiceSectionProps[] = [
     phase: "03",
     phaseLabel: "FASE",
     title: "Infraestructura & Cloud",
-    accentBg: "bg-cyan-100",
-    accentText: "text-cyan-600",
-    sectionBg: "bg-slate-50",
+    accentBg: "bg-[#ecfeff]",
+    accentText: "text-[#22d3ee]",
+    sectionBg: "bg-[#f0f4f8]",
     cards: [
       {
         icon: <Cloud size={18} />,

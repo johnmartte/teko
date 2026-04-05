@@ -8,7 +8,9 @@ export default function ServiciosPage() {
     <main>
       <ServicesHero/>
       {serviciosSections.map((section, i) => (
-        <SectionServicios key={i} {...section} />
+        <div key={i} className={i === 0 ? "-mt-8 md:-mt-10" : ""}>
+          <SectionServicios {...section} />
+        </div>
       ))}
       <SectionMicroservicios />
     </main>
