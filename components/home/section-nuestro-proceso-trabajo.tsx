@@ -26,8 +26,8 @@ const workflowSteps = [
     description:
       "Creamos wireframes, prototipos interactivos y el sistema de diseño visual.",
     icon: FiPenTool,
-    badgeColor: "bg-[#9333ea]", // Purple
-    iconColor: "text-gray-400",
+    badgeColor: "bg-[#0047ff]",
+    iconColor: "text-[#0047ff]",
   },
   {
     id: 4,
@@ -54,32 +54,32 @@ const WorkflowStep = ({ step }: { step: (typeof workflowSteps)[0] }) => {
   return (
     <div className="flex flex-col items-center group">
       {/* Contenedor del Icono y el Badge */}
-      <div className="relative mb-6">
+      <div className="relative mb-5">
         <div
           className={cn(
-            "flex items-center justify-center w-24 h-24 p-3 border border-gray-100 bg-white rounded-full shadow-lg group-hover:shadow-xl transition-shadow duration-300",
+            "flex items-center justify-center h-[104px] w-[104px] border border-[#f2f4f7] bg-white rounded-full shadow-[0_8px_22px_-12px_rgba(16,24,40,0.28)] group-hover:shadow-[0_14px_32px_-12px_rgba(16,24,40,0.38)] transition-shadow duration-300",
           )}
         >
           <div
             className={cn(
-              "w-full h-full flex items-center justify-center rounded-full absolute m-3",
-              `${step.badgeColor} opacity-15 w-20 h-20`,
+              "h-16 w-16 flex items-center justify-center rounded-full absolute",
+              `${step.badgeColor} opacity-15`,
             )}
           ></div>
-          <IconComponent className={`${step.iconColor} w-10 h-10`} />
+          <IconComponent className={`${step.iconColor} h-8 w-8`} />
         </div>
         {/* Badge Numerado */}
         <div
-          className={`absolute top-3 right-0 flex items-center justify-center w-8 h-8 rounded-full ${step.badgeColor} transform translate-x-1/2 -translate-y-1/2 shadow-md`}
+          className={`absolute right-0 top-3 flex h-7 w-7 items-center justify-center rounded-full ${step.badgeColor} translate-x-1/2 -translate-y-1/2 shadow-md`}
         >
-          <span className="font-semibold text-white text-sm">{step.id}</span>
+          <span className="text-[12px] font-semibold text-white">{step.id}</span>
         </div>
       </div>
 
       {/* Texto del Paso */}
       <div className="text-center">
-        <h3 className="mb-2 text-xl font-bold text-gray-950">{step.title}</h3>
-        <p className="max-w-60 text-sm text-gray-500 leading-relaxed">
+        <h3 className="mb-2 text-[18px] font-semibold text-[#101828]">{step.title}</h3>
+        <p className="max-w-60 text-[14px] leading-[22px] text-[#99a1af]">
           {step.description}
         </p>
       </div>
@@ -90,14 +90,14 @@ const WorkflowStep = ({ step }: { step: (typeof workflowSteps)[0] }) => {
 export default function SectionNuestroProcesoTrabajo() {
   return (
     <div className="bg-white">
-      <section className="py-24 px-4 md:px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-4 pb-24 pt-10 md:px-[145px] md:pb-[120px] md:pt-8">
+        <div className="mx-auto max-w-[1150px]">
           {/* Encabezado */}
-          <div className="max-w-4xl mx-auto mb-16 text-center">
-            <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-950">
+          <div className="mx-auto mb-14 max-w-[840px] text-center">
+            <h2 className="mb-4 text-[34px] font-extrabold tracking-[-0.06em] text-[#101828] md:text-[40px] md:leading-[48px]">
               Nuestro proceso de trabajo
             </h2>
-            <p className="text-lg font-light text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="mx-auto max-w-[752px] text-[14px] font-normal leading-[22px] text-[#99a1af] md:text-[16px] md:leading-[24px]">
               Un método probado en +50 proyectos que reduce la incertidumbre y
               maximiza resultados.
             </p>
@@ -106,15 +106,15 @@ export default function SectionNuestroProcesoTrabajo() {
           {/* Pasos del Flujo de Trabajo */}
           <div className="relative">
             {/* Línea de Conexión (Cyan) */}
-            <div className="absolute top-12 left-0 right-0 hidden md:block">
-              <div className="h-0.5 bg-[#00d7f2]/15 rounded-full w-full mx-auto max-w-[calc(100%-120px)]"></div>
+            <div className="absolute left-0 right-0 top-[52px] hidden md:block">
+              <div className="mx-auto h-[2px] w-full max-w-[calc(100%-110px)] rounded-full bg-[#00d7f2]/20"></div>
             </div>
 
             {/* Conector vertical — solo móvil */}
             <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-[#00d7f2]/20 block md:hidden" />
 
             {/* Cuadrícula de Pasos */}
-            <div className="grid grid-cols-1 gap-y-16 sm:grid-cols-2 md:grid-cols-5 md:gap-x-12 relative z-10">
+            <div className="relative z-10 grid grid-cols-1 gap-y-14 sm:grid-cols-2 md:grid-cols-5 md:gap-x-8">
               {workflowSteps.map((step) => (
                 <WorkflowStep key={step.id} step={step} />
               ))}

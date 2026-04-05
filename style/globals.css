@@ -120,6 +120,30 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+  @font-face {
+    font-family: "Advercase";
+    src: url("/fonts/Advercase/Advercase-Bold.otf") format("opentype");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "PPEditorialOld";
+    src: url("/fonts/PPEditorialOld/PPEditorialOld-Italic.otf") format("opentype");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  .font-advercase {
+    font-family: "Advercase", "Old Standard TT", Georgia, "Times New Roman", serif;
+  }
+
+  .font-ppeditorialold {
+    font-family: "PPEditorialOld", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { ServiceCard } from "@/components/globales/service-card";
 import { cn } from "@/lib/utils";
 import type { ServiceSectionProps } from "@/shared/types";
@@ -21,43 +14,39 @@ export function SectionServicios({
   cards,
 }: ServiceSectionProps) {
   return (
-    <section className={cn("py-16  md:py-24 ", sectionBg)}>
-      <div className="mx-auto max-w-7xl px-8 sm:px-6 md:px-0">
+    <section className={cn("py-[80px]", sectionBg)}>
+      <div className="mx-auto max-w-[1280px] px-6 md:px-[100px]">
         {/* Encabezado */}
-        <div className="mb-10 flex items-center gap-4">
+        <div className="mb-12 flex items-center gap-4">
           {/* Número con fondo circular de color */}
-          <div className={cn("flex flex-col items-center justify-center rounded-2xl px-3 py-2 min-w-14", accentBg)}>
-
-            <span className={cn("text-2xl py-2 px-1 font-extrabold leading-none", accentText)}>
+          <div
+            className={cn(
+              "flex h-14 w-14 items-center justify-center rounded-2xl",
+              accentBg,
+            )}
+          >
+            <span className={cn("text-[17.6px] font-black leading-[26.4px]", accentText)}>
               {phase}
             </span>
           </div>
 
           {/* Título */}
-          <div>        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-            {phaseLabel}
-          </span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl lg:text-5xl">
+          <div>
+            <span className={cn("text-[12px] font-semibold uppercase tracking-[1.2px]", accentText)}>
+              {phaseLabel}
+            </span>
+            <h2 className="text-[30px] font-extrabold leading-[43.2px] tracking-[-0.576px] text-[#101828]">
               {title}
-            </h2></div>
-
+            </h2>
+          </div>
         </div>
 
-        {/* Carousel */}
-        <Carousel opts={{ align: "start", dragFree: true }} className="w-full">
-          <CarouselContent className="-ml-4">
-            {cards.map((card, i) => (
-              <CarouselItem
-                key={i}
-                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-              >
-                <ServiceCard {...card} accentText={accentText} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-2 md:-left-6" />
-          <CarouselNext className="right-2 md:-right-6" />
-        </Carousel>
+        {/* Cards desplazables horizontalmente */}
+        <div className="flex gap-[29px] overflow-x-auto overflow-y-visible py-[1px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {cards.map((card, i) => (
+            <ServiceCard key={i} {...card} accentText={accentText} />
+          ))}
+        </div>
       </div>
     </section>
   );

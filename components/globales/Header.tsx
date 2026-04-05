@@ -6,10 +6,13 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import LogoTeko from "@/public/LogoTeko.svg";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isServicesRoute = pathname?.startsWith("/servicios");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,28 +24,29 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed left-0 top-0 z-50 w-full px-4 md:px-5 py-4 transition-all duration-500 ${
-        isScrolled
-          ? "bg-blue-500 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
-          : "bg-white/0 backdrop-blur-sx "
+      className={`fixed left-0 top-0 z-50 w-full px-4 py-0 md:px-20 transition-all duration-500 ${
+        isServicesRoute || isScrolled
+          ? "bg-[#0b6eff]/95 backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <div>
-          <Image src={LogoTeko} alt="Logo TEKO" width={100} height={32} />
-        </div>
+        <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px]">
+          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
+        </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-4">
-          <nav className="flex items-center gap-6">
-            <Link href="/servicios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Servicios</Link>
-            <Link href="/portafolio" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Portafolio</Link>
-            <Link href="/nosotros" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Nosotros</Link>
-            <Link href="/precios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Precios</Link>
-            <Link href="/contacto" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Contacto</Link>
+        <div className="hidden md:flex items-center gap-0">
+          <nav className="flex items-center">
+            <Link href="/servicios" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Servicios</Link>
+            <Link href="/portafolio" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Portafolio</Link>
+            <Link href="/nosotros" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Nosotros</Link>
+            <Link href="/precios" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Precios</Link>
+            <Link href="/contacto" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Contacto</Link>
           </nav>
-          <Button className="px-6 py-5 rounded-full text-sm font-semibold text-white bg-white/15 border border-white/30 hover:bg-white/25 backdrop-blur-sm transition-all duration-300 shadow-[0_2px_12px_rgba(255,255,255,0.1)]">
+          <div className="w-10" aria-hidden="true" />
+          <Button className="h-10 w-[154px] rounded-full bg-[rgba(0,71,255,0.5)] px-4 text-[13px] font-medium text-white hover:bg-[rgba(0,71,255,0.6)]">
             Agenda una llamada
           </Button>
         </div>
