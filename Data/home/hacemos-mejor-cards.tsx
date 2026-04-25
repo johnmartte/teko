@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Branding from "@/public/IllustrationBranding.svg";
-import Aplicaciones from "@/public/Aplicaciones.svg";
-import AplicacionesMoviles from "@/public/Container.svg";
-import Sistemas from "@/public/SistemaAutomatico.svg"
+import Branding from "@/public/Branding-Identidad-Visual.png";
+import Aplicaciones from "@/public/Diseno-Desarrollo-Web.png";
+import AplicacionesMoviles from "@/public/Aplicaciones-Moviles.png";
+import Sistemas from "@/public/Sistemas-Automatizacion.png"
 
 export const data_hacemos_mejor_cards = [
   {

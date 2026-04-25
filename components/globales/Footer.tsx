@@ -44,7 +44,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#1880ff] pt-16 pb-8 text-white">
+    <footer className="bg-[#1880ff] pt-16 pb-8 text-white dark:bg-[#0f1525] dark:border-t dark:border-white/10">
       <div className="mx-auto w-full  px-6 md:px-12">
         {/* Sección Superior: Grid principal */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-6 lg:gap-8">

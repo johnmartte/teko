@@ -7,12 +7,13 @@ import { Button } from "../ui/button";
 import LogoTeko from "@/public/LogoTeko.svg";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "./theme-toggle";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isServicesRoute = pathname?.startsWith("/servicios");
+  const isInnerRoute = pathname !== "/" && pathname !== null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,8 +26,8 @@ export default function Header() {
   return (
     <header
       className={`fixed left-0 top-0 z-50 w-full px-4 py-0 md:px-20 transition-all duration-500 ${
-        isServicesRoute || isScrolled
-          ? "bg-[#0b6eff]/95 backdrop-blur-md"
+        isInnerRoute || isScrolled
+          ? "bg-[#0b6eff]/95 backdrop-blur-md dark:bg-[#0a0e1a]/90"
           : "bg-transparent"
       }`}
     >
@@ -46,13 +47,17 @@ export default function Header() {
             <Link href="/contacto" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Contacto</Link>
           </nav>
           <div className="w-10" aria-hidden="true" />
-          <Button className="h-10 w-[154px] rounded-full bg-[rgba(0,71,255,0.5)] px-4 text-[13px] font-medium text-white hover:bg-[rgba(0,71,255,0.6)]">
+          <Button className="h-10 w-[154px] rounded-full bg-[rgba(0,71,255,0.5)] px-4 text-[13px] font-medium text-white hover:bg-[rgba(0,71,255,0.6)] dark:bg-white/10 dark:hover:bg-white/20">
             Agenda una llamada
           </Button>
+          <div className="ml-3">
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Botón Menú Móvil */}
-        <div className="md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle className="h-9 w-9" />
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 rounded-xl bg-white/10 border border-white/20 text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
