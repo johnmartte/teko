@@ -55,6 +55,7 @@ export default function SectionAhorraTiempo() {
           duration: 0.5,
           ease: "back.out(1.7)",
           stagger: 0.08,
+          clearProps: "transform,opacity",
           scrollTrigger: {
             trigger: iconsRef.current,
             start: "top 85%",
