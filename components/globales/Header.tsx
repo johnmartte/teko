@@ -59,13 +59,12 @@ export default function Header() {
     >
       <div className="flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px] shrink-0">
-          <Image
-            src={LogoTeko}
-            alt="Logo TEKO"
-            fill
-            className="object-contain [filter:brightness(0)_saturate(100%)_invert(8%)_sepia(15%)_saturate(2000%)_hue-rotate(195deg)] dark:filter-none"
-          />
+        <Link
+          href="/"
+          aria-label="Ir al inicio"
+          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center rounded-2xl bg-[#0a0e1a] px-2 dark:bg-transparent dark:px-0"
+        >
+          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
         </Link>
 
         {/* Desktop Nav — pill glass centrado */}
