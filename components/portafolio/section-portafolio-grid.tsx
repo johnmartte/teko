@@ -5,19 +5,27 @@ import Image, { type StaticImageData } from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import WebImg from "@/public/Diseno-Desarrollo-Web.png";
-import MobileImg from "@/public/Aplicaciones-Moviles.png";
-import BrandingImg from "@/public/Branding-Identidad-Visual.png";
-import SistemasImg from "@/public/Sistemas-Automatizacion.png";
+
+import CitasMedicasLight from "@/public/portafolio/citas-medicas-light.png";
+import CitasMedicasDark from "@/public/portafolio/citas-medicas-dark.png";
+import DeliveryLight from "@/public/portafolio/delivery-light.png";
+import DeliveryDark from "@/public/portafolio/delivery-dark.png";
+import FintechLight from "@/public/portafolio/identidad-fintech-light.png";
+import FintechDark from "@/public/portafolio/identidad-fintech-dark.png";
+import CrmLight from "@/public/portafolio/crm-light.png";
+import CrmDark from "@/public/portafolio/crm-dark.png";
+import EcommerceLight from "@/public/portafolio/ecommerce-light.png";
+import EcommerceDark from "@/public/portafolio/ecommerce-dark.png";
+import BarberiaLight from "@/public/portafolio/barberia-light.png";
+import BarberiaDark from "@/public/portafolio/barberia-dark.png";
+import LandingLight from "@/public/portafolio/landing-light.png";
+import LandingDark from "@/public/portafolio/landing-dark.png";
+import FacturaLight from "@/public/portafolio/factura-light.png";
+import FacturaDark from "@/public/portafolio/factura-dark.png";
+import BrandingLight from "@/public/portafolio/branding-light.png";
+import BrandingDark from "@/public/portafolio/branding-dark.png";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const categoryImages: Record<string, StaticImageData> = {
-  Web: WebImg,
-  Mobile: MobileImg,
-  Branding: BrandingImg,
-  Sistemas: SistemasImg,
-};
 
 const categories = ["Todos", "Web", "Mobile", "Branding", "Sistemas"] as const;
 type Category = (typeof categories)[number];
@@ -28,7 +36,8 @@ type Project = {
   client: string;
   description: string;
   metric: string;
-  gradient: string;
+  imageLight: StaticImageData;
+  imageDark: StaticImageData;
 };
 
 const projects: Project[] = [
@@ -39,7 +48,8 @@ const projects: Project[] = [
     description:
       "Sistema de agendamiento online con integración a calendarios y recordatorios automáticos.",
     metric: "+40% conversión",
-    gradient: "from-[#0047ff] to-[#00d7f2]",
+    imageLight: CitasMedicasLight,
+    imageDark: CitasMedicasDark,
   },
   {
     title: "App de delivery gastronómico",
@@ -48,7 +58,8 @@ const projects: Project[] = [
     description:
       "Aplicación nativa iOS/Android con tracking en tiempo real y pagos integrados.",
     metric: "50k+ descargas",
-    gradient: "from-[#2e5fff] to-[#0071ff]",
+    imageLight: DeliveryLight,
+    imageDark: DeliveryDark,
   },
   {
     title: "Identidad visual — Fintech",
@@ -57,7 +68,8 @@ const projects: Project[] = [
     description:
       "Rebrand completo: logo, design system, guía de marca y aplicaciones digitales.",
     metric: "Brand kit completo",
-    gradient: "from-[#1ec4ff] to-[#2e5fff]",
+    imageLight: FintechLight,
+    imageDark: FintechDark,
   },
   {
     title: "CRM empresarial a medida",
@@ -66,7 +78,8 @@ const projects: Project[] = [
     description:
       "Panel de gestión de clientes, pipelines y automatización de seguimientos.",
     metric: "-60% tiempo operativo",
-    gradient: "from-[#0b6eff] to-[#101828]",
+    imageLight: CrmLight,
+    imageDark: CrmDark,
   },
   {
     title: "E-commerce de moda",
@@ -75,7 +88,8 @@ const projects: Project[] = [
     description:
       "Tienda online con catálogo dinámico, pagos y gestión de inventario.",
     metric: "+220% ventas online",
-    gradient: "from-[#00d7f2] to-[#0047ff]",
+    imageLight: EcommerceLight,
+    imageDark: EcommerceDark,
   },
   {
     title: "App de reservas de barbería",
@@ -84,7 +98,8 @@ const projects: Project[] = [
     description:
       "Reservas por WhatsApp, panel de profesionales y recordatorios automáticos.",
     metric: "3min tiempo de reserva",
-    gradient: "from-[#2563eb] to-[#1ec4ff]",
+    imageLight: BarberiaLight,
+    imageDark: BarberiaDark,
   },
   {
     title: "Landing page SaaS B2B",
@@ -93,7 +108,8 @@ const projects: Project[] = [
     description:
       "Landing conversión con animaciones, A/B testing y analítica integrada.",
     metric: "+180% leads calificados",
-    gradient: "from-[#0071ff] to-[#2e5fff]",
+    imageLight: LandingLight,
+    imageDark: LandingDark,
   },
   {
     title: "Sistema de facturación fiscal",
@@ -102,7 +118,8 @@ const projects: Project[] = [
     description:
       "Generación de facturas electrónicas con validación y envío automático.",
     metric: "10k+ facturas/mes",
-    gradient: "from-[#101828] to-[#2563eb]",
+    imageLight: FacturaLight,
+    imageDark: FacturaDark,
   },
   {
     title: "Branding — Agencia creativa",
@@ -111,7 +128,8 @@ const projects: Project[] = [
     description:
       "Nueva identidad con paleta moderna, tipografía editorial y aplicaciones.",
     metric: "Design system v1.0",
-    gradient: "from-[#2e5fff] to-[#00d7f2]",
+    imageLight: BrandingLight,
+    imageDark: BrandingDark,
   },
 ];
 
@@ -174,20 +192,29 @@ export default function SectionPortafolioGrid() {
         {filtered.map((p, i) => (
           <article
             key={`${filter}-${i}`}
-            className="project-card group overflow-hidden rounded-[24px] bg-[#f4f7ff] dark:bg-[#141a2b] transition-shadow duration-300 hover:shadow-xl"
+            className="project-card group overflow-hidden rounded-[24px] border border-[#e6eaf2] bg-white shadow-[0_8px_30px_-12px_rgba(16,24,40,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(11,110,255,0.25)] dark:border-white/10 dark:bg-[#0f1525] dark:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_18px_40px_-12px_rgba(11,110,255,0.5)]"
           >
-            <div
-              className={`relative h-[220px] overflow-hidden bg-gradient-to-br ${p.gradient} flex items-end p-6`}
-            >
+            <div className="relative h-[220px] overflow-hidden">
+              {/* Imagen versión clara */}
               <Image
-                src={categoryImages[p.category]}
+                src={p.imageLight}
                 alt={p.title}
-                className="pointer-events-none absolute inset-0 m-auto h-[78%] w-auto object-contain drop-shadow-[0_12px_30px_rgba(0,0,0,0.3)] transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 dark:hidden"
               />
-              <span className="relative z-10 rounded-full bg-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm ring-1 ring-white/30">
+              {/* Imagen versión oscura */}
+              <Image
+                src={p.imageDark}
+                alt={p.title}
+                className="absolute inset-0 hidden h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 dark:block"
+              />
+
+              {/* Tag categoría */}
+              <span className="absolute bottom-5 left-5 z-10 rounded-full bg-white/25 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white ring-1 ring-white/30 backdrop-blur-md">
                 {p.category}
               </span>
-              <span className="absolute right-5 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-md transition-transform duration-300 group-hover:rotate-45 group-hover:bg-white/30">
+
+              {/* Flecha esquina */}
+              <span className="absolute right-5 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-md transition-transform duration-300 group-hover:rotate-45 group-hover:bg-white/35">
                 <ArrowUpRight className="h-4 w-4" />
               </span>
             </div>
@@ -201,7 +228,7 @@ export default function SectionPortafolioGrid() {
               <p className="mb-4 text-[14px] leading-[22px] text-[#7a8595] dark:text-[#a1a8b3]">
                 {p.description}
               </p>
-              <div className="inline-flex items-center rounded-full bg-white dark:bg-[#0a0e1a] px-3 py-1 text-[12px] font-semibold text-[#0047ff]">
+              <div className="inline-flex items-center rounded-full bg-[#eef4ff] dark:bg-[#0047ff]/15 px-3 py-1 text-[12px] font-semibold text-[#0047ff] dark:text-[#7aa3ff]">
                 {p.metric}
               </div>
             </div>
