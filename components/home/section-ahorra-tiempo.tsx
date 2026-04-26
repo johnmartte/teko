@@ -7,10 +7,10 @@ import { Input } from "../ui/input";
 import {
   ArrowRight,
   MessageSquare,
-  Code,
+  Code2,
   Database,
   Cloud,
-  LayoutGrid,
+  Grid3x3,
   Share2,
 } from "lucide-react";
 import Background from "@/public/Background-seccion.svg";
@@ -20,7 +20,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SectionAhorraTiempo() {
-  const icons = [MessageSquare, Code, Database, Cloud, LayoutGrid, Share2];
+  const icons = [MessageSquare, Code2, Database, Cloud, Grid3x3, Share2];
 
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
