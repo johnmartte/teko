@@ -192,45 +192,54 @@ export default function SectionPortafolioGrid() {
         {filtered.map((p, i) => (
           <article
             key={`${filter}-${i}`}
-            className="project-card group overflow-hidden rounded-[24px] border border-[#e6eaf2] bg-white shadow-[0_8px_30px_-12px_rgba(16,24,40,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(11,110,255,0.25)] dark:border-white/10 dark:bg-[#0f1525] dark:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_18px_40px_-12px_rgba(11,110,255,0.5)]"
+            className="project-card group relative aspect-[4/5] overflow-hidden rounded-[28px] border border-[#e6eaf2] bg-white shadow-[0_10px_40px_-12px_rgba(16,24,40,0.18)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(11,110,255,0.35)] dark:border-white/10 dark:bg-[#0f1525] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] dark:hover:shadow-[0_24px_60px_-16px_rgba(11,110,255,0.55)]"
           >
-            <div className="relative h-[220px] overflow-hidden">
-              {/* Imagen versión clara */}
-              <Image
-                src={p.imageLight}
-                alt={p.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 dark:hidden"
-              />
-              {/* Imagen versión oscura */}
-              <Image
-                src={p.imageDark}
-                alt={p.title}
-                className="absolute inset-0 hidden h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 dark:block"
-              />
+            {/* Imagen full-bleed */}
+            <Image
+              src={p.imageLight}
+              alt={p.title}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] dark:hidden"
+            />
+            <Image
+              src={p.imageDark}
+              alt={p.title}
+              className="absolute inset-0 hidden h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] dark:block"
+            />
 
-              {/* Tag categoría */}
-              <span className="absolute bottom-5 left-5 z-10 rounded-full bg-white/25 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white ring-1 ring-white/30 backdrop-blur-md">
-                {p.category}
-              </span>
+            {/* Gradiente inferior para legibilidad del texto (light) */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-white via-white/80 to-transparent dark:hidden" />
+            {/* Gradiente inferior (dark) */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-[55%] bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/85 to-transparent dark:block" />
 
-              {/* Flecha esquina */}
-              <span className="absolute right-5 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-md transition-transform duration-300 group-hover:rotate-45 group-hover:bg-white/35">
+            {/* Top: tag categoría + cliente */}
+            <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-5 sm:p-6">
+              <div className="flex flex-col items-start gap-2">
+                <span className="rounded-full bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white ring-1 ring-white/20 backdrop-blur-md">
+                  {p.category}
+                </span>
+                <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#101828] shadow-sm backdrop-blur-md dark:bg-white/15 dark:text-white dark:ring-1 dark:ring-white/20">
+                  {p.client}
+                </span>
+              </div>
+
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white ring-1 ring-white/20 backdrop-blur-md transition-all duration-300 group-hover:rotate-45 group-hover:bg-black/60">
                 <ArrowUpRight className="h-4 w-4" />
               </span>
             </div>
-            <div className="p-6">
-              <p className="mb-1 text-[12px] font-semibold uppercase tracking-wide text-[#99a1af] dark:text-[#a1a8b3]">
-                {p.client}
-              </p>
-              <h3 className="mb-2 text-[20px] font-semibold text-[#101828] dark:text-white">
-                {p.title}
-              </h3>
-              <p className="mb-4 text-[14px] leading-[22px] text-[#7a8595] dark:text-[#a1a8b3]">
-                {p.description}
-              </p>
-              <div className="inline-flex items-center rounded-full bg-[#eef4ff] dark:bg-[#0047ff]/15 px-3 py-1 text-[12px] font-semibold text-[#0047ff] dark:text-[#7aa3ff]">
-                {p.metric}
+
+            {/* Bottom: título, descripción y CTA */}
+            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-5 sm:p-6">
+              <div className="min-w-0 flex-1">
+                <h3 className="mb-1.5 text-[20px] font-bold leading-[26px] tracking-[-0.01em] text-[#101828] sm:text-[22px] dark:text-white">
+                  {p.title}
+                </h3>
+                <p className="line-clamp-2 text-[13px] leading-[18px] text-[#5a6675] dark:text-[#cfd6e4]">
+                  {p.description}
+                </p>
               </div>
+              <span className="shrink-0 inline-flex items-center rounded-full bg-[#101828] px-4 py-2 text-[12px] font-semibold text-white shadow-md transition-all duration-300 group-hover:bg-[#0047ff] dark:bg-white dark:text-[#0a0e1a] dark:group-hover:bg-[#7aa3ff] dark:group-hover:text-white">
+                {p.metric}
+              </span>
             </div>
           </article>
         ))}
