@@ -70,7 +70,7 @@ export default function SectionHero() {
               Construimos productos
             </span>
             <span ref={line2Ref} className="block">
-              digitales que{" "}
+              digitales que<br className="sm:hidden" />{" "}
               <span
                 ref={transformanRef}
                 className={cn(

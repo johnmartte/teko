@@ -23,7 +23,35 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock scroll y fuerza compositing layer al abrir el menú móvil
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
   return (
+    <>
+      {/* Backdrop blur cuando el menú móvil está abierto */}
+      <div
+        onClick={() => setIsMobileMenuOpen(false)}
+        aria-hidden="true"
+        style={{
+          backdropFilter: isMobileMenuOpen ? "blur(20px) saturate(140%)" : "blur(0px)",
+          WebkitBackdropFilter: isMobileMenuOpen ? "blur(20px) saturate(140%)" : "blur(0px)",
+          transform: "translateZ(0)",
+          willChange: "backdrop-filter, opacity",
+        }}
+        className={`fixed inset-0 z-40 md:hidden bg-black/55 transition-all duration-500 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      />
+
     <header
       className={`fixed left-0 top-0 z-50 w-full px-4 py-0 md:px-20 transition-all duration-500 ${
         isInnerRoute || isScrolled
@@ -74,7 +102,7 @@ export default function Header() {
           isMobileMenuOpen ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
         }`}
       >
-        <div className=" px-6 py-6">
+        <div className="px-4 py-5 rounded-2xl bg-white/10 dark:bg-white/5 border border-white/20 backdrop-blur-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.4)]">
           <nav className="flex flex-col gap-1">
             {[
               { href: "/servicios", label: "Servicios" },
@@ -104,5 +132,6 @@ export default function Header() {
         </div>
       </div>
     </header>
+    </>
   );
 }

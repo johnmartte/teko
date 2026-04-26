@@ -105,14 +105,14 @@ export default function SectionAhorraTiempo() {
 
         <div
           ref={iconsRef}
-          className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5"
+          className="grid w-full max-w-[260px] grid-cols-3 place-items-center gap-3 sm:max-w-none sm:gap-5"
         >
           {icons.map((Icon, index) => (
             <div
               key={index}
-              className="icon-box flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-transform hover:-translate-y-1 md:h-18 md:w-18 dark:bg-[#1a2138] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
+              className="icon-box flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-transform hover:-translate-y-1 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px] dark:bg-[#1a2138] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
             >
-              <Icon className="h-6 w-6 stroke-[1.5] text-slate-600 md:h-7 md:w-7 dark:text-slate-300" />
+              <Icon className="h-5 w-5 stroke-[1.5] text-slate-600 sm:h-6 sm:w-6 md:h-7 md:w-7 dark:text-slate-300" />
             </div>
           ))}
         </div>
