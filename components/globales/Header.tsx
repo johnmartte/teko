@@ -62,7 +62,8 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Ir al inicio"
-          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center rounded-2xl bg-[#0a0e1a] px-2 dark:bg-transparent dark:px-0"
+          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white/20 px-2 shadow-[0_4px_18px_-6px_rgba(16,24,40,0.25)] backdrop-blur-xl dark:border-transparent dark:bg-transparent dark:px-0 dark:shadow-none dark:backdrop-blur-0"
+          style={{ WebkitBackdropFilter: "blur(16px) saturate(140%)" }}
         >
           <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
         </Link>
