@@ -53,34 +53,57 @@ export default function Header() {
       />
 
     <header
-      className={`fixed left-0 top-0 z-50 w-full px-4 py-0 md:px-20 transition-all duration-500 ${
-        isInnerRoute || isScrolled
-          ? "bg-[#0b6eff]/95 backdrop-blur-md dark:bg-[#0a0e1a]/90"
-          : "bg-transparent"
+      className={`fixed left-0 top-0 z-50 w-full px-4 py-3 md:px-10 lg:px-16 transition-all duration-500 ${
+        isMobileMenuOpen ? "bg-transparent" : ""
       }`}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px]">
+        <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px] shrink-0">
           <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-0">
-          <nav className="flex items-center">
-            <Link href="/servicios" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Servicios</Link>
-            <Link href="/portafolio" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Portafolio</Link>
-            <Link href="/nosotros" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Nosotros</Link>
-            <Link href="/precios" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Precios</Link>
-            <Link href="/contacto" className="flex h-[72px] w-[100px] items-center justify-center text-[14px] font-medium text-white transition-colors hover:text-white/85">Contacto</Link>
-          </nav>
-          <div className="w-10" aria-hidden="true" />
-          <Button className="h-10 w-[154px] rounded-full bg-[rgba(0,71,255,0.5)] px-4 text-[13px] font-medium text-white hover:bg-[rgba(0,71,255,0.6)] dark:bg-white/10 dark:hover:bg-white/20">
-            Agenda una llamada
-          </Button>
-          <div className="ml-3">
-            <ThemeToggle />
-          </div>
+        {/* Desktop Nav — pill glass centrado */}
+        <nav
+          className="hidden md:flex items-center gap-1 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl px-2 py-2 shadow-[0_8px_32px_-12px_rgba(0,71,255,0.35)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_32px_-12px_rgba(30,196,255,0.25)]"
+          style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
+        >
+          {[
+            { href: "/", label: "Inicio" },
+            { href: "/servicios", label: "Servicios" },
+            { href: "/portafolio", label: "Portafolio" },
+            { href: "/nosotros", label: "Nosotros" },
+            { href: "/precios", label: "Precios" },
+            { href: "/contacto", label: "Contacto" },
+          ].map(({ href, label }) => {
+            const isActive =
+              href === "/" ? pathname === "/" : pathname?.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] text-white shadow-[0_4px_18px_-4px_rgba(11,110,255,0.6)]"
+                    : "text-white/85 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right side: Contact + theme toggle */}
+        <div className="hidden md:flex items-center gap-3 shrink-0">
+          <ThemeToggle />
+          <Link
+            href="/contacto"
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-5 text-[13px] font-semibold text-white shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-all duration-300 hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110"
+          >
+            Contacto
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
         {/* Botón Menú Móvil */}
