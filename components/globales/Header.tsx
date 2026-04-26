@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import LogoTeko from "@/public/LogoTeko.svg";
+import LogoTeko from "@/public/LogoTeko.png";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./theme-toggle";
@@ -59,13 +59,8 @@ export default function Header() {
     >
       <div className="flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link
-          href="/"
-          aria-label="Ir al inicio"
-          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white/20 px-2 shadow-[0_4px_18px_-6px_rgba(16,24,40,0.25)] backdrop-blur-xl dark:border-transparent dark:bg-transparent dark:px-0 dark:shadow-none dark:backdrop-blur-0"
-          style={{ WebkitBackdropFilter: "blur(16px) saturate(140%)" }}
-        >
-          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
+        <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px] shrink-0">
+          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" priority />
         </Link>
 
         {/* Desktop Nav — pill glass centrado */}
