@@ -65,7 +65,7 @@ export default function Header() {
           className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/20 px-3 shadow-[0_8px_24px_-10px_rgba(11,110,255,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_24px_-10px_rgba(30,196,255,0.35)]"
           style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
         >
-          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain p-1" priority />
+          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain p-1 translate-y-[3px]" priority />
         </Link>
 
         {/* Desktop Nav — pill glass centrado */}
