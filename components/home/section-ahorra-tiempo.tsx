@@ -105,7 +105,7 @@ export default function SectionAhorraTiempo() {
 
         <div
           ref={iconsRef}
-          className="grid w-full max-w-[260px] grid-cols-3 place-items-center gap-3 sm:max-w-none sm:gap-5"
+          className="mx-auto grid w-full max-w-[240px] grid-cols-3 place-items-center gap-3 rounded-2xl bg-white/40 p-4 sm:max-w-none sm:bg-transparent sm:p-0 sm:gap-5 dark:bg-white/[0.03] dark:sm:bg-transparent"
         >
           {icons.map((Icon, index) => (
             <div
