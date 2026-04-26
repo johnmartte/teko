@@ -60,12 +60,17 @@ export default function Header() {
       <div className="flex items-center justify-between gap-4">
         {/* Logo */}
         <Link href="/" aria-label="Ir al inicio" className="relative h-[54px] w-[157px] shrink-0">
-          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain" />
+          <Image
+            src={LogoTeko}
+            alt="Logo TEKO"
+            fill
+            className="object-contain [filter:brightness(0)_saturate(100%)_invert(8%)_sepia(15%)_saturate(2000%)_hue-rotate(195deg)] dark:filter-none"
+          />
         </Link>
 
         {/* Desktop Nav — pill glass centrado */}
         <nav
-          className="hidden md:flex items-center gap-1 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl px-2 py-2 shadow-[0_8px_32px_-12px_rgba(0,71,255,0.35)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_32px_-12px_rgba(30,196,255,0.25)]"
+          className="hidden md:flex items-center gap-1 rounded-full border border-[#e6eaf2] bg-white/80 backdrop-blur-xl px-2 py-2 shadow-[0_8px_32px_-12px_rgba(16,24,40,0.18)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_32px_-12px_rgba(30,196,255,0.25)]"
           style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
         >
           {[
@@ -85,7 +90,7 @@ export default function Header() {
                 className={`relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all duration-300 ${
                   isActive
                     ? "bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] text-white shadow-[0_4px_18px_-4px_rgba(11,110,255,0.6)]"
-                    : "text-white/85 hover:text-white hover:bg-white/10"
+                    : "text-[#252b37] hover:text-[#0047ff] hover:bg-[#eef4ff] dark:text-white/85 dark:hover:text-white dark:hover:bg-white/10"
                 }`}
               >
                 {label}
