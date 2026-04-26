@@ -1,11 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image, { type StaticImageData } from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import WebImg from "@/public/Diseno-Desarrollo-Web.png";
+import MobileImg from "@/public/Aplicaciones-Moviles.png";
+import BrandingImg from "@/public/Branding-Identidad-Visual.png";
+import SistemasImg from "@/public/Sistemas-Automatizacion.png";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const categoryImages: Record<string, StaticImageData> = {
+  Web: WebImg,
+  Mobile: MobileImg,
+  Branding: BrandingImg,
+  Sistemas: SistemasImg,
+};
 
 const categories = ["Todos", "Web", "Mobile", "Branding", "Sistemas"] as const;
 type Category = (typeof categories)[number];
@@ -165,12 +177,19 @@ export default function SectionPortafolioGrid() {
             className="project-card group overflow-hidden rounded-[24px] bg-[#f4f7ff] dark:bg-[#141a2b] transition-shadow duration-300 hover:shadow-xl"
           >
             <div
-              className={`relative h-[220px] bg-gradient-to-br ${p.gradient} p-6 flex items-end`}
+              className={`relative h-[220px] overflow-hidden bg-gradient-to-br ${p.gradient} flex items-end p-6`}
             >
-              <span className="rounded-full bg-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">
+              <Image
+                src={categoryImages[p.category]}
+                alt={p.title}
+                className="pointer-events-none absolute inset-0 m-auto h-[78%] w-auto object-contain drop-shadow-[0_12px_30px_rgba(0,0,0,0.3)] transition-transform duration-500 group-hover:scale-105"
+              />
+              <span className="relative z-10 rounded-full bg-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm ring-1 ring-white/30">
                 {p.category}
               </span>
-              <ArrowUpRight className="absolute right-5 top-5 h-6 w-6 text-white opacity-80 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              <span className="absolute right-5 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-md transition-transform duration-300 group-hover:rotate-45 group-hover:bg-white/30">
+                <ArrowUpRight className="h-4 w-4" />
+              </span>
             </div>
             <div className="p-6">
               <p className="mb-1 text-[12px] font-semibold uppercase tracking-wide text-[#99a1af] dark:text-[#a1a8b3]">
