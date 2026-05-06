@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import "./../style/globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Header from "@/components/globales/Header";
-import Footer from "@/components/globales/Footer";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,9 +30,9 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange={false}
         >
-          <Header />
-          {children}
-          <Footer />
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

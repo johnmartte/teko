@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import Link from "next/link";
 import gsap from "gsap";
 import HeroGrid from "./hero-grid";
 
@@ -100,13 +101,19 @@ export default function SectionHero() {
           ref={buttonsRef}
           className="mt-1 flex w-full flex-col gap-3 px-4 sm:w-auto sm:flex-row sm:px-0"
         >
-          <Button className="h-11 w-full rounded-full bg-[rgba(0,71,255,0.5)] px-7 text-[13px] font-black text-white shadow-none transition-colors hover:bg-[rgba(0,71,255,0.6)] sm:w-[140px]">
-            Agenda una cita
-          </Button>
+          <Link
+            href="/contacto"
+            className="flex h-11 w-full items-center justify-center rounded-full bg-[rgba(0,71,255,0.5)] px-7 text-[13px] font-black text-white whitespace-nowrap shadow-none transition-colors hover:bg-[rgba(0,71,255,0.6)] sm:w-[140px]"
+          >
+            Agendar cita
+          </Link>
 
-          <Button className="h-11 w-full rounded-full border border-white/30 bg-white/10 px-7 text-[13px] font-medium text-[#0047ff] shadow-none backdrop-blur-md transition-colors hover:bg-white/20 sm:w-[140px] dark:text-white">
+          <Link
+            href="/precios"
+            className="flex h-11 w-full items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 text-[13px] font-medium text-[#0047ff] shadow-none backdrop-blur-md transition-colors hover:bg-white/20 sm:w-[140px] dark:text-white"
+          >
             Ver planes
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

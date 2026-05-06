@@ -99,9 +99,15 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Right side: Contact + theme toggle */}
+        {/* Right side: Portal + Contact + theme toggle */}
         <div className="hidden md:flex items-center gap-3 shrink-0">
           <ThemeToggle />
+          <Link
+            href="/portal/login"
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/20 px-5 text-[13px] font-semibold text-white shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-white/30"
+          >
+            Portal Cliente
+          </Link>
           <Link
             href="/contacto"
             className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-5 text-[13px] font-semibold text-white shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-all duration-300 hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110"
@@ -138,6 +144,7 @@ export default function Header() {
               { href: "/nosotros", label: "Nosotros" },
               { href: "/precios", label: "Precios" },
               { href: "/contacto", label: "Contacto" },
+              { href: "/portal/login", label: "Portal Cliente" },
             ].map(({ href, label }) => (
               <Link
                 key={href}
@@ -150,12 +157,13 @@ export default function Header() {
             ))}
           </nav>
           <div className="mt-4 pt-4 border-t border-white/15">
-            <Button
+            <Link
+              href="/contacto"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full rounded-full py-5 text-sm font-semibold text-white bg-white/15 border border-white/30 hover:bg-white/25 backdrop-blur-sm transition-all duration-300"
+              className="flex w-full items-center justify-center rounded-full py-3.5 text-sm font-semibold text-white bg-white/15 border border-white/30 hover:bg-white/25 backdrop-blur-sm transition-all duration-300"
             >
               Agenda una llamada
-            </Button>
+            </Link>
           </div>
         </div>
       </div>
