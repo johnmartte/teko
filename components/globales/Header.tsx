@@ -77,6 +77,7 @@ export default function Header() {
             { href: "/", label: "Inicio" },
             { href: "/servicios", label: "Servicios" },
             { href: "/portafolio", label: "Portafolio" },
+            { href: "/plataformas", label: "Plataformas" },
             { href: "/nosotros", label: "Nosotros" },
             { href: "/precios", label: "Precios" },
             { href: "/contacto", label: "Contacto" },
@@ -141,6 +142,7 @@ export default function Header() {
             {[
               { href: "/servicios", label: "Servicios" },
               { href: "/portafolio", label: "Portafolio" },
+              { href: "/plataformas", label: "Plataformas" },
               { href: "/nosotros", label: "Nosotros" },
               { href: "/precios", label: "Precios" },
               { href: "/contacto", label: "Contacto" },
