@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { prefersReducedMotion } from "@/lib/motion";
 
 const CELL_SIZE = 62;
 
@@ -27,6 +28,7 @@ export default function HeroGrid() {
 
   useEffect(() => {
     if (!dims.cols || !dims.rows) return;
+    if (prefersReducedMotion()) return;
 
     const lightUp = (index: number) => {
       const cell = cellsRef.current[index];

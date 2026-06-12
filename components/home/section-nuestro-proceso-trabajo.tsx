@@ -5,6 +5,7 @@ import Image, { type StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/lib/motion";
 import InvestigacionImg from "@/public/Proceso-Investigacion.png";
 import EstrategiaImg from "@/public/Proceso-Estrategia.png";
 import DisenoImg from "@/public/Proceso-Diseno.png";
@@ -105,6 +106,8 @@ export default function SectionNuestroProcesoTrabajo() {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const ctx = gsap.context(() => {
       gsap.from(headingRef.current, {
         y: 40,

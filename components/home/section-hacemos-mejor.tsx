@@ -7,6 +7,7 @@ import { data_hacemos_mejor_cards } from "@/Data/home/hacemos-mejor-cards";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,8 @@ export default function SectionHacemosMejor() {
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const ctx = gsap.context(() => {
       // Animación del encabezado
       gsap.from(headingRef.current, {
@@ -88,7 +91,7 @@ export default function SectionHacemosMejor() {
         {data_hacemos_mejor_cards.map((card, index) => (
           <Card
             key={index}
-            className="service-card flex h-full min-h-[390px] flex-col justify-between rounded-[24px] border-none bg-[#f4f7ff] p-0 shadow-none transition-shadow duration-300 hover:shadow-lg dark:bg-[#141a2b] dark:hover:shadow-[0_8px_30px_-12px_rgba(0,71,255,0.45)]"
+            className="service-card flex h-full min-h-[390px] flex-col justify-between rounded-[24px] border-none bg-[#f4f7ff] p-0 shadow-none transition-[box-shadow,transform] duration-300 ease-out hover:-translate-y-1 hover:shadow-lg dark:bg-[#141a2b] dark:hover:shadow-[0_8px_30px_-12px_rgba(0,71,255,0.45)]"
           >
             <CardHeader className="flex min-h-[220px] items-center justify-center p-6 pb-4">
               {card.image}

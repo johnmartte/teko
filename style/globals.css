@@ -155,3 +155,47 @@
     @apply font-sans;
     }
 }
+
+/* ============================================================
+   TEKO — capa de craft global
+   ============================================================ */
+:root {
+    --teko-blue: #0047ff;
+    --teko-blue-soft: #0b6eff;
+    --teko-cyan: #00d7f2;
+    /* Curvas con nombre y propósito */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* entradas premium */
+    --ease-ui: cubic-bezier(0.23, 1, 0.32, 1);      /* micro-interacciones */
+}
+
+::selection {
+    background: rgba(0, 71, 255, 0.18);
+    color: inherit;
+}
+
+.dark ::selection {
+    background: rgba(122, 163, 255, 0.3);
+}
+
+/* Foco de teclado consistente en toda la web */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+    outline: 2px solid var(--teko-blue-soft);
+    outline-offset: 2px;
+    border-radius: inherit;
+}
+
+/* Reduced motion: menos y más suave, nunca brusco.
+   (Los efectos GSAP se desactivan por JS en cada componente.) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

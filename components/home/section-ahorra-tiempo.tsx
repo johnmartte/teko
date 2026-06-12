@@ -16,6 +16,7 @@ import {
 import Background from "@/public/Background-seccion.svg";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,6 +28,8 @@ export default function SectionAhorraTiempo() {
   const iconsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const ctx = gsap.context(() => {
       // Contenido de texto y CTA
       const contentElements = contentRef.current?.children;
@@ -83,7 +86,7 @@ export default function SectionAhorraTiempo() {
           ref={contentRef}
           className="max-w-xl space-y-6 text-center lg:text-left"
         >
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-[#007aff] sm:text-4xl md:text-5xl dark:text-[#3b8bff]">
+          <h2 className="text-3xl font-bold leading-tight tracking-tight text-[#0047ff] sm:text-4xl md:text-5xl dark:text-[#3b8bff]">
             Ahorra Tiempo, Dinero <br className="hidden md:block" />y Escala tu
             Negocio.
           </h2>
@@ -98,7 +101,7 @@ export default function SectionAhorraTiempo() {
               placeholder="Tu email de trabajo"
               className="h-14 w-full flex-1 rounded-full border-none bg-slate-50/80 px-6 text-base shadow-inner focus-visible:ring-1 focus-visible:ring-[#007aff] sm:w-auto"
             />
-            <Button className="flex h-14 w-full items-center justify-center gap-3 rounded-full bg-slate-950 px-8 font-medium text-white hover:bg-slate-800 sm:w-auto">
+            <Button className="flex h-14 w-full items-center justify-center gap-3 rounded-full bg-slate-950 px-8 font-medium text-white transition-[background-color,transform] duration-200 ease-out hover:bg-slate-800 active:scale-[0.97] sm:w-auto">
               Empezar <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -111,7 +114,7 @@ export default function SectionAhorraTiempo() {
           {icons.map((Icon, index) => (
             <div
               key={index}
-              className="icon-box flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-transform hover:-translate-y-1 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px] dark:bg-[#1a2138] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
+              className="icon-box flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-transform duration-200 ease-out hover:-translate-y-1 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px] dark:bg-[#1a2138] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
             >
               <Icon className="h-5 w-5 stroke-[1.5] text-slate-600 sm:h-6 sm:w-6 md:h-7 md:w-7 dark:text-slate-300" />
             </div>

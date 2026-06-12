@@ -7,6 +7,7 @@ import DisenoDesarrollo from "@/public/Tu-proceso-Diseno-Desarrollo.png";
 import SistemeTecnologia from "@/public/Tu-proceso-Implementacion.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,8 @@ export default function SectionTransformacionDigital() {
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const ctx = gsap.context(() => {
       // Heading
       gsap.from(headingRef.current, {

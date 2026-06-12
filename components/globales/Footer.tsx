@@ -27,7 +27,6 @@ export default function Footer() {
         "Centro de Ayuda",
         "Demo",
         "Estado del Servidor",
-        "Blog",
         "Partners",
       ],
     },
@@ -36,7 +35,6 @@ export default function Footer() {
       links: [
         "Sobre TEKO",
         "Contacto",
-        "Características",
         "Carreras",
         "Prensa",
       ],
@@ -44,8 +42,17 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#1880ff] pt-16 pb-8 text-white dark:bg-[#0f1525] dark:border-t dark:border-white/10">
-      <div className="mx-auto w-full  px-6 md:px-12">
+    <footer className="relative overflow-hidden bg-[#0b1226] pt-16 pb-8 text-white dark:bg-[#0f1525] border-t border-white/10">
+      {/* Resplandor superior: la luz de marca entra por arriba */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0b6eff]/70 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[640px] -translate-x-1/2 rounded-full bg-[#0b6eff]/15 blur-3xl"
+      />
+      <div className="relative mx-auto w-full px-6 md:px-12">
         {/* Sección Superior: Grid principal */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-6 lg:gap-8">
           {/* Columna Izquierda (Brand & Descripción) - Ocupa 2 columnas en desktop */}
@@ -114,6 +121,14 @@ export default function Footer() {
             </div>
           ))}
         </div>
+
+        {/* Marca fantasma: la palabra cierra la página como firma */}
+        <p
+          aria-hidden="true"
+          className="font-advercase pointer-events-none mt-14 -mb-4 select-none text-center text-[22vw] font-bold leading-[0.78] tracking-tight text-white/[0.045] lg:text-[17vw]"
+        >
+          teko
+        </p>
 
         {/* Separador */}
         <hr className="my-10 border-white/10" />

@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import gsap from "gsap";
 import HeroGrid from "./hero-grid";
+import { prefersReducedMotion } from "@/lib/motion";
 
 export default function SectionHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,17 +15,21 @@ export default function SectionHero() {
   const transformanRef = useRef<HTMLSpanElement>(null);
   const futuroRef = useRef<HTMLSpanElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const chipsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    if (prefersReducedMotion()) return;
 
-      // Líneas del título entran una por una desde abajo
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+
+      // Blur-rise: las líneas suben mientras se enfocan
       tl.from([line1Ref.current, line2Ref.current, line3Ref.current], {
-        y: 60,
+        y: 48,
         opacity: 0,
-        duration: 0.85,
-        stagger: 0.18,
+        filter: "blur(12px)",
+        duration: 1.0,
+        stagger: 0.17,
       })
         // Las palabras itálicas tienen un brillo de color
         .from(
@@ -36,17 +40,29 @@ export default function SectionHero() {
             duration: 0.5,
             stagger: 0.12,
           },
-          "-=0.4",
+          "-=0.55",
         )
         // Botones suben al final
         .from(
           buttonsRef.current,
           {
-            y: 30,
+            y: 28,
             opacity: 0,
             duration: 0.6,
           },
-          "-=0.2",
+          "-=0.35",
+        )
+        // Los chips se "posan" uno a uno sobre la retícula
+        .from(
+          chipsRef.current ? Array.from(chipsRef.current.children) : [],
+          {
+            y: 14,
+            opacity: 0,
+            filter: "blur(6px)",
+            duration: 0.5,
+            stagger: 0.12,
+          },
+          "-=0.3",
         );
     }, sectionRef);
 
@@ -103,17 +119,40 @@ export default function SectionHero() {
         >
           <Link
             href="/contacto"
-            className="flex h-11 w-full items-center justify-center rounded-full bg-[rgba(0,71,255,0.5)] px-7 text-[13px] font-black text-white whitespace-nowrap shadow-none transition-colors hover:bg-[rgba(0,71,255,0.6)] sm:w-[140px]"
+            className="flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-7 text-[13px] font-black text-white whitespace-nowrap shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-[box-shadow,transform,filter] duration-200 ease-out hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110 active:scale-[0.97] sm:w-[140px]"
           >
             Agendar cita
           </Link>
 
           <Link
             href="/precios"
-            className="flex h-11 w-full items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 text-[13px] font-medium text-[#0047ff] shadow-none backdrop-blur-md transition-colors hover:bg-white/20 sm:w-[140px] dark:text-white"
+            className="flex h-11 w-full items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 text-[13px] font-medium text-[#0047ff] shadow-none backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-white/20 active:scale-[0.97] sm:w-[140px] dark:text-white"
           >
             Ver planes
           </Link>
+        </div>
+
+        {/* Prueba social: chips de vidrio posados sobre la retícula */}
+        <div
+          ref={chipsRef}
+          className="mt-10 flex flex-wrap items-center justify-center gap-2.5 px-4 sm:gap-3"
+        >
+          {[
+            "+50 proyectos entregados",
+            "Web · Mobile · Sistemas",
+            "Soporte y evolución continua",
+          ].map((label) => (
+            <span
+              key={label}
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[12px] font-medium text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-md dark:border-white/15 dark:bg-white/5"
+            >
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-[#00d7f2]"
+              />
+              {label}
+            </span>
+          ))}
         </div>
       </div>
     </section>

@@ -88,7 +88,7 @@ export default function Header() {
               <Link
                 key={href}
                 href={href}
-                className={`relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all duration-300 ${
+                className={`relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-[background-color,color,box-shadow] duration-200 ease-out ${
                   isActive
                     ? "bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] text-white shadow-[0_4px_18px_-4px_rgba(11,110,255,0.6)]"
                     : "text-[#252b37] hover:text-[#0047ff] hover:bg-[#eef4ff] dark:text-white/85 dark:hover:text-white dark:hover:bg-white/10"
@@ -105,13 +105,13 @@ export default function Header() {
           <ThemeToggle />
           <Link
             href="/portal/login"
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/20 px-5 text-[13px] font-semibold text-white shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-white/30"
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/20 px-5 text-[13px] font-semibold text-white shadow-sm backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-white/30 active:scale-[0.97]"
           >
             Portal Cliente
           </Link>
           <Link
             href="/contacto"
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-5 text-[13px] font-semibold text-white shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-all duration-300 hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110"
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-5 text-[13px] font-semibold text-white shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-[box-shadow,filter,transform] duration-200 ease-out hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110 active:scale-[0.97]"
           >
             Contacto
             <span aria-hidden="true">→</span>
