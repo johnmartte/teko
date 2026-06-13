@@ -199,7 +199,3 @@ Flujo sugerido:
 1. `npm run build`
 2. Validar el build localmente con `npm run start`
 3. Publicar en el proveedor elegido
-
----
-
-Si quieres, tambien puedo prepararte una segunda version del README orientada a clientes (menos tecnica) y otra orientada a onboarding de desarrolladores (mas tecnica y con checklist de arranque).
