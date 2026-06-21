@@ -13,7 +13,7 @@ export function ServiceCard({
   accentText = "text-primary",
 }: ServiceCard) {
   return (
-    <Card className="flex min-h-[274.8px] w-[312px] shrink-0 flex-col items-center gap-3 overflow-visible rounded-[16px] border-[0.8px] border-[rgba(229,231,235,0.6)] bg-white p-[0.8px_0.8px_24.8px_0.8px] py-0 ring-0 shadow-none">
+    <Card className="flex min-h-[274.8px] w-[312px] shrink-0 flex-col items-center gap-3 overflow-visible rounded-[16px] border-[0.8px] border-[rgba(229,231,235,0.6)] dark:border-white/10 bg-white dark:bg-[#141a2b] p-[0.8px_0.8px_24.8px_0.8px] py-0 ring-0 shadow-none">
       <CardHeader className="flex w-full flex-row items-center gap-3 px-6 pb-4 pt-6">
         <span
           className={cn(
@@ -33,12 +33,12 @@ export function ServiceCard({
         </span>
       </CardHeader>
       <CardContent className="w-full px-6 pb-6 pt-0">
-        <h3 className="mb-3 text-[16.8px] font-bold leading-[25.2px] text-[#101828]">
+        <h3 className="mb-3 text-[16.8px] font-bold leading-[25.2px] text-[#101828] dark:text-white">
           {title}
         </h3>
         <div
           className={cn(
-            "prose prose-sm max-w-none text-[14px] leading-[22.4px] text-[#6a7282]",
+            "prose prose-sm max-w-none text-[14px] leading-[22.4px] text-[#6a7282] dark:text-[#a1a8b3]",
             "[&_p]:m-0 [&_ul]:m-0 [&_ul]:list-none [&_ul]:space-y-[10px] [&_ul]:pl-0",
             "[&_li]:relative [&_li]:pl-4 [&_li]:leading-[22.4px]",
             "[&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[8px] [&_li]:before:h-[6px] [&_li]:before:w-[6px] [&_li]:before:rounded-full [&_li]:before:bg-current [&_li]:before:opacity-50",

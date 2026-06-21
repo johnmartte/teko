@@ -35,7 +35,7 @@ export function SectionServicios({
             <span className={cn("text-[12px] font-semibold uppercase tracking-[1.2px]", accentText)}>
               {phaseLabel}
             </span>
-            <h2 className="text-[30px] font-extrabold leading-[43.2px] tracking-[-0.576px] text-[#101828]">
+            <h2 className="text-[30px] font-extrabold leading-[43.2px] tracking-[-0.576px] text-[#101828] dark:text-white">
               {title}
             </h2>
           </div>
