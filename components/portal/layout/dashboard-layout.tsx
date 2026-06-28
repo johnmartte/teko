@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9fb] dark:bg-[#0a0e1a]">
+    <div className="flex h-screen overflow-hidden bg-[var(--bg-base)]">
       {/* Desktop sidebar */}
       <Sidebar className="hidden md:flex" />
 

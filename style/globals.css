@@ -199,3 +199,138 @@ input:focus-visible,
         scroll-behavior: auto !important;
     }
 }
+
+/* ============================================================
+   TEKO PORTAL — Design System (espejo de TEKO-Planner)
+   ------------------------------------------------------------
+   Tokens semánticos portados 1:1 desde TEKO-Planner para que el
+   Portal de Clientes y el Planner interno compartan exactamente
+   el mismo lenguaje visual. Úsalos vía var(--token) en el portal,
+   NO hex fijos. El sitio de marketing sigue usando los tokens
+   shadcn/oklch de arriba; estos solo aplican donde se referencien.
+   ============================================================ */
+:root {
+    /* Backgrounds */
+    --bg-base: #fbfcfe;
+    --bg-surface: #ffffff;
+    --bg-subtle: #f7f9fc;
+    --bg-muted: #f1f4f9;
+    --bg-inset: #eef1f6;
+    --bg-hover: #f7f9fc;
+    --bg-input: #f7faff;
+
+    /* Text */
+    --text-primary: #101828;
+    --text-secondary: #475569;
+    --text-tertiary: #6a7282;
+    --text-muted: #94a3b8;
+    --text-faint: #99a1af;
+    --text-ghost: #cbd5e1;
+
+    /* Borders */
+    --border-default: #e7ebf2;
+    --border-subtle: #eef1f6;
+    --border-light: #f1f4f9;
+    --border-input: #e2e8f2;
+    --border-separator: #eaeef4;
+
+    /* Brand */
+    --brand: #0047ff;
+    --brand-hover: #0038cc;
+    --brand-light: #eaf4ff;
+    --brand-border: #cfe0ff;
+    --brand-alt: #0071ff;
+    --brand-badge: #dbebff;
+
+    /* Status / Accent */
+    --accent-green: #22c55e;
+    --accent-green-bg: #dcfce7;
+    --accent-green-light: #f0fdf4;
+    --accent-red: #ef4444;
+    --accent-red-dark: #b91c1c;
+    --accent-red-bg: #fef2f2;
+    --accent-red-border: #fecaca;
+    --accent-red-light: #f5a3a3;
+    --accent-yellow: #f59e0b;
+    --accent-yellow-bg: #fef3c7;
+
+    /* Shadows */
+    --shadow-color: rgba(16, 24, 40, .06);
+    --shadow-md: rgba(16, 24, 40, .12);
+    --shadow-lg: rgba(16, 24, 40, .35);
+    --shadow-xl: rgba(16, 24, 40, .45);
+    --shadow-overlay: rgba(16, 24, 40, .5);
+    --shadow-toast: rgba(16, 24, 40, .3);
+
+    /* Misc */
+    --toggle-off: #e7ebf2;
+    --info-bg: #eaf4ff;
+    --info-border: #cfe0ff;
+    --info-text: #0047ff;
+    --dashed-border: #d7e0ec;
+    --bg-acme: #dbe3ef;
+    --text-acme: #5b6b85;
+}
+
+.dark {
+    --bg-base: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-subtle: #162032;
+    --bg-muted: #253347;
+    --bg-inset: #334155;
+    --bg-hover: #253347;
+    --bg-input: #1a2a42;
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-muted: #64748b;
+    --text-faint: #64748b;
+    --text-ghost: #475569;
+
+    --border-default: #334155;
+    --border-subtle: #253347;
+    --border-light: #253347;
+    --border-input: #3b4c63;
+    --border-separator: #334155;
+
+    --brand: #3b82f6;
+    --brand-hover: #2563eb;
+    --brand-light: #1e3a5f;
+    --brand-border: #1d4ed8;
+    --brand-alt: #60a5fa;
+    --brand-badge: #1e3a5f;
+
+    --accent-green: #4ade80;
+    --accent-green-bg: #052e16;
+    --accent-green-light: #052e16;
+    --accent-red: #f87171;
+    --accent-red-dark: #fca5a5;
+    --accent-red-bg: #450a0a;
+    --accent-red-border: #7f1d1d;
+    --accent-red-light: #991b1b;
+    --accent-yellow: #fbbf24;
+    --accent-yellow-bg: #451a03;
+
+    --shadow-color: rgba(0, 0, 0, .25);
+    --shadow-md: rgba(0, 0, 0, .35);
+    --shadow-lg: rgba(0, 0, 0, .5);
+    --shadow-xl: rgba(0, 0, 0, .6);
+    --shadow-overlay: rgba(0, 0, 0, .65);
+    --shadow-toast: rgba(0, 0, 0, .4);
+
+    --toggle-off: #475569;
+    --info-bg: #1e3a5f;
+    --info-border: #1d4ed8;
+    --info-text: #60a5fa;
+    --dashed-border: #475569;
+    --bg-acme: #334155;
+    --text-acme: #94a3b8;
+}
+
+/* Animación de entrada compartida con el Planner */
+@keyframes tekoSlideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.teko-slide-up { animation: tekoSlideUp .4s var(--ease-out-expo) both; }
