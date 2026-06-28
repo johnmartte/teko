@@ -18,36 +18,36 @@ export default function OverviewStats({ summary }: OverviewStatsProps) {
       label: "Proyectos activos",
       value: summary.activeProjectsCount,
       icon: FolderKanban,
-      color: "text-[#0047ff] dark:text-[#7aa3ff]",
-      bg: "bg-[#0047ff]/10 dark:bg-[#0047ff]/20",
+      color: "text-[var(--brand)]",
+      bg: "bg-[var(--brand-light)]",
     },
     {
       label: "Reuniones proximas",
       value: summary.upcomingMeetingsCount,
       icon: CalendarDays,
-      color: "text-emerald-600 dark:text-emerald-400",
-      bg: "bg-emerald-500/10 dark:bg-emerald-500/20",
+      color: "text-[var(--accent-green)]",
+      bg: "bg-[var(--accent-green-bg)]",
     },
     {
       label: "Entregables pendientes",
       value: summary.pendingDeliverablesCount,
       icon: FileBox,
-      color: "text-amber-600 dark:text-amber-400",
-      bg: "bg-amber-500/10 dark:bg-amber-500/20",
+      color: "text-[var(--accent-yellow)]",
+      bg: "bg-[var(--accent-yellow-bg)]",
     },
     {
       label: "Notificaciones",
       value: summary.unreadNotificationsCount,
       icon: Bell,
-      color: "text-rose-600 dark:text-rose-400",
-      bg: "bg-rose-500/10 dark:bg-rose-500/20",
+      color: "text-[var(--accent-red)]",
+      bg: "bg-[var(--accent-red-bg)]",
     },
     {
       label: "Balance pendiente",
       value: formatCurrency(summary.outstandingBalance),
       icon: DollarSign,
-      color: "text-violet-600 dark:text-violet-400",
-      bg: "bg-violet-500/10 dark:bg-violet-500/20",
+      color: "text-[var(--brand-alt)]",
+      bg: "bg-[var(--brand-badge)]",
       isString: true,
     },
   ];
@@ -75,7 +75,7 @@ export default function OverviewStats({ summary }: OverviewStatsProps) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex items-center gap-4 rounded-2xl border border-[#e6eaf2] bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-white/10 dark:bg-[#0f1525]"
+          className="flex items-center gap-4 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-4 shadow-[0_1px_2px_var(--shadow-color)] transition-all hover:shadow-[0_4px_16px_var(--shadow-color)]"
         >
           <div
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${stat.bg}`}
@@ -83,10 +83,10 @@ export default function OverviewStats({ summary }: OverviewStatsProps) {
             <stat.icon className={`h-5 w-5 ${stat.color}`} />
           </div>
           <div className="min-w-0">
-            <p className="text-2xl font-bold text-[#101828] dark:text-white">
+            <p className="text-2xl font-bold text-[var(--text-primary)]">
               {stat.value}
             </p>
-            <p className="truncate text-[11px] text-[#7a8595] dark:text-white/40">
+            <p className="truncate text-[11px] text-[var(--text-faint)]">
               {stat.label}
             </p>
           </div>

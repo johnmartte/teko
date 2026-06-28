@@ -14,18 +14,18 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/portal/proyectos/${project.id}`}
-      className="group flex flex-col rounded-2xl border border-[#e6eaf2] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:border-white/10 dark:bg-[#0f1525] dark:hover:shadow-[0_12px_32px_-8px_rgba(11,110,255,0.25)]"
+      className="group flex flex-col rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5 shadow-[0_1px_2px_var(--shadow-color)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_var(--shadow-color)]"
     >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#7a8595] dark:text-white/40">
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--text-faint)]">
             {project.category}
           </p>
-          <h3 className="text-base font-bold text-[#101828] dark:text-white">
+          <h3 className="text-base font-bold text-[var(--text-primary)]">
             {project.name}
           </h3>
         </div>
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#f4f7ff] text-[#7a8595] transition-all group-hover:bg-[#0047ff] group-hover:text-white dark:bg-white/5 dark:text-white/40">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-light)] text-[var(--brand)] transition-all group-hover:bg-[var(--brand)] group-hover:text-white">
           <ArrowUpRight className="h-4 w-4" />
         </span>
       </div>
@@ -34,8 +34,8 @@ export default function ProjectCard({ project }: { project: Project }) {
 
       <div className="mt-4 space-y-1.5">
         <div className="flex items-center justify-between text-[11px]">
-          <span className="text-[#7a8595] dark:text-white/40">Progreso</span>
-          <span className="font-semibold text-[#101828] dark:text-white">
+          <span className="text-[var(--text-faint)]">Progreso</span>
+          <span className="font-semibold text-[var(--text-primary)]">
             {project.progress}%
           </span>
         </div>
@@ -43,11 +43,11 @@ export default function ProjectCard({ project }: { project: Project }) {
       </div>
 
       {nextMilestone && (
-        <div className="mt-4 rounded-xl bg-[#f4f7ff] px-3 py-2 dark:bg-white/5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#7a8595] dark:text-white/40">
+        <div className="mt-4 rounded-xl bg-[var(--bg-subtle)] px-3 py-2">
+          <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-faint)]">
             Proximo hito
           </p>
-          <p className="mt-0.5 text-[12px] font-medium text-[#101828] dark:text-white/80">
+          <p className="mt-0.5 text-[12px] font-medium text-[var(--text-secondary)]">
             {nextMilestone.title}
           </p>
         </div>

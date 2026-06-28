@@ -35,12 +35,12 @@ export default function Topbar({ onMobileMenuToggle }: TopbarProps) {
   const isProjectDetail = pathname?.match(/\/portal\/proyectos\/.+/);
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-[#e6eaf2] bg-white/60 px-4 backdrop-blur-xl dark:border-white/10 dark:bg-[#0c1120]/60 md:px-6">
+    <header className="flex h-16 items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 md:px-6">
       <div className="flex items-center gap-3">
         {/* Mobile menu trigger */}
         <button
           onClick={onMobileMenuToggle}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-[#7a8595] transition-colors hover:bg-[#f4f7ff] md:hidden dark:text-white/40 dark:hover:bg-white/5"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)] md:hidden cursor-pointer"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -49,16 +49,16 @@ export default function Topbar({ onMobileMenuToggle }: TopbarProps) {
         <nav className="flex items-center gap-1.5 text-sm">
           <Link
             href="/portal"
-            className="text-[#7a8595] transition-colors hover:text-[#0047ff] dark:text-white/40 dark:hover:text-white/70"
+            className="text-[var(--text-tertiary)] transition-colors hover:text-[var(--brand)]"
           >
             Portal
           </Link>
           {pageTitle !== "Dashboard" && (
             <>
-              <span className="text-[#d0d5dd] dark:text-white/20">/</span>
+              <span className="text-[var(--text-ghost)]">/</span>
               <Link
                 href={matchedRoute ?? "/portal"}
-                className="text-[#101828] font-medium dark:text-white"
+                className="text-[var(--text-primary)] font-medium"
               >
                 {pageTitle}
               </Link>
@@ -66,8 +66,8 @@ export default function Topbar({ onMobileMenuToggle }: TopbarProps) {
           )}
           {isProjectDetail && (
             <>
-              <span className="text-[#d0d5dd] dark:text-white/20">/</span>
-              <span className="text-[#101828] font-medium dark:text-white">Detalle</span>
+              <span className="text-[var(--text-ghost)]">/</span>
+              <span className="text-[var(--text-primary)] font-medium">Detalle</span>
             </>
           )}
         </nav>
@@ -77,11 +77,11 @@ export default function Topbar({ onMobileMenuToggle }: TopbarProps) {
         {/* Notification bell */}
         <Link
           href="/portal/mensajes"
-          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-[#7a8595] transition-colors hover:bg-[#f4f7ff] dark:text-white/40 dark:hover:bg-white/5"
+          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)]"
         >
           <Bell className="h-[18px] w-[18px]" />
           {unreadCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0047ff] px-1 text-[9px] font-bold text-white">
+            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--accent-red)] px-1 text-[9px] font-bold text-white">
               {unreadCount}
             </span>
           )}
@@ -91,7 +91,7 @@ export default function Topbar({ onMobileMenuToggle }: TopbarProps) {
         {user && (
           <Link
             href="/portal/perfil"
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-b from-[#1ec4ff] to-[#0047ff] text-xs font-bold text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-b from-[var(--brand-alt)] to-[var(--brand)] text-xs font-bold text-white"
           >
             {user.firstName[0]}
             {user.lastName[0]}

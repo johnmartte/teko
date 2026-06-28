@@ -12,12 +12,12 @@ import {
 import type { Notification, NotificationType } from "@/shared/portal-types";
 
 const iconMap: Record<NotificationType, { icon: typeof CheckCircle2; color: string }> = {
-  milestone_completed: { icon: CheckCircle2, color: "text-emerald-500" },
-  deliverable_uploaded: { icon: Upload, color: "text-[#0047ff] dark:text-[#7aa3ff]" },
-  meeting_scheduled: { icon: CalendarDays, color: "text-violet-500" },
-  invoice_issued: { icon: Receipt, color: "text-amber-500" },
-  message_received: { icon: MessageSquare, color: "text-rose-500" },
-  project_status_changed: { icon: ArrowRightLeft, color: "text-cyan-500" },
+  milestone_completed: { icon: CheckCircle2, color: "text-[var(--accent-green)]" },
+  deliverable_uploaded: { icon: Upload, color: "text-[var(--brand)]" },
+  meeting_scheduled: { icon: CalendarDays, color: "text-[var(--brand-alt)]" },
+  invoice_issued: { icon: Receipt, color: "text-[var(--accent-yellow)]" },
+  message_received: { icon: MessageSquare, color: "text-[var(--accent-red)]" },
+  project_status_changed: { icon: ArrowRightLeft, color: "text-[var(--brand-alt)]" },
 };
 
 function timeAgo(dateStr: string): string {
@@ -37,8 +37,8 @@ interface RecentActivityProps {
 
 export default function RecentActivity({ notifications }: RecentActivityProps) {
   return (
-    <div className="rounded-2xl border border-[#e6eaf2] bg-white p-5 dark:border-white/10 dark:bg-[#0f1525]">
-      <h3 className="mb-4 text-sm font-semibold text-[#101828] dark:text-white">
+    <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5">
+      <h3 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">
         Actividad reciente
       </h3>
       <div className="space-y-1">
@@ -48,19 +48,19 @@ export default function RecentActivity({ notifications }: RecentActivityProps) {
             <Link
               key={n.id}
               href={n.actionUrl ?? "/portal"}
-              className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[#f4f7ff] dark:hover:bg-white/5"
+              className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--bg-hover)]"
             >
               <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${color}`} />
               <div className="min-w-0 flex-1">
-                <p className={`text-[13px] leading-tight ${n.read ? "text-[#52607a] dark:text-white/50" : "font-medium text-[#101828] dark:text-white"}`}>
+                <p className={`text-[13px] leading-tight ${n.read ? "text-[var(--text-tertiary)]" : "font-medium text-[var(--text-primary)]"}`}>
                   {n.message}
                 </p>
-                <p className="mt-0.5 text-[11px] text-[#99a1af] dark:text-white/30">
+                <p className="mt-0.5 text-[11px] text-[var(--text-faint)]">
                   {timeAgo(n.createdAt)}
                 </p>
               </div>
               {!n.read && (
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#0047ff]" />
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--brand)]" />
               )}
             </Link>
           );
