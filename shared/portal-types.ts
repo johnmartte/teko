@@ -168,6 +168,9 @@ export interface SharedFile {
   projectName: string;
   uploadedAt: string;
   uploadedBy: string;
+  // Dirección del espejo con el Planner: "cliente" = lo subió el cliente y
+  // el equipo lo ve en el Planner; "equipo" = entregable subido por el equipo.
+  origin?: "cliente" | "equipo";
 }
 
 // ============================================================
