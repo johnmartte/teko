@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import LogoTeko from "@/public/LogoTeko.png";
+import Isologo from "@/public/Isologo.svg";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./theme-toggle";
@@ -62,10 +63,11 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Ir al inicio"
-          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/20 px-3 shadow-[0_8px_24px_-10px_rgba(11,110,255,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_24px_-10px_rgba(30,196,255,0.35)]"
+          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#c8d2e4] bg-white/80 px-3 shadow-[0_8px_24px_-10px_rgba(11,110,255,0.15)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_24px_-10px_rgba(30,196,255,0.35)]"
           style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
         >
-          <Image src={LogoTeko} alt="Logo TEKO" fill className="object-contain p-1 translate-y-[3px]" priority />
+          <Image src={Isologo} alt="Logo TEKO" fill className="object-contain p-1 translate-y-[3px] dark:hidden" priority />
+          <Image src={LogoTeko} alt="Logo TEKO" fill className="hidden object-contain p-1 translate-y-[3px] dark:block" priority />
         </Link>
 
         {/* Desktop Nav — pill glass centrado */}
@@ -105,7 +107,7 @@ export default function Header() {
           <ThemeToggle />
           <Link
             href="/portal/login"
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/20 px-5 text-[13px] font-semibold text-white shadow-sm backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-white/30 active:scale-[0.97]"
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-[#d5d7da] bg-white/80 px-5 text-[13px] font-semibold text-[#252b37] shadow-sm backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-[#f4f7ff] active:scale-[0.97] dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
           >
             Portal Cliente
           </Link>
@@ -123,7 +125,7 @@ export default function Header() {
           <ThemeToggle className="h-9 w-9" />
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-xl bg-white/10 border border-white/20 text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
+            className="p-2 rounded-xl border border-[#d5d7da] bg-white/80 text-[#252b37] backdrop-blur-sm transition-all duration-200 hover:bg-[#f4f7ff] dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}

@@ -184,7 +184,7 @@ export default function SectionContactoForm() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="input-base"
-                  placeholder="John Marte"
+                  placeholder="John Doe"
                 />
               </Field>
 

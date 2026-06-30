@@ -41,7 +41,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
       aria-label={isDark ? "Activar modo claro" : "Activar modo oscuro"}
       onClick={handleClick}
       className={cn(
-        "relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white/20 dark:border-white/15 dark:bg-white/10",
+        "relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] bg-white/80 text-[#252b37] backdrop-blur-md transition-colors hover:bg-[#f4f7ff] dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20",
         className,
       )}
     >

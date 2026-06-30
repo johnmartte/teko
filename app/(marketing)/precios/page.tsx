@@ -7,13 +7,13 @@ export default function PreciosPage() {
   return (
     <main>
       <PageHero
-        badge="Planes y Precios 2026"
+        badge="Nuestros Planes"
         title={
           <>
-            Precios claros, <span className="text-[#0047ff]">sin sorpresas</span>
+            El plan perfecto para <span className="text-[#0047ff]">tu negocio</span>
           </>
         }
-        description="Tres planes para cubrir desde microservicios puntuales hasta transformación digital completa. Y si necesitas algo específico, también lo cotizamos a medida."
+        description="Tres planes diseñados para cubrir desde los primeros pasos digitales hasta la transformación completa de tu empresa. Cotiza directamente con nosotros."
       />
       <SectionPlanes />
       <SectionMicroserviciosPrecios />

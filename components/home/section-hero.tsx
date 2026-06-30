@@ -144,11 +144,11 @@ export default function SectionHero() {
           ].map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[12px] font-medium text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-md dark:border-white/15 dark:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-full border border-[#0047ff]/20 bg-[#0047ff]/10 px-4 py-1.5 text-[12px] font-medium text-[#0047ff] shadow-[inset_0_1px_1px_rgba(0,71,255,0.1)] backdrop-blur-md dark:border-white/15 dark:bg-white/5 dark:text-white dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
             >
               <span
                 aria-hidden="true"
-                className="h-1.5 w-1.5 rounded-full bg-[#00d7f2]"
+                className="h-1.5 w-1.5 rounded-full bg-[#0047ff] dark:bg-[#00d7f2]"
               />
               {label}
             </span>
