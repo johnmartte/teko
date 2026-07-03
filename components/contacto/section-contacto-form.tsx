@@ -1,41 +1,29 @@
 "use client";
 
+import CustomSelect, { type SelectOption } from "./custom-select";
 import { useEffect, useRef, useState } from "react";
 import { Mail, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CustomSelect from "./custom-select";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
-const presupuestos = [
-  "< US$1,000",
-  "US$1,000 - 5,000",
-  "US$5,000 - 15,000",
-  "US$15,000+",
-  "Aún no sé",
-];
 
-const servicios = [
-  "Landing / Sitio web",
-  "App móvil",
-  "E-commerce",
-  "Sistema a medida",
-  "Branding / Identidad",
-  "Microservicio",
-  "Otro",
-];
 
 export default function SectionContactoForm() {
+  const [serviceOptions, setServiceOptions] = useState<SelectOption[]>([]);
+  const [budgetOptions, setBudgetOptions] = useState<SelectOption[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    service: "",
-    budget: "",
-    message: "",
-  });
+  name: "",
+  email: "",
+  company: "",
+  service_id: "",
+  budget_range_id: "",
+  message: "",
+});
 
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -69,19 +57,72 @@ export default function SectionContactoForm() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Aquí iría la integración con el backend (mailer, API, etc.)
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
-    setForm({
-      name: "",
-      email: "",
-      company: "",
-      service: "",
-      budget: "",
-      message: "",
-    });
+  useEffect(() => {
+  async function loadOptions() {
+    try {
+      const [servicesRes, budgetsRes] = await Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/services"),
+        fetch("http://127.0.0.1:8000/api/v1/budget-ranges"),
+      ]);
+
+      const services = await servicesRes.json();
+      const budgets = await budgetsRes.json();
+
+      setServiceOptions(
+        services.map((service: { id: number; title: string }) => ({
+          value: String(service.id),
+          label: service.title,
+        })),
+      );
+
+      setBudgetOptions(
+        budgets.map((budget: { id: number; label: string }) => ({
+          value: String(budget.id),
+          label: budget.label,
+        })),
+      );
+    } finally {
+      setLoadingOptions(false);
+    }
+  }
+
+  loadOptions();
+}, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const payload = {
+    name: form.name,
+    email: form.email,
+    company: form.company || null,
+    phone: null,
+    service_id: Number(form.service_id),
+    budget_range_id: form.budget_range_id ? Number(form.budget_range_id) : null,
+    message: form.message,
+  };
+
+  const res = await fetch("http://127.0.0.1:8000/api/v1/contact-requests", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    alert("No se pudo enviar el mensaje.");
+    return;
+  }
+
+  setSent(true);
+  setTimeout(() => setSent(false), 5000);
+   setForm({
+  name: "",
+  email: "",
+  company: "",
+  service_id: "",
+  budget_range_id: "",
+  message: "",
+});
   };
 
   return (
@@ -108,7 +149,7 @@ export default function SectionContactoForm() {
                     Email
                   </p>
                   <p className="break-all text-[13px] font-medium md:text-[14px]">
-                    john.marte@unicaribe.edu.do
+                    ayuda-cliente@teko.do
                   </p>
                 </div>
               </a>
@@ -211,22 +252,24 @@ export default function SectionContactoForm() {
               </Field>
 
               <Field label="¿Qué necesitas? *" htmlFor="service">
-                <CustomSelect
-                  id="service"
-                  required
-                  value={form.service}
-                  onChange={(v) => setForm({ ...form, service: v })}
-                  options={servicios}
-                />
+               <CustomSelect
+                 id="service"
+                 required
+                 value={form.service_id}
+                 onChange={(v) => setForm({ ...form, service_id: v })}
+                 options={serviceOptions}
+                 placeholder={loadingOptions ? "Cargando..." : "Selecciona..."}
+                  />
               </Field>
 
               <Field label="Presupuesto" htmlFor="budget">
                 <CustomSelect
-                  id="budget"
-                  value={form.budget}
-                  onChange={(v) => setForm({ ...form, budget: v })}
-                  options={presupuestos}
-                />
+                id="budget"
+                value={form.budget_range_id}
+                onChange={(v) => setForm({ ...form, budget_range_id: v })}
+                options={budgetOptions}
+                placeholder={loadingOptions ? "Cargando..." : "Selecciona..."}
+/>
               </Field>
 
               <Field label="Cuéntanos sobre el proyecto *" htmlFor="message" full>

@@ -39,3 +39,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# ============================================
+# Backend (FastAPI / Python) BRYAN LORA 
+# ============================================
+
+backend/venv/
+backend/.venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/.pytest_cache/
+backend/.mypy_cache/
+
+# Alembic
+backend/alembic/__pycache__/
+
+# Python cache
+**/__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# Local SQLite (si algún día la usas)
+*.db
+*.sqlite3
