@@ -51,7 +51,11 @@ class PortfolioProject(Base):
     slug: Mapped[str] = mapped_column(String(220), unique=True, index=True, nullable=False)
 
     short_description: Mapped[str] = mapped_column(Text, nullable=False)
+
+    metric: Mapped[str | None] = mapped_column(String(100), nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    image_light_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    image_dark_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     project_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     github_url: Mapped[str | None] = mapped_column(String(500), nullable=True)

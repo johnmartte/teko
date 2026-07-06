@@ -6,6 +6,12 @@ import { Mail, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL no está definida");
+}
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,8 +67,8 @@ export default function SectionContactoForm() {
   async function loadOptions() {
     try {
       const [servicesRes, budgetsRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/v1/services"),
-        fetch("http://127.0.0.1:8000/api/v1/budget-ranges"),
+        fetch(`${API_URL}/services`),
+        fetch(`${API_URL}/budget-ranges`),
       ]);
 
       const services = await servicesRes.json();
@@ -102,7 +108,7 @@ export default function SectionContactoForm() {
     message: form.message,
   };
 
-  const res = await fetch("http://127.0.0.1:8000/api/v1/contact-requests", {
+  const res = await fetch(`${API_URL}/contact-requests`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

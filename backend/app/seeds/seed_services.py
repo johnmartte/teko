@@ -42,7 +42,10 @@ def seed_services():
                 .first()
             )
 
-            if not category:
+            if category:
+                for key, value in category_data.items():
+                    setattr(category, key, value)
+            else:
                 category = ServiceCategory(**category_data)
                 db.add(category)
                 db.flush()
@@ -71,6 +74,26 @@ def seed_services():
                 "sort_order": 2,
             },
             {
+                "category_slug": "diseno-branding",
+                "title": "Landing Pages & Sitios Web",
+                "slug": "landing-pages-sitios-web",
+                "description": "- Diseño visual orientado a conversión\n- Maquetas Figma listas para desarrollo\n- Responsive y mobile-first",
+                "type": "service",
+                "icon_key": "globe",
+                "badge": "Web",
+                "sort_order": 3,
+            },
+            {
+                "category_slug": "diseno-branding",
+                "title": "Presentaciones & Pitch Decks",
+                "slug": "presentaciones-pitch-decks",
+                "description": "- Pitch para inversionistas y clientes\n- Catálogos y portafolios digitales\n- Presentaciones de marca corporativa",
+                "type": "service",
+                "icon_key": "presentation",
+                "badge": "Pitch",
+                "sort_order": 4,
+            },
+            {
                 "category_slug": "desarrollo-web-software",
                 "title": "Desarrollo Web",
                 "slug": "desarrollo-web",
@@ -91,6 +114,46 @@ def seed_services():
                 "sort_order": 2,
             },
             {
+                "category_slug": "desarrollo-web-software",
+                "title": "Mantenimiento & Soporte",
+                "slug": "mantenimiento-soporte",
+                "description": "- Actualizaciones y correcciones continuas\n- Monitoreo de rendimiento\n- Soporte técnico mensual",
+                "type": "service",
+                "icon_key": "wrench",
+                "badge": "Ops",
+                "sort_order": 3,
+            },
+            {
+                "category_slug": "infraestructura-cloud",
+                "title": "Servidores & Hosting",
+                "slug": "servidores-hosting",
+                "description": "- AWS, Vercel, DigitalOcean, Cloudflare\n- Configuración de dominios, DNS y SSL\n- Seguridad y respaldos automáticos",
+                "type": "service",
+                "icon_key": "cloud",
+                "badge": "Cloud",
+                "sort_order": 1,
+            },
+            {
+                "category_slug": "infraestructura-cloud",
+                "title": "DevOps & Automatización",
+                "slug": "devops-automatizacion",
+                "description": "- Pipelines de deployment automáticos\n- Control de versiones y ambientes\n- Monitoreo y alertas en tiempo real",
+                "type": "service",
+                "icon_key": "git_branch",
+                "badge": "CI/CD",
+                "sort_order": 2,
+            },
+            {
+                "category_slug": "infraestructura-cloud",
+                "title": "Consultoría Tecnológica",
+                "slug": "consultoria-tecnologica",
+                "description": "- Auditoría tecnológica de productos existentes\n- Arquitectura de software para startups\n- Selección de stack tecnológico",
+                "type": "service",
+                "icon_key": "message_square",
+                "badge": "Consult",
+                "sort_order": 3,
+            },
+            {
                 "category_slug": "microservicios",
                 "title": "Menú Digital QR",
                 "slug": "menu-digital-qr",
@@ -104,6 +167,26 @@ def seed_services():
             },
             {
                 "category_slug": "microservicios",
+                "title": "Badges & Certificados",
+                "slug": "badges-certificados",
+                "description": "Badges digitales con validación QR para cursos, eventos y diplomas.",
+                "type": "microservice",
+                "icon_key": "award",
+                "badge": "Microservicio",
+                "sort_order": 2,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Flyers & Redes Sociales",
+                "slug": "flyers-redes-sociales",
+                "description": "Pack mensual de piezas gráficas para Instagram, Facebook y WhatsApp.",
+                "type": "microservice",
+                "icon_key": "image",
+                "badge": "Microservicio",
+                "sort_order": 3,
+            },
+            {
+                "category_slug": "microservicios",
                 "title": "Landing Page Única",
                 "slug": "landing-page-unica",
                 "description": "Página web rápida con dominio y hosting incluido por 1 año.",
@@ -112,7 +195,87 @@ def seed_services():
                 "badge": "Microservicio",
                 "starting_price": 349,
                 "currency": "USD",
-                "sort_order": 2,
+                "sort_order": 4,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Sistema de Facturación",
+                "slug": "sistema-facturacion",
+                "description": "Genera cotizaciones y facturas PDF profesionales en segundos.",
+                "type": "microservice",
+                "icon_key": "file_text",
+                "badge": "Microservicio",
+                "sort_order": 5,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Formulario de Pedidos",
+                "slug": "formulario-pedidos",
+                "description": "Página de pedidos o reservas online conectada a WhatsApp o email.",
+                "type": "microservice",
+                "icon_key": "clipboard_list",
+                "badge": "Microservicio",
+                "sort_order": 6,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Link de Cobro",
+                "slug": "link-cobro",
+                "description": "Página de pago personalizada para transferencia o tarjeta.",
+                "type": "microservice",
+                "icon_key": "credit_card",
+                "badge": "Microservicio",
+                "sort_order": 7,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "CRM Básico",
+                "slug": "crm-basico",
+                "description": "Panel para gestionar contactos, clientes y seguimientos.",
+                "type": "microservice",
+                "icon_key": "users",
+                "badge": "Microservicio",
+                "sort_order": 8,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Chatbot WhatsApp",
+                "slug": "chatbot-whatsapp",
+                "description": "Flujos de atención al cliente automatizados 24/7.",
+                "type": "microservice",
+                "icon_key": "message_circle",
+                "badge": "Microservicio",
+                "sort_order": 9,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Notificaciones Auto.",
+                "slug": "notificaciones-auto",
+                "description": "Recordatorios de citas, pagos o entregas por WhatsApp.",
+                "type": "microservice",
+                "icon_key": "bell",
+                "badge": "Microservicio",
+                "sort_order": 10,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Tarjeta Digital NFC",
+                "slug": "tarjeta-digital-nfc",
+                "description": "Tarjeta de presentación digital con NFC y QR personalizado.",
+                "type": "microservice",
+                "icon_key": "nfc_card",
+                "badge": "Microservicio",
+                "sort_order": 11,
+            },
+            {
+                "category_slug": "microservicios",
+                "title": "Kit Redes Sociales",
+                "slug": "kit-redes-sociales",
+                "description": "Plantillas de portadas, stories, highlights y posts editables.",
+                "type": "microservice",
+                "icon_key": "layout_grid",
+                "badge": "Microservicio",
+                "sort_order": 12,
             },
         ]
 
@@ -126,7 +289,12 @@ def seed_services():
                 .first()
             )
 
-            if not service:
+            if service:
+                service.category_id = category.id
+
+                for key, value in service_data.items():
+                    setattr(service, key, value)
+            else:
                 service = Service(
                     category_id=category.id,
                     **service_data,
