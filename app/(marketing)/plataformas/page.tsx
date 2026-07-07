@@ -27,8 +27,8 @@ const platforms = [
     description:
       "Accede a tu panel personalizado para dar seguimiento a tus proyectos, revisar entregables, ver reuniones programadas y mucho mas.",
     icon: Users,
-    href: "/portal/login",
-    external: false,
+    href: "http://localhost:3002/login",
+    external: true,
     gradient: "from-[#0b6eff] to-[#0047ff]",
     shadowColor: "rgba(11,110,255,0.5)",
     features: [

@@ -106,7 +106,7 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3 shrink-0">
           <ThemeToggle />
           <Link
-            href="/portal/login"
+            href="http://localhost:3002/login"
             className="inline-flex h-11 items-center gap-2 rounded-full border border-[#d5d7da] bg-white/80 px-5 text-[13px] font-semibold text-[#252b37] shadow-sm backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-[#f4f7ff] active:scale-[0.97] dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
           >
             Portal Cliente
@@ -148,7 +148,7 @@ export default function Header() {
               { href: "/nosotros", label: "Nosotros" },
               { href: "/precios", label: "Precios" },
               { href: "/contacto", label: "Contacto" },
-              { href: "/portal/login", label: "Portal Cliente" },
+              { href: "http://localhost:3002/login", label: "Portal Cliente" },
             ].map(({ href, label }) => (
               <Link
                 key={href}
