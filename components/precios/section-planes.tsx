@@ -13,6 +13,9 @@ if (!API_URL) {
   throw new Error("NEXT_PUBLIC_API_URL no está definida");
 }
 
+const WS_LINK =
+  "https://wa.me/18092000000?text=Hola%2C%20me%20interesa%20cotizar%20un%20plan";
+
 type Billing = "mensual" | "proyecto";
 
 type PlanFeature = {
@@ -60,7 +63,7 @@ export default function SectionPlanes() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const cards = sectionRef.current?.querySelectorAll(".plan-card");
-      if (cards) {
+      if (cards && cards.length) {
         gsap.from(cards, {
           y: 60,
           opacity: 0,
@@ -76,6 +79,7 @@ export default function SectionPlanes() {
         });
       }
     }, sectionRef);
+
     return () => ctx.revert();
   }, [plans]);
 
@@ -86,10 +90,25 @@ export default function SectionPlanes() {
     >
       <div className="mb-12 flex justify-center">
         <div className="inline-flex rounded-full border border-[#d5d7da] dark:border-white/10 bg-white dark:bg-[#141a2b] p-1">
-          <button onClick={() => setBilling("proyecto")} className={`rounded-full px-6 py-2 text-[13px] font-semibold transition-all ${billing === "proyecto" ? "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a]" : "text-[#252b37] dark:text-white"}`}>
+          <button
+            onClick={() => setBilling("proyecto")}
+            className={`rounded-full px-6 py-2 text-[13px] font-semibold transition-all ${
+              billing === "proyecto"
+                ? "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a]"
+                : "text-[#252b37] dark:text-white"
+            }`}
+          >
             Por proyecto
           </button>
-          <button onClick={() => setBilling("mensual")} className={`rounded-full px-6 py-2 text-[13px] font-semibold transition-all ${billing === "mensual" ? "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a]" : "text-[#252b37] dark:text-white"}`}>
+
+          <button
+            onClick={() => setBilling("mensual")}
+            className={`rounded-full px-6 py-2 text-[13px] font-semibold transition-all ${
+              billing === "mensual"
+                ? "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a]"
+                : "text-[#252b37] dark:text-white"
+            }`}
+          >
             Mensual (retainer)
           </button>
         </div>
@@ -123,22 +142,43 @@ export default function SectionPlanes() {
               )}
 
               <h3 className="mb-1 text-[22px] font-bold">{p.name}</h3>
-              <p className={`mb-6 text-[13px] leading-[20px] ${p.is_highlighted ? "text-white/70" : "text-[#7a8595] dark:text-[#a1a8b3]"}`}>
+
+              <p
+                className={`mb-6 text-[13px] leading-[20px] ${
+                  p.is_highlighted
+                    ? "text-white/70"
+                    : "text-[#7a8595] dark:text-[#a1a8b3]"
+                }`}
+              >
                 {p.tagline}
               </p>
 
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
                   {!isQuote && (
-                    <span className={`text-[14px] font-semibold ${p.is_highlighted ? "text-white/60" : "text-[#7a8595] dark:text-[#a1a8b3]"}`}>
+                    <span
+                      className={`text-[14px] font-semibold ${
+                        p.is_highlighted
+                          ? "text-white/60"
+                          : "text-[#7a8595] dark:text-[#a1a8b3]"
+                      }`}
+                    >
                       US$
                     </span>
                   )}
+
                   <span className="break-all text-[40px] font-extrabold leading-none tracking-tight sm:text-[44px] md:text-[52px]">
                     {displayPrice}
                   </span>
+
                   {!isQuote && (
-                    <span className={`text-[13px] ${p.is_highlighted ? "text-white/60" : "text-[#7a8595] dark:text-[#a1a8b3]"}`}>
+                    <span
+                      className={`text-[13px] ${
+                        p.is_highlighted
+                          ? "text-white/60"
+                          : "text-[#7a8595] dark:text-[#a1a8b3]"
+                      }`}
+                    >
                       {billing === "mensual" ? "/mes" : "desde"}
                     </span>
                   )}
@@ -148,18 +188,39 @@ export default function SectionPlanes() {
               <ul className="mb-8 flex flex-1 flex-col gap-3">
                 {p.features.map((f) => (
                   <li key={f.id} className="flex items-start gap-3 text-[14px]">
-                    <Check className={`mt-0.5 h-4 w-4 flex-shrink-0 ${p.is_highlighted ? "text-[#00d7f2]" : "text-[#0047ff]"}`} strokeWidth={3} />
-                    <span className={p.is_highlighted ? "text-white/90" : "text-[#252b37] dark:text-white"}>
+                    <Check
+                      className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
+                        p.is_highlighted ? "text-[#00d7f2]" : "text-[#0047ff]"
+                      }`}
+                      strokeWidth={3}
+                    />
+
+                    <span
+                      className={
+                        p.is_highlighted
+                          ? "text-white/90"
+                          : "text-[#252b37] dark:text-white"
+                      }
+                    >
                       {f.text}
                     </span>
                   </li>
                 ))}
               </ul>
 
-              <button className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[14px] font-semibold transition-all ${p.is_highlighted ? "bg-white text-[#101828] hover:bg-[#f4f7ff]" : "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a] hover:bg-[#252b37] dark:hover:bg-white/90"}`}>
-                Empezar con {p.name}
+              <a
+                href={`${WS_LINK}%20${encodeURIComponent(p.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[14px] font-semibold transition-all ${
+                  p.is_highlighted
+                    ? "bg-white text-[#101828] hover:bg-[#f4f7ff]"
+                    : "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a] hover:bg-[#252b37] dark:hover:bg-white/90"
+                }`}
+              >
+                Cotizar {p.name}
                 <ArrowRight className="h-4 w-4" />
-              </button>
+              </a>
             </div>
           );
         })}
