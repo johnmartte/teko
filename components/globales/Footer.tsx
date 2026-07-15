@@ -1,5 +1,6 @@
 'use client'
 import { Globe, LayoutGrid } from "lucide-react";
+import Link from "next/link";
 
 import { FiGithub } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa6";
@@ -137,15 +138,15 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-white/60 md:flex-row">
           <p>© 2026 TEKO. Todos los derechos reservados.</p>
           <div className="flex flex-wrap justify-center gap-6">
-            <a href="#" className="transition-colors hover:text-white">
+            <Link href="/politica-de-cookies" className="transition-colors hover:text-white">
               Política de Cookies
-            </a>
-            <a href="#" className="transition-colors hover:text-white">
+            </Link>
+            <Link href="/politica-de-privacidad" className="transition-colors hover:text-white">
               Política de Privacidad
-            </a>
-            <a href="#" className="transition-colors hover:text-white">
+            </Link>
+            <Link href="/terminos-y-condiciones" className="transition-colors hover:text-white">
               Términos y Condiciones
-            </a>
+            </Link>
           </div>
         </div>
       </div>
