@@ -1,6 +1,9 @@
 'use client'
-import { Globe, LayoutGrid } from "lucide-react";
+import { Globe } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import LogoTeko from "@/public/LogoTeko.png";
+import Isologo from "@/public/Isologo.svg";
 
 import { FiGithub } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa6";
@@ -60,10 +63,10 @@ export default function Footer() {
           <div className="lg:col-span-2">
             {/* Logo */}
             <div className="mb-6 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0047ff]/10 dark:bg-white/20">
-                <LayoutGrid className="h-5 w-5 text-[#0047ff] dark:text-white" />
+              <div className="relative h-8 w-28">
+                <Image src={Isologo} alt="Logo TEKO" fill className="object-contain object-left dark:hidden" />
+                <Image src={LogoTeko} alt="Logo TEKO" fill className="hidden object-contain object-left dark:block" />
               </div>
-              <span className="text-2xl font-bold tracking-tight text-[#101828] dark:text-white">teko.</span>
             </div>
 
             {/* Descripción */}
