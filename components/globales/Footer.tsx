@@ -1,4 +1,6 @@
 'use client'
+
+import Link from "next/link";
 import { Globe, LayoutGrid } from "lucide-react";
 
 import { FiGithub } from "react-icons/fi";
@@ -10,33 +12,39 @@ export default function Footer() {
     {
       title: "PRODUCTOS",
       links: [
-        "Plataformas Web",
-        "Apps Móviles",
-        "Sistemas",
-        "API & Backend",
-        "Integraciones",
+        { label: "Plataformas Web", href: "/plataformas", type:"page"},
+        { label: "Apps Móviles", href: "/portafolio", type: "page"},
+        { label: "Sistemas", href: "/servicios", type: "page"},
+        { label: "API & Backend", href: "/servicios", type: "page"},
+        { label: "Integraciones", href: "/servicios", type: "page"},
       ],
     },
     {
       title: "EMPRESA",
-      links: ["CRM", "Pagos", "Funciones", "Características", "Blog"],
+      links: [ 
+        { label: "CRM", href: "/portafolio", type: "page"},
+        { label: "Pagos",href: "/precios", type: "page"},
+        { label: "Funciones", href: "#", type: "pending"},
+        { label: "Características", href: "/servicios", type: "page"},
+        { label: "Blog", href: "#", type: "pending"},
+      ],
     },
     {
       title: "RECURSOS",
       links: [
-        "Centro de Ayuda",
-        "Demo",
-        "Estado del Servidor",
-        "Partners",
+        { label: "Centro de Ayuda", href: "#", type: "pending"},
+        { label: "Demo", href: "#", type: "pending" },
+        { label: "Estado del Servidor", href: "#", type: "pending"},
+        { label: "Partners", href: "#", type: "pending"},
       ],
     },
     {
       title: "NOSOTROS",
       links: [
-        "Sobre TEKO",
-        "Contacto",
-        "Carreras",
-        "Prensa",
+        { label: "Sobre TEKO", href: "/nosotros", type: "page"},
+        { label: "Contacto", href: "/contacto", type: "page"},
+        { label: "Carreras", href: "#", type: "pending"},
+        { label: "Prensa", href: "#", type: "pending"},
       ],
     },
   ];
@@ -109,12 +117,21 @@ export default function Footer() {
               <ul className="space-y-4">
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
+                    {link.type === "page" ? (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-white/80 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
                     <a
-                      href="#"
+                      href="link.href"
                       className="text-sm text-white/80 transition-colors hover:text-white"
                     >
-                      {link}
+                      {link.label}
                     </a>
+                    )}
                   </li>
                 ))}
               </ul>
