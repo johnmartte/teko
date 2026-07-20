@@ -24,18 +24,18 @@ export default function Footer() {
       links: [ 
         { label: "CRM", href: "/portafolio", type: "page"},
         { label: "Pagos",href: "/precios", type: "page"},
-        { label: "Funciones", href: "#", type: "pending"},
+        { label: "Funciones", href: "/", type: "page"},
         { label: "Características", href: "/servicios", type: "page"},
-        { label: "Blog", href: "#", type: "pending"},
+        { label: "Blog", href: "/", type: "page"},
       ],
     },
     {
       title: "RECURSOS",
       links: [
-        { label: "Centro de Ayuda", href: "#", type: "pending"},
-        { label: "Demo", href: "#", type: "pending" },
-        { label: "Estado del Servidor", href: "#", type: "pending"},
-        { label: "Partners", href: "#", type: "pending"},
+        { label: "Centro de Ayuda", href: "/contacto", type: "page"},
+        { label: "Demo", href: "/", type: "page" },
+        { label: "Estado del Servidor", href: "/", type: "page"},
+        { label: "Partners", href: "/", type: "page"},
       ],
     },
     {
@@ -43,8 +43,8 @@ export default function Footer() {
       links: [
         { label: "Sobre TEKO", href: "/nosotros", type: "page"},
         { label: "Contacto", href: "/contacto", type: "page"},
-        { label: "Carreras", href: "#", type: "pending"},
-        { label: "Prensa", href: "#", type: "pending"},
+        { label: "Carreras", href: "/nosotros", type: "page"},
+        { label: "Prensa", href: "/", type: "page"},
       ],
     },
   ];
