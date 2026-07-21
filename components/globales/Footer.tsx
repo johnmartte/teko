@@ -1,7 +1,10 @@
 'use client'
 
+import { Globe } from "lucide-react";
 import Link from "next/link";
-import { Globe, LayoutGrid } from "lucide-react";
+import Image from "next/image";
+import LogoTeko from "@/public/LogoTeko.png";
+import Isologo from "@/public/Isologo.svg";
 
 import { FiGithub } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa6";
@@ -50,15 +53,15 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-[#0b1226] pt-16 pb-8 text-white dark:bg-[#0f1525] border-t border-white/10">
+    <footer className="relative overflow-hidden bg-[#f3f4f6] pt-16 pb-8 text-[#101828] border-t border-[#e5e7eb] dark:bg-[#0b1226] dark:text-white dark:border-white/10">
       {/* Resplandor superior: la luz de marca entra por arriba */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0b6eff]/70 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0b6eff]/30 to-transparent dark:via-[#0b6eff]/70"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[640px] -translate-x-1/2 rounded-full bg-[#0b6eff]/15 blur-3xl"
+        className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[640px] -translate-x-1/2 rounded-full bg-[#0b6eff]/5 blur-3xl dark:bg-[#0b6eff]/15"
       />
       <div className="relative mx-auto w-full px-6 md:px-12">
         {/* Sección Superior: Grid principal */}
@@ -67,14 +70,14 @@ export default function Footer() {
           <div className="lg:col-span-2">
             {/* Logo */}
             <div className="mb-6 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-white/20">
-                <LayoutGrid className="h-5 w-5 text-white" />
+              <div className="relative h-8 w-28">
+                <Image src={Isologo} alt="Logo TEKO" fill className="object-contain object-left dark:hidden" />
+                <Image src={LogoTeko} alt="Logo TEKO" fill className="hidden object-contain object-left dark:block" />
               </div>
-              <span className="text-2xl font-bold tracking-tight">teko.</span>
             </div>
 
             {/* Descripción */}
-            <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/80">
+            <p className="mb-8 max-w-sm text-sm leading-relaxed text-[#7a8595] dark:text-white/80">
               Software que transforma negocios. Diseñamos, desarrollamos e
               implementamos soluciones digitales a medida.
             </p>
@@ -83,25 +86,25 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/20"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
               >
                 <CiTwitter className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/20"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
               >
                 <FaLinkedinIn className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/20"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
               >
                 <FiGithub className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/20"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
               >
                 <Globe className="h-4 w-4" />
               </a>
@@ -111,7 +114,7 @@ export default function Footer() {
           {/* Columnas de Enlaces */}
           {footerLinks.map((column, index) => (
             <div key={index} className="lg:col-span-1">
-              <h4 className="mb-6 text-sm font-semibold tracking-wider text-white">
+              <h4 className="mb-6 text-sm font-semibold tracking-wider text-[#101828] dark:text-white">
                 {column.title}
               </h4>
               <ul className="space-y-4">
@@ -126,8 +129,8 @@ export default function Footer() {
                       </Link>
                     ) : (
                     <a
-                      href="link.href"
-                      className="text-sm text-white/80 transition-colors hover:text-white"
+                      href="#"
+                      className="text-sm text-[#7a8595] transition-colors hover:text-[#101828] dark:text-white/80 dark:hover:text-white"
                     >
                       {link.label}
                     </a>
@@ -142,27 +145,27 @@ export default function Footer() {
         {/* Marca fantasma: la palabra cierra la página como firma */}
         <p
           aria-hidden="true"
-          className="font-advercase pointer-events-none mt-14 -mb-4 select-none text-center text-[22vw] font-bold leading-[0.78] tracking-tight text-white/[0.045] lg:text-[17vw]"
+          className="font-advercase pointer-events-none mt-14 -mb-4 select-none text-center text-[22vw] font-bold leading-[0.78] tracking-tight text-[#101828]/[0.04] lg:text-[17vw] dark:text-white/[0.045]"
         >
           teko
         </p>
 
         {/* Separador */}
-        <hr className="my-10 border-white/10" />
+        <hr className="my-10 border-[#e5e7eb] dark:border-white/10" />
 
         {/* Sección Inferior: Copyright y Legales */}
-        <div className="flex flex-col items-center justify-between gap-4 text-sm text-white/60 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 text-sm text-[#7a8595] dark:text-white/60 md:flex-row">
           <p>© 2026 TEKO. Todos los derechos reservados.</p>
           <div className="flex flex-wrap justify-center gap-6">
-            <a href="#" className="transition-colors hover:text-white">
+            <Link href="/politica-de-cookies" className="transition-colors hover:text-[#101828] dark:hover:text-white">
               Política de Cookies
-            </a>
-            <a href="#" className="transition-colors hover:text-white">
+            </Link>
+            <Link href="/politica-de-privacidad" className="transition-colors hover:text-[#101828] dark:hover:text-white">
               Política de Privacidad
-            </a>
-            <a href="#" className="transition-colors hover:text-white">
+            </Link>
+            <Link href="/terminos-y-condiciones" className="transition-colors hover:text-[#101828] dark:hover:text-white">
               Términos y Condiciones
-            </a>
+            </Link>
           </div>
         </div>
       </div>
