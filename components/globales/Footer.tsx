@@ -1,4 +1,5 @@
 'use client'
+
 import { Globe } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,33 +15,39 @@ export default function Footer() {
     {
       title: "PRODUCTOS",
       links: [
-        "Plataformas Web",
-        "Apps Móviles",
-        "Sistemas",
-        "API & Backend",
-        "Integraciones",
+        { label: "Plataformas Web", href: "/plataformas", type:"page"},
+        { label: "Apps Móviles", href: "/portafolio", type: "page"},
+        { label: "Sistemas", href: "/servicios", type: "page"},
+        { label: "API & Backend", href: "/servicios", type: "page"},
+        { label: "Integraciones", href: "/servicios", type: "page"},
       ],
     },
     {
       title: "EMPRESA",
-      links: ["CRM", "Pagos", "Funciones", "Características", "Blog"],
+      links: [ 
+        { label: "CRM", href: "/portafolio", type: "page"},
+        { label: "Pagos",href: "/precios", type: "page"},
+        { label: "Funciones", href: "/", type: "page"},
+        { label: "Características", href: "/servicios", type: "page"},
+        { label: "Blog", href: "/", type: "page"},
+      ],
     },
     {
       title: "RECURSOS",
       links: [
-        "Centro de Ayuda",
-        "Demo",
-        "Estado del Servidor",
-        "Partners",
+        { label: "Centro de Ayuda", href: "/contacto", type: "page"},
+        { label: "Demo", href: "/", type: "page" },
+        { label: "Estado del Servidor", href: "/", type: "page"},
+        { label: "Partners", href: "/", type: "page"},
       ],
     },
     {
       title: "NOSOTROS",
       links: [
-        "Sobre TEKO",
-        "Contacto",
-        "Carreras",
-        "Prensa",
+        { label: "Sobre TEKO", href: "/nosotros", type: "page"},
+        { label: "Contacto", href: "/contacto", type: "page"},
+        { label: "Carreras", href: "/nosotros", type: "page"},
+        { label: "Prensa", href: "/", type: "page"},
       ],
     },
   ];
@@ -113,12 +120,21 @@ export default function Footer() {
               <ul className="space-y-4">
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
+                    {link.type === "page" ? (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-white/80 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
                     <a
                       href="#"
                       className="text-sm text-[#7a8595] transition-colors hover:text-[#101828] dark:text-white/80 dark:hover:text-white"
                     >
-                      {link}
+                      {link.label}
                     </a>
+                    )}
                   </li>
                 ))}
               </ul>
