@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.admin_contact_request import AdminContactRequestListItem
 from app.security.dependencies import get_current_admin
 from app.services import contact_request_service
 
@@ -11,6 +10,7 @@ from app.schemas.admin_contact_request import (
     ContactRequestStatusUpdate,
 )
 from app.schemas.contact_request import ContactRequestRead
+from app.schemas.admin_catalog import ContactRequestDetail
 
 router = APIRouter(
     prefix="/admin/contact-requests",
@@ -24,6 +24,15 @@ def list_contact_requests(
     current_admin=Depends(get_current_admin),
 ):
     return contact_request_service.get_contact_requests_for_admin(db)
+
+
+@router.get("/{contact_request_id}", response_model=ContactRequestDetail)
+def get_contact_request(
+    contact_request_id: int,
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return contact_request_service.get_contact_request_detail(db, contact_request_id)
 
 @router.patch("/{contact_request_id}/status", response_model=ContactRequestRead)
 def update_contact_request_status(

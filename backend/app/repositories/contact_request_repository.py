@@ -37,6 +37,8 @@ def get_contact_requests_for_admin(db: Session):
             ContactRequest.company.label("company"),
             Service.title.label("service"),
             BudgetRange.label.label("budget"),
+            ContactRequest.phone.label("phone"),
+            ContactRequest.message.label("message"),
             ContactRequest.status.label("status"),
             ContactRequest.created_at.label("created_at"),
         )
@@ -55,6 +57,29 @@ def get_contact_request_by_id(db: Session, contact_request_id: int):
     )
 
 
+def get_contact_request_detail(db: Session, contact_request_id: int):
+    return (
+        db.query(
+            ContactRequest.id,
+            ContactRequest.name,
+            Lead.email,
+            ContactRequest.company,
+            ContactRequest.phone,
+            Service.title.label("service"),
+            BudgetRange.label.label("budget"),
+            ContactRequest.message,
+            ContactRequest.status,
+            ContactRequest.created_at,
+            ContactRequest.updated_at,
+        )
+        .join(Lead, ContactRequest.lead_id == Lead.id)
+        .outerjoin(Service, ContactRequest.service_id == Service.id)
+        .outerjoin(BudgetRange, ContactRequest.budget_range_id == BudgetRange.id)
+        .filter(ContactRequest.id == contact_request_id)
+        .first()
+    )
+
+
 def update_contact_request_status(
     db: Session,
     contact_request: ContactRequest,
@@ -66,4 +91,4 @@ def update_contact_request_status(
     db.commit()
     db.refresh(contact_request)
 
-    return contact_request    
+    return contact_request

@@ -22,6 +22,7 @@ if database_url.startswith("postgres://"):
         1,
     )
 
+
 engine = create_engine(
     database_url,
     pool_pre_ping=True,

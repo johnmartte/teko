@@ -11,6 +11,9 @@ def login(db: Session, email: str, password: str):
     if not admin:
         return None
 
+    if not admin.is_active:
+        return None
+
     if not verify_password(password, admin.password_hash):
         return None
 

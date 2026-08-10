@@ -33,6 +33,16 @@ def create_contact_request(db: Session, contact_in: ContactRequestCreate):
 def get_contact_requests_for_admin(db):
     return contact_request_repository.get_contact_requests_for_admin(db)    
 
+
+def get_contact_request_detail(db: Session, contact_request_id: int):
+    contact_request = contact_request_repository.get_contact_request_detail(db, contact_request_id)
+    if not contact_request:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Solicitud de contacto no encontrada",
+        )
+    return contact_request
+
 def update_contact_request_status(db, contact_request_id: int, new_status: str):
     contact_request = contact_request_repository.get_contact_request_by_id(
         db=db,

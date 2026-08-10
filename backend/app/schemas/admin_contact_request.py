@@ -1,6 +1,5 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
-from pydantic import BaseModel
 
 
 class AdminContactRequestListItem(BaseModel):
@@ -10,6 +9,8 @@ class AdminContactRequestListItem(BaseModel):
     company: str | None
     service: str | None
     budget: str | None
+    phone: str | None
+    message: str
     status: str
     created_at: datetime
 
