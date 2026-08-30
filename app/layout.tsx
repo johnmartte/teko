@@ -8,8 +8,48 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "TEKO",
-  description: "",
+  title: {
+    default: "TEKO — Agencia de Transformación Digital",
+    template: "%s | TEKO",
+  },
+  description:
+    "Diseñamos, desarrollamos e implementamos soluciones digitales a medida: plataformas web, apps móviles, sistemas empresariales y APIs. +50 proyectos entregados en RD y LATAM.",
+  keywords: [
+    "agencia digital",
+    "desarrollo web",
+    "apps móviles",
+    "transformación digital",
+    "software a medida",
+    "República Dominicana",
+    "TEKO",
+  ],
+  authors: [{ name: "TEKO" }],
+  creator: "TEKO",
+  metadataBase: new URL("https://www.teko.do"),
+  openGraph: {
+    type: "website",
+    locale: "es_DO",
+    url: "https://www.teko.do",
+    siteName: "TEKO",
+    title: "TEKO — Agencia de Transformación Digital",
+    description:
+      "Construimos productos digitales que transforman tu negocio. Plataformas web, apps móviles, sistemas y APIs a medida.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TEKO — Agencia de Transformación Digital",
+    description:
+      "Construimos productos digitales que transforman tu negocio. Plataformas web, apps móviles, sistemas y APIs a medida.",
+  },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

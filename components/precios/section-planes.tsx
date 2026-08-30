@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,22 +46,53 @@ function formatPrice(value: string | null, fallback: string | null) {
   });
 }
 
+function PlanSkeleton() {
+  return (
+    <div className="flex flex-col rounded-[24px] border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] p-6 sm:p-8">
+      <div className="skeleton mb-2 h-7 w-32" />
+      <div className="skeleton mb-6 h-4 w-48" />
+      <div className="skeleton mb-6 h-14 w-40" />
+      <div className="mb-8 flex flex-col gap-3">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="skeleton h-4 w-4 rounded-full" />
+            <div className="skeleton h-4 flex-1" />
+          </div>
+        ))}
+      </div>
+      <div className="skeleton h-12 w-full rounded-full" />
+    </div>
+  );
+}
+
 export default function SectionPlanes() {
   const [billing, setBilling] = useState<Billing>("proyecto");
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    async function loadPlans() {
+  const loadPlans = useCallback(async () => {
+    setError(false);
+    setLoading(true);
+    try {
       const res = await fetch(`${API_URL}/plans`);
+      if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
       setPlans(data);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
     }
-
-    loadPlans();
   }, []);
 
   useEffect(() => {
+    loadPlans();
+  }, [loadPlans]);
+
+  useEffect(() => {
+    if (loading || plans.length === 0) return;
     const ctx = gsap.context(() => {
       const cards = sectionRef.current?.querySelectorAll(".plan-card");
       if (cards && cards.length) {
@@ -81,7 +113,7 @@ export default function SectionPlanes() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [plans]);
+  }, [plans, loading]);
 
   return (
     <section
@@ -115,116 +147,131 @@ export default function SectionPlanes() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {plans.map((p) => {
-          const currentPrice =
-            billing === "mensual" ? p.monthly_price : p.project_price;
+        {loading
+          ? [1, 2, 3].map((i) => <PlanSkeleton key={i} />)
+          : plans.map((p) => {
+              const currentPrice =
+                billing === "mensual" ? p.monthly_price : p.project_price;
 
-          const displayPrice = formatPrice(
-            currentPrice,
-            billing === "proyecto" ? p.project_price_label : null,
-          );
+              const displayPrice = formatPrice(
+                currentPrice,
+                billing === "proyecto" ? p.project_price_label : null,
+              );
 
-          const isQuote = displayPrice === "Cotización";
+              const isQuote = displayPrice === "Cotización";
 
-          return (
-            <div
-              key={p.id}
-              className={`plan-card relative flex flex-col rounded-[24px] p-6 transition-all duration-300 sm:p-8 ${
-                p.is_highlighted
-                  ? "bg-[#101828] text-white shadow-2xl lg:-translate-y-4"
-                  : "border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] text-[#101828] dark:text-white hover:shadow-lg"
-              }`}
-            >
-              {p.is_highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#00d7f2] px-4 py-1 text-[11px] font-bold uppercase tracking-wide text-[#101828]">
-                  Más popular
-                </div>
-              )}
-
-              <h3 className="mb-1 text-[22px] font-bold">{p.name}</h3>
-
-              <p
-                className={`mb-6 text-[13px] leading-[20px] ${
-                  p.is_highlighted
-                    ? "text-white/70"
-                    : "text-[#7a8595] dark:text-[#a1a8b3]"
-                }`}
-              >
-                {p.tagline}
-              </p>
-
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2">
-                  {!isQuote && (
-                    <span
-                      className={`text-[14px] font-semibold ${
-                        p.is_highlighted
-                          ? "text-white/60"
-                          : "text-[#7a8595] dark:text-[#a1a8b3]"
-                      }`}
-                    >
-                      US$
-                    </span>
+              return (
+                <div
+                  key={p.id}
+                  className={`plan-card relative flex flex-col rounded-[24px] p-6 transition-all duration-300 sm:p-8 ${
+                    p.is_highlighted
+                      ? "bg-[#101828] text-white shadow-2xl lg:-translate-y-4"
+                      : "border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] text-[#101828] dark:text-white hover:shadow-lg"
+                  }`}
+                >
+                  {p.is_highlighted && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#00d7f2] px-4 py-1 text-[11px] font-bold uppercase tracking-wide text-[#101828]">
+                      Más popular
+                    </div>
                   )}
 
-                  <span className="break-all text-[40px] font-extrabold leading-none tracking-tight sm:text-[44px] md:text-[52px]">
-                    {displayPrice}
-                  </span>
+                  <h3 className="mb-1 text-[22px] font-bold">{p.name}</h3>
 
-                  {!isQuote && (
-                    <span
-                      className={`text-[13px] ${
-                        p.is_highlighted
-                          ? "text-white/60"
-                          : "text-[#7a8595] dark:text-[#a1a8b3]"
-                      }`}
-                    >
-                      {billing === "mensual" ? "/mes" : "desde"}
-                    </span>
-                  )}
+                  <p
+                    className={`mb-6 text-[13px] leading-[20px] ${
+                      p.is_highlighted
+                        ? "text-white/70"
+                        : "text-[#7a8595] dark:text-[#a1a8b3]"
+                    }`}
+                  >
+                    {p.tagline}
+                  </p>
+
+                  <div className="mb-6">
+                    <div className="flex items-baseline gap-2">
+                      {!isQuote && (
+                        <span
+                          className={`text-[14px] font-semibold ${
+                            p.is_highlighted
+                              ? "text-white/60"
+                              : "text-[#7a8595] dark:text-[#a1a8b3]"
+                          }`}
+                        >
+                          US$
+                        </span>
+                      )}
+
+                      <span className="break-all text-[40px] font-extrabold leading-none tracking-tight sm:text-[44px] md:text-[52px]">
+                        {displayPrice}
+                      </span>
+
+                      {!isQuote && (
+                        <span
+                          className={`text-[13px] ${
+                            p.is_highlighted
+                              ? "text-white/60"
+                              : "text-[#7a8595] dark:text-[#a1a8b3]"
+                          }`}
+                        >
+                          {billing === "mensual" ? "/mes" : "desde"}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <ul className="mb-8 flex flex-1 flex-col gap-3">
+                    {p.features.map((f) => (
+                      <li
+                        key={f.id}
+                        className="flex items-start gap-3 text-[14px]"
+                      >
+                        <Check
+                          className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
+                            p.is_highlighted
+                              ? "text-[#00d7f2]"
+                              : "text-[#0047ff]"
+                          }`}
+                          strokeWidth={3}
+                        />
+
+                        <span
+                          className={
+                            p.is_highlighted
+                              ? "text-white/90"
+                              : "text-[#252b37] dark:text-white"
+                          }
+                        >
+                          {f.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={`${WS_LINK}%20${encodeURIComponent(p.name)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[14px] font-semibold transition-all ${
+                      p.is_highlighted
+                        ? "bg-white text-[#101828] hover:bg-[#f4f7ff]"
+                        : "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a] hover:bg-[#252b37] dark:hover:bg-white/90"
+                    }`}
+                  >
+                    Cotizar {p.name}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
                 </div>
-              </div>
-
-              <ul className="mb-8 flex flex-1 flex-col gap-3">
-                {p.features.map((f) => (
-                  <li key={f.id} className="flex items-start gap-3 text-[14px]">
-                    <Check
-                      className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
-                        p.is_highlighted ? "text-[#00d7f2]" : "text-[#0047ff]"
-                      }`}
-                      strokeWidth={3}
-                    />
-
-                    <span
-                      className={
-                        p.is_highlighted
-                          ? "text-white/90"
-                          : "text-[#252b37] dark:text-white"
-                      }
-                    >
-                      {f.text}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <a
-                href={`${WS_LINK}%20${encodeURIComponent(p.name)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[14px] font-semibold transition-all ${
-                  p.is_highlighted
-                    ? "bg-white text-[#101828] hover:bg-[#f4f7ff]"
-                    : "bg-[#101828] dark:bg-white text-white dark:text-[#0a0e1a] hover:bg-[#252b37] dark:hover:bg-white/90"
-                }`}
-              >
-                Cotizar {p.name}
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-          );
-        })}
+              );
+            })}
       </div>
+
+      {error && (
+        <ApiErrorToast
+          message="No pudimos cargar los planes. Intenta de nuevo."
+          onRetry={loadPlans}
+          onDismiss={() => setError(false)}
+        />
+      )}
     </section>
   );
 }

@@ -5,13 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { Mail, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
   throw new Error("NEXT_PUBLIC_API_URL no está definida");
 }
-
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +22,7 @@ export default function SectionContactoForm() {
   const [budgetOptions, setBudgetOptions] = useState<SelectOption[]>([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [sent, setSent] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [form, setForm] = useState({
   name: "",
   email: "",
@@ -115,7 +116,7 @@ export default function SectionContactoForm() {
   });
 
   if (!res.ok) {
-    alert("No se pudo enviar el mensaje.");
+    setSubmitError(true);
     return;
   }
 
@@ -303,6 +304,13 @@ export default function SectionContactoForm() {
           )}
         </form>
       </div>
+
+      {submitError && (
+        <ApiErrorToast
+          message="No se pudo enviar el mensaje. Intenta de nuevo."
+          onDismiss={() => setSubmitError(false)}
+        />
+      )}
 
       <style jsx>{`
         .input-base {

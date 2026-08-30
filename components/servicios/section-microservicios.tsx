@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Background from "@/public/Background-seccion.svg";
 import {
@@ -17,6 +17,7 @@ import {
   CreditCard as NfcCard,
   LayoutGrid,
 } from "lucide-react";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -47,21 +48,44 @@ type ApiService = {
   icon_key: keyof typeof iconMap | null;
 };
 
+function MicroservicioSkeleton() {
+  return (
+    <div className="rounded-[14px] border border-[rgba(17,17,34,0.06)] bg-[rgba(0,0,0,0.04)] p-[20px] dark:border-white/10 dark:bg-white/5">
+      <div className="flex items-start gap-3">
+        <div className="skeleton mt-[2px] h-9 w-9 shrink-0 rounded-[10px]" />
+        <div className="flex-1">
+          <div className="skeleton mb-2 h-4 w-28" />
+          <div className="skeleton h-3 w-full" />
+          <div className="skeleton mt-1 h-3 w-3/4" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SectionMicroservicios() {
   const [microservicios, setMicroservicios] = useState<ApiService[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const loadMicroservicios = useCallback(async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/services`);
+      if (!res.ok) throw new Error(`${res.status}`);
+      const data: ApiService[] = await res.json();
+      setMicroservicios(data.filter((item) => item.type === "microservice"));
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    async function loadMicroservicios() {
-      const res = await fetch(`${API_URL}/services`);
-      const data: ApiService[] = await res.json();
-
-      setMicroservicios(
-        data.filter((item) => item.type === "microservice"),
-      );
-    }
-
     loadMicroservicios();
-  }, []);
+  }, [loadMicroservicios]);
 
   return (
     <section className="relative overflow-hidden px-4 py-16 md:px-8 md:py-24">
@@ -99,39 +123,51 @@ export default function SectionMicroservicios() {
         </p>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {microservicios.map((item) => {
-            const Icon =
-              item.icon_key && iconMap[item.icon_key]
-                ? iconMap[item.icon_key]
-                : Globe;
+          {loading
+            ? [1, 2, 3, 4, 5, 6].map((i) => (
+                <MicroservicioSkeleton key={i} />
+              ))
+            : microservicios.map((item) => {
+                const Icon =
+                  item.icon_key && iconMap[item.icon_key]
+                    ? iconMap[item.icon_key]
+                    : Globe;
 
-            return (
-              <div
-                key={item.id}
-                className="rounded-[14px] border border-[rgba(17,17,34,0.06)] bg-[rgba(0,0,0,0.04)] p-[20px] dark:border-white/10 dark:bg-white/5"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="mt-[2px] flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(90,128,255,0.1)]">
-                    <Icon
-                      className="h-4 w-4 text-[#1f4fff]"
-                      strokeWidth={1.9}
-                    />
-                  </div>
+                return (
+                  <div
+                    key={item.id}
+                    className="rounded-[14px] border border-[rgba(17,17,34,0.06)] bg-[rgba(0,0,0,0.04)] p-[20px] dark:border-white/10 dark:bg-white/5"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-[2px] flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(90,128,255,0.1)]">
+                        <Icon
+                          className="h-4 w-4 text-[#1f4fff]"
+                          strokeWidth={1.9}
+                        />
+                      </div>
 
-                  <div>
-                    <p className="text-[14.4px] font-bold leading-[21.6px] text-[#111122] dark:text-white">
-                      {item.title}
-                    </p>
-                    <p className="mt-1 text-[12px] leading-[20.4px] text-[rgba(17,17,34,0.35)] dark:text-[#a1a8b3]">
-                      {item.description}
-                    </p>
+                      <div>
+                        <p className="text-[14.4px] font-bold leading-[21.6px] text-[#111122] dark:text-white">
+                          {item.title}
+                        </p>
+                        <p className="mt-1 text-[12px] leading-[20.4px] text-[rgba(17,17,34,0.35)] dark:text-[#a1a8b3]">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
         </div>
       </div>
+
+      {error && (
+        <ApiErrorToast
+          message="No pudimos cargar los microservicios."
+          onRetry={loadMicroservicios}
+          onDismiss={() => setError(false)}
+        />
+      )}
     </section>
   );
 }
