@@ -8,7 +8,7 @@ import Isologo from "@/public/Isologo.svg";
 
 import { FiGithub } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa6";
-import { CiTwitter } from "react-icons/ci";
+import { FaInstagram} from "react-icons/fa";
 
 export default function Footer() {
   const footerLinks = [
@@ -85,10 +85,12 @@ export default function Footer() {
             {/* Redes Sociales */}
             <div className="flex items-center gap-3">
               <a
-                href="#"
+                href="https://www.instagram.com/teko.dr/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
               >
-                <CiTwitter className="h-4 w-4" />
+                <FaInstagram className="h-4 w-4" />
               </a>
               <a
                 href="#"
@@ -123,7 +125,7 @@ export default function Footer() {
                     {link.type === "page" ? (
                       <Link
                         href={link.href}
-                        className="text-sm text-white/80 transition-colors hover:text-white"
+                        className="text-sm text-[#7a8595] transition-colors hover:text-[#101828]"
                       >
                         {link.label}
                       </Link>
