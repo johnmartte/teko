@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Users, Share2 } from "lucide-react";
+import { ArrowUpRight, Users, Share2, UtensilsCrossed } from "lucide-react";
 import gsap from "gsap";
 
 const platforms = [
@@ -36,6 +36,22 @@ const platforms = [
       "Entregables y archivos",
       "Reuniones agendadas",
       "Facturacion y pagos",
+    ],
+  },
+  {
+    name: "Rapidito",
+    description:
+      "La carta digital que entiende al restaurante criollo. Crea y gestiona tu menu en minutos, de forma simple, rapida y profesional.",
+    icon: UtensilsCrossed,
+    href: "#",
+    external: true,
+    gradient: "from-[#2D644D] to-[#C7F169]",
+    shadowColor: "rgba(45,100,77,0.5)",
+    features: [
+      "Carta digital en minutos",
+      "Gestion de categorias y platos",
+      "Plantillas personalizables",
+      "FoodTech · SaaS",
     ],
   },
 ];
