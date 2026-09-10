@@ -72,8 +72,8 @@ export default function SectionHero() {
           </Link>
         </div>
 
-        {/* Rapidito Dashboard Mockup */}
-        <div className="tk-r4 relative mt-[72px] w-full max-w-[1080px]">
+        {/* Rapidito Dashboard Mockup — hidden on mobile */}
+        <div className="tk-r4 relative mt-[72px] hidden w-full max-w-[1080px] lg:block">
           <div aria-hidden="true" className="absolute inset-x-[10%] -bottom-10 h-[120px] rounded-full blur-[60px]" style={{ background: "rgba(30,120,255,0.25)" }} />
           <div className="relative overflow-hidden rounded-[18px] border text-left" style={{ borderColor: "rgba(255,255,255,0.12)", background: "#0d1017", boxShadow: "0 60px 120px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08)" }}>
             {/* Browser chrome */}
