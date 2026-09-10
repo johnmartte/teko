@@ -17,9 +17,7 @@ export const serviciosSections: ServiceSectionProps[] = [
     phase: "01",
     phaseLabel: "FASE",
     title: "Diseño & Branding",
-    accentBg: "bg-[#eef2ff] dark:bg-[#6366f1]/15",
-    accentText: "text-[#6366f1] dark:text-[#a5b4fc]",
-    sectionBg: "bg-[#f0f4f8] dark:bg-[#0a0e1a]",
+    accentColor: "#a78bfa",
     cards: [
       {
         icon: <Palette size={18} />,
@@ -51,9 +49,7 @@ export const serviciosSections: ServiceSectionProps[] = [
     phase: "02",
     phaseLabel: "FASE",
     title: "Desarrollo Web & Software",
-    accentBg: "bg-[#eff6ff] dark:bg-[#3b82f6]/15",
-    accentText: "text-[#3b82f6] dark:text-[#93c5fd]",
-    sectionBg: "bg-white dark:bg-[#0f1525]",
+    accentColor: "#60a5fa",
     cards: [
       {
         icon: <Code2 size={18} />,
@@ -79,9 +75,7 @@ export const serviciosSections: ServiceSectionProps[] = [
     phase: "03",
     phaseLabel: "FASE",
     title: "Infraestructura & Cloud",
-    accentBg: "bg-[#ecfeff] dark:bg-[#22d3ee]/15",
-    accentText: "text-[#22d3ee] dark:text-[#67e8f9]",
-    sectionBg: "bg-[#f0f4f8] dark:bg-[#0a0e1a]",
+    accentColor: "#22d3ee",
     cards: [
       {
         icon: <Cloud size={18} />,

@@ -20,14 +20,8 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isMobileMenuOpen]);
 
   return (
@@ -37,57 +31,43 @@ export default function Header() {
         onClick={() => setIsMobileMenuOpen(false)}
         aria-hidden="true"
         className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
-          isMobileMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}
       />
 
-      <header className="fixed left-0 top-0 z-50 w-full px-4 py-4 md:px-10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+      <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4" style={{ pointerEvents: "none" }}>
+        {/* Single centered pill — matches design */}
+        <div
+          className="flex items-center gap-1.5 rounded-full"
+          style={{
+            pointerEvents: "auto",
+            padding: "6px 6px 6px 14px",
+            background: "rgba(14,17,26,0.72)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            backdropFilter: "blur(18px) saturate(140%)",
+            WebkitBackdropFilter: "blur(18px) saturate(140%)",
+            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08)",
+            maxWidth: "100%",
+          }}
+        >
           {/* Logo */}
-          <Link href="/" aria-label="Ir al inicio" className="shrink-0 flex items-center gap-3">
-            <Image
-              src="/Isologo-White.svg"
-              alt="TEKO"
-              width={52}
-              height={52}
-              priority
-            />
-            <span
-              className="hidden sm:block text-[17px] font-semibold tracking-[-0.02em]"
-              style={{ color: "#f2f3f5" }}
-            >
-              teko
-            </span>
+          <Link href="/" aria-label="TEKO" className="mr-2 flex items-center">
+            <Image src="/Isologo-White.svg" alt="TEKO" width={80} height={20} className="block" style={{ height: "20px", width: "auto" }} priority />
           </Link>
 
-          {/* Desktop Nav pill */}
-          <nav
-            className="hidden md:flex items-center gap-1 rounded-full px-2 py-2"
-            style={{
-              background: "rgba(14,17,26,0.72)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
+          {/* Desktop nav links */}
+          <nav className="hidden items-center gap-0.5 text-[13px] font-medium md:flex">
             {NAV_LINKS.map(({ href, label }) => {
-              const isActive =
-                href === "/" ? pathname === "/" : pathname?.startsWith(href);
+              const isActive = href === "/" ? pathname === "/" : pathname?.startsWith(href);
               return (
                 <Link
                   key={href}
                   href={href}
-                  className="relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all duration-200"
+                  className="rounded-full px-3 py-2 transition-colors duration-200"
                   style={{
-                    background: isActive
-                      ? "rgba(255,255,255,0.08)"
-                      : "transparent",
-                    color: isActive
-                      ? "#f2f3f5"
-                      : "rgba(242,243,245,0.7)",
+                    color: isActive ? "#fff" : "rgba(242,243,245,0.7)",
+                    background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
                   }}
                 >
                   {label}
@@ -96,112 +76,89 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Right side CTAs */}
-          <div className="hidden md:flex items-center gap-3 shrink-0">
-            <Link
-              href="/portal"
-              className="inline-flex h-10 items-center rounded-full px-5 text-[13px] font-semibold transition-all duration-200"
-              style={{
-                border: "1px solid rgba(255,255,255,0.18)",
-                color: "rgba(242,243,245,0.85)",
-                background: "rgba(255,255,255,0.05)",
-              }}
-            >
-              Portal Cliente
-            </Link>
-            <Link
-              href="/contacto"
-              className="inline-flex h-10 items-center gap-2 rounded-full px-5 text-[13px] font-semibold text-[#080a0f] transition-all duration-200 hover:brightness-90"
-              style={{ background: "#f2f3f5" }}
-            >
-              Agendar
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path
-                  d="M2.5 7h9M7.5 3.5 11 7l-3.5 3.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-          </div>
+          {/* Portal Cliente — desktop only */}
+          <Link
+            href="/portal"
+            className="hidden rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors duration-200 hover:bg-white/[0.06] md:inline-flex"
+            style={{
+              marginLeft: "6px",
+              color: "rgba(242,243,245,0.85)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            Portal Cliente
+          </Link>
+
+          {/* Agendar CTA */}
+          <Link
+            href="/contacto"
+            className="hidden items-center gap-2 rounded-full px-4 py-[9px] text-[13px] font-semibold transition-colors duration-200 hover:bg-[#e8ecf5] md:inline-flex"
+            style={{ background: "#fff", color: "#080a0f", whiteSpace: "nowrap" }}
+          >
+            Agendar
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" /></svg>
+          </Link>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl transition-all duration-200"
-            style={{
-              border: "1px solid rgba(255,255,255,0.15)",
-              background: "rgba(255,255,255,0.06)",
-              color: "#f2f3f5",
-            }}
+            className="ml-1 rounded-full p-2 transition-colors duration-200 md:hidden"
+            style={{ color: "#f2f3f5", background: "rgba(255,255,255,0.06)" }}
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
+      </header>
 
-        {/* Mobile dropdown */}
+      {/* Mobile dropdown — below the pill */}
+      <div
+        className={`fixed inset-x-0 top-[72px] z-50 px-4 md:hidden transition-all duration-500 ease-in-out ${
+          isMobileMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+        }`}
+      >
         <div
-          className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-            isMobileMenuOpen ? "max-h-[520px] opacity-100 mt-3" : "max-h-0 opacity-0 mt-0"
-          }`}
+          className="mx-auto max-w-md rounded-2xl px-4 py-5"
+          style={{
+            background: "rgba(14,17,26,0.92)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.8)",
+          }}
         >
-          <div
-            className="mx-auto max-w-7xl rounded-2xl px-4 py-5"
-            style={{
-              background: "rgba(14,17,26,0.92)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            <nav className="flex flex-col gap-1">
-              {NAV_LINKS.map(({ href, label }) => {
-                const isActive =
-                  href === "/" ? pathname === "/" : pathname?.startsWith(href);
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-4 py-3 rounded-xl text-base font-medium transition-all duration-200"
-                    style={{
-                      color: isActive ? "#f2f3f5" : "rgba(242,243,245,0.7)",
-                      background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
-                    }}
-                  >
-                    {label}
-                  </Link>
-                );
-              })}
-            </nav>
-            <div
-              className="mt-4 pt-4"
-              style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
+          <nav className="flex flex-col gap-1">
+            {[...NAV_LINKS, { href: "/portal", label: "Portal Cliente" }].map(({ href, label }) => {
+              const isActive = href === "/" ? pathname === "/" : pathname?.startsWith(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="rounded-xl px-4 py-3 text-base font-medium transition-all duration-200"
+                  style={{
+                    color: isActive ? "#f2f3f5" : "rgba(242,243,245,0.7)",
+                    background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                  }}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="mt-4 border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
+            <Link
+              href="/contacto"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-colors duration-200 hover:bg-[#e8ecf5]"
+              style={{ background: "#f2f3f5", color: "#080a0f" }}
             >
-              <Link
-                href="/contacto"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-[#080a0f] transition-all duration-200 hover:brightness-90"
-                style={{ background: "#f2f3f5" }}
-              >
-                Agendar una llamada
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path
-                    d="M2.5 7h9M7.5 3.5 11 7l-3.5 3.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-            </div>
+              Agendar una cita
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" /></svg>
+            </Link>
           </div>
         </div>
-      </header>
+      </div>
     </>
   );
 }

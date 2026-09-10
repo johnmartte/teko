@@ -87,12 +87,10 @@ export default function ServiciosPage() {
   }, [services]);
 
   return (
-    <main>
+    <main style={{ background: "#080a0f" }}>
       <ServicesHero />
-      {sections.map((section, i) => (
-        <div key={section.title} className={i === 0 ? "-mt-8 md:-mt-10" : ""}>
-          <SectionServicios {...section} />
-        </div>
+      {sections.map((section) => (
+        <SectionServicios key={section.title} {...section} />
       ))}
       <SectionMicroservicios />
     </main>

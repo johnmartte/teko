@@ -5,7 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { prefersReducedMotion } from "@/lib/motion";
 
-export default function ServicesHero() {
+export default function PortafolioHero() {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -22,8 +22,7 @@ export default function ServicesHero() {
   }, []);
 
   return (
-    <section ref={ref} className="relative overflow-hidden px-6 pb-20 pt-[130px] md:px-[100px]" style={{ background: "#080a0f", color: "#f2f3f5" }}>
-      {/* Subtle radial glow */}
+    <section ref={ref} className="relative overflow-hidden px-6 pb-0 pt-[130px] md:px-[100px]" style={{ color: "#f2f3f5" }}>
       <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(60% 40% at 50% 0%, rgba(30,120,255,0.12), transparent 70%)" }} />
 
       <div className="relative mx-auto max-w-[1200px]">
@@ -40,17 +39,16 @@ export default function ServicesHero() {
         <div data-reveal="" className="mt-8 max-w-[760px]">
           <p className="flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.08em]" style={{ color: "rgba(242,243,245,0.55)" }}>
             <span className="h-1.5 w-1.5 rounded-full bg-[#1ec4ff]" style={{ boxShadow: "0 0 12px #1ec4ff" }} />
-            Catálogo Completo 2026
+            Casos de Éxito 2026
           </p>
 
           <h1 className="mt-5 text-[clamp(36px,5vw,58px)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ textWrap: "balance" }}>
-            Todos nuestros{" "}
-            <em style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400, color: "#bfe9ff" }}>servicios</em>
+            Proyectos que{" "}
+            <em style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400, color: "#bfe9ff" }}>transforman</em>
           </h1>
 
           <p className="mt-5 max-w-[520px] text-[15.5px] font-light leading-[1.6]" style={{ color: "rgba(242,243,245,0.62)" }}>
-            Desde identidad de marca hasta infraestructura cloud — un ecosistema
-            completo de soluciones digitales organizadas en 4 fases estratégicas.
+            Una selección de productos digitales que hemos construido para startups, negocios establecidos y emprendimientos en US y LATAM.
           </p>
         </div>
       </div>

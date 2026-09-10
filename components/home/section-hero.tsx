@@ -21,9 +21,18 @@ export default function SectionHero() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-x-clip" style={{ background: "#080a0f", color: "#f2f3f5", fontFamily: "var(--font-sans)" }}>
-      {/* Background effects */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[1100px] overflow-hidden">
+      {/* Background effects — 5-layer stack */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[1100px] overflow-hidden" style={{ zIndex: 0 }}>
+        {/* 1. Video atmosférico */}
+        <video
+          autoPlay loop muted playsInline
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_064122_c4750c0e-7476-4b44-94a2-a85a65c63bf2.mp4"
+          className="absolute top-0 left-1/2 h-[120%] w-[120%] -translate-x-1/2 object-cover"
+          style={{ opacity: 0.35 }}
+        />
+        {/* 2. Luz azul desde arriba */}
         <div className="absolute inset-0" style={{ background: "radial-gradient(60% 50% at 50% 0%, rgba(30,120,255,0.22), rgba(8,10,15,0) 70%)" }} />
+        {/* 3. Fundido hacia el fondo */}
         <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,10,15,0.2) 0%, rgba(8,10,15,0.55) 55%, #080a0f 100%)" }} />
         <div className="absolute inset-0 opacity-50" style={{
           backgroundImage: "linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px)",
@@ -81,7 +90,9 @@ export default function SectionHero() {
             <div className="grid min-h-[480px] grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)]">
               {/* Sidebar */}
               <aside className="hidden border-r p-[18px_14px] md:flex md:flex-col md:gap-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                <Image src="/Rapidito-Logo.png" alt="Rapidito" width={104} height={26} className="mb-3.5 ml-1 rounded" style={{ height: "26px", width: "auto" }} />
+                <div className="relative mb-3.5 ml-1" style={{ height: "26px", width: "104px" }}>
+                  <Image src="/Rapidito-Logo.png" alt="Rapidito" fill className="rounded object-contain object-left" />
+                </div>
                 <p className="mx-3 my-1.5 text-[9.5px] font-bold uppercase tracking-[0.12em]" style={{ color: "rgba(242,243,245,0.5)" }}>Gestión del menú</p>
                 <SidebarItem label="Dashboard" active />
                 <SidebarItem label="Categorías" />
