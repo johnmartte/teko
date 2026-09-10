@@ -1,19 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Button } from "@base-ui/react";
-import Image from "next/image";
-import { Input } from "../ui/input";
-import {
-  ArrowRight,
-  MessageSquare,
-  Code2,
-  Database,
-  Cloud,
-  Grid3x3,
-  Share2,
-} from "lucide-react";
-import Background from "@/public/Background-seccion.svg";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion } from "@/lib/motion";
@@ -21,104 +8,69 @@ import { prefersReducedMotion } from "@/lib/motion";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SectionAhorraTiempo() {
-  const icons = [MessageSquare, Code2, Database, Cloud, Grid3x3, Share2];
-
   const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (email) setSent(true);
+  };
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
-
     const ctx = gsap.context(() => {
-      // Contenido de texto y CTA
-      const contentElements = contentRef.current?.children;
-      if (contentElements) {
-        gsap.from(contentElements, {
-          y: 40,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: contentRef.current,
-            start: "top 85%",
-            once: true,
-          },
-        });
-      }
-
-      // Iconos con efecto pop escalonado
-      const iconBoxes = iconsRef.current?.querySelectorAll(".icon-box");
-      if (iconBoxes) {
-        gsap.from(iconBoxes, {
-          y: 30,
-          opacity: 0,
-          scale: 0.7,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          stagger: 0.08,
-          clearProps: "transform,opacity",
-          scrollTrigger: {
-            trigger: iconsRef.current,
-            start: "top 85%",
-            once: true,
-          },
-        });
+      const el = sectionRef.current?.querySelector("[data-reveal]");
+      if (el) {
+        const rect = (el as HTMLElement).getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9) return;
+        gsap.set(el, { opacity: 0, y: 18 });
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", once: true } });
       }
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative flex min-h-[500px] items-center justify-center overflow-hidden px-4 py-16 md:px-8 md:py-24"
-    >
-      <Image
-        className="absolute inset-0 -z-10 h-full w-full object-cover dark:opacity-20"
-        src={Background}
-        alt="Background"
-      />
-      <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-between gap-10 rounded-3xl bg-gradient-to-br from-[#eaf4ff] to-white/60 p-6 shadow-sm backdrop-blur-md sm:p-8 md:gap-12 md:rounded-[2.5rem] md:p-14 lg:flex-row dark:border dark:border-white/10 dark:from-[#141a2b] dark:to-[#141a2b] dark:shadow-[0_8px_40px_-12px_rgba(0,71,255,0.4)]">
-        <div
-          ref={contentRef}
-          className="max-w-xl space-y-6 text-center lg:text-left"
-        >
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-[#0047ff] sm:text-4xl md:text-5xl dark:text-[#3b8bff]">
-            Ahorra Tiempo, Dinero <br className="hidden md:block" />y Escala tu
-            Negocio.
-          </h2>
-          <p className="text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-            TEKO se integra con las plataformas que ya usas, facilitando
-            unificar todo en un solo lugar para potenciar tu operación digital.
-          </p>
+    <section ref={sectionRef} id="contacto" className="relative z-[2] mx-auto max-w-[1200px] px-6 py-[120px]" style={{ color: "#f2f3f5" }}>
+      <div data-reveal="" className="relative overflow-hidden rounded-[28px] border" style={{ borderColor: "rgba(255,255,255,0.12)", background: "#0b0e16", padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(70% 60% at 50% 110%, rgba(30,120,255,0.35), transparent 70%)" }} />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(60% 80% at 50% 100%, #000, transparent)",
+          WebkitMaskImage: "radial-gradient(60% 80% at 50% 100%, #000, transparent)",
+        }} />
 
-          <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:flex-row lg:justify-start">
-            <Input
-              type="email"
-              placeholder="Tu email de trabajo"
-              className="h-14 w-full flex-1 rounded-full border-none bg-slate-50/80 px-6 text-base shadow-inner focus-visible:ring-1 focus-visible:ring-[#007aff] sm:w-auto"
-            />
-            <Button className="flex h-14 w-full items-center justify-center gap-3 rounded-full bg-slate-950 px-8 font-medium text-white transition-[background-color,transform] duration-200 ease-out hover:bg-slate-800 active:scale-[0.97] sm:w-auto">
-              Empezar <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+        <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+          <div>
+            <h2 className="text-[clamp(36px,4.6vw,64px)] font-semibold leading-none tracking-[-0.04em]" style={{ textWrap: "balance" }}>
+              Ahorra tiempo, dinero y{" "}
+              <em style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400, color: "#bfe9ff", textShadow: "0 0 40px rgba(30,196,255,0.35)" }}>escala</em>{" "}
+              tu negocio.
+            </h2>
+            <p className="mt-[22px] max-w-[50ch] text-base font-light leading-[1.55]" style={{ color: "rgba(242,243,245,0.68)" }}>
+              TEKO se integra con las plataformas que ya usas y unifica todo en un solo lugar para potenciar tu operación digital.
+            </p>
           </div>
-        </div>
-
-        <div
-          ref={iconsRef}
-          className="mx-auto grid w-full max-w-[240px] grid-cols-3 place-items-center gap-3 rounded-2xl bg-white/40 p-4 sm:max-w-none sm:bg-transparent sm:p-0 sm:gap-5 dark:bg-white/[0.03] dark:sm:bg-transparent"
-        >
-          {icons.map((Icon, index) => (
-            <div
-              key={index}
-              className="icon-box flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-transform duration-200 ease-out hover:-translate-y-1 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px] dark:bg-[#1a2138] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
-            >
-              <Icon className="h-5 w-5 stroke-[1.5] text-slate-600 sm:h-6 sm:w-6 md:h-7 md:w-7 dark:text-slate-300" />
-            </div>
-          ))}
+          <div>
+            <form onSubmit={handleSubmit} className="flex gap-2 rounded-full border p-1.5 backdrop-blur-[10px]" style={{ borderColor: "rgba(255,255,255,0.14)", background: "rgba(255,255,255,0.05)" }}>
+              <input
+                type="email"
+                required
+                placeholder="Tu email de trabajo"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setSent(false); }}
+                className="h-[46px] min-w-0 flex-1 border-none bg-transparent px-[18px] text-[14.5px] text-white outline-none placeholder:text-white/40"
+              />
+              <button type="submit" className="h-[46px] whitespace-nowrap rounded-full bg-white px-5 text-sm font-semibold text-[#080a0f] transition-colors hover:bg-[#e8ecf5]">
+                {sent ? "Recibido ✓" : "Empezar"}
+              </button>
+            </form>
+            <p className="ml-[18px] mt-3 text-[12.5px]" style={{ color: "rgba(242,243,245,0.5)" }}>
+              Respondemos en menos de 24 horas laborables. Sin compromiso.
+            </p>
+          </div>
         </div>
       </div>
     </section>

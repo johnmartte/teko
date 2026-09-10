@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./../style/globals.css";
-import { Geist } from "next/font/google";
+import { Geist, Instrument_Serif } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const instrumentSerif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-instrument-serif" });
 
 export const metadata: Metadata = {
   title: {
@@ -64,7 +65,7 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={cn("h-full ", "font-sans", geist.variable)}
+      className={cn("h-full ", "font-sans", geist.variable, instrumentSerif.variable)}
     >
       <body className="min-h-full flex flex-col bg-white text-[#101828] transition-colors duration-300 dark:bg-[#0a0e1a] dark:text-white">
         <ThemeProvider
