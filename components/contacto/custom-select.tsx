@@ -89,30 +89,34 @@ export default function CustomSelect({
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className={`flex h-12 w-full items-center justify-between rounded-xl border bg-[#f9fafb] px-4 text-left text-[14px] transition-all hover:border-[#0047ff]/40 dark:bg-[#141a2b] ${
-          open
-            ? "border-[#0047ff] bg-white shadow-[0_0_0_3px_rgba(0,71,255,0.1)] dark:bg-[#141a2b]"
-            : "border-[#e5e7eb] dark:border-white/10"
-        } ${
-          selectedOption
-            ? "text-[#101828] dark:text-white"
-            : "text-[#99a1af] dark:text-[#a1a8b3]"
-        }`}
+        className="flex h-12 w-full items-center justify-between rounded-xl border px-4 text-left text-[14px] transition-all"
+        style={{
+          borderColor: open ? "rgba(30,196,255,0.5)" : "rgba(255,255,255,0.1)",
+          background: open ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
+          color: selectedOption ? "#f2f3f5" : "rgba(242,243,245,0.35)",
+          boxShadow: open ? "0 0 0 3px rgba(30,196,255,0.1)" : "none",
+        }}
       >
         <span className="truncate">{selectedOption?.label || placeholder}</span>
         <ChevronDown
-          className={`h-4 w-4 flex-shrink-0 text-[#7a8595] transition-transform duration-200 dark:text-[#a1a8b3] ${
+          className={`h-4 w-4 flex-shrink-0 transition-transform duration-200 ${
             open ? "rotate-180" : ""
           }`}
+          style={{ color: "rgba(242,243,245,0.4)" }}
         />
       </button>
 
       <div
-        className={`absolute left-0 right-0 top-full z-30 mt-2 origin-top overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-xl transition-all duration-200 dark:border-white/10 dark:bg-[#141a2b] ${
+        className={`absolute left-0 right-0 top-full z-30 mt-2 origin-top overflow-hidden rounded-xl border transition-all duration-200 ${
           open
             ? "scale-y-100 opacity-100"
             : "pointer-events-none scale-y-95 opacity-0"
         }`}
+        style={{
+          borderColor: "rgba(255,255,255,0.1)",
+          background: "#0d1017",
+          boxShadow: "0 20px 40px -10px rgba(0,0,0,0.8)",
+        }}
       >
         <ul role="listbox" className="max-h-[260px] overflow-y-auto py-1">
           {options.map((option, i) => {
@@ -129,16 +133,18 @@ export default function CustomSelect({
                   onChange(option.value);
                   setOpen(false);
                 }}
-                className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-[14px] transition-colors ${
-                  focused
-                    ? "bg-[#f4f7ff] text-[#0047ff] dark:bg-white/5"
-                    : "text-[#252b37] hover:bg-[#f4f7ff] dark:text-white dark:hover:bg-white/5"
-                } ${selected ? "font-semibold" : ""}`}
+                className="flex cursor-pointer items-center justify-between px-4 py-2.5 text-[14px] transition-colors"
+                style={{
+                  background: focused ? "rgba(255,255,255,0.06)" : "transparent",
+                  color: focused ? "#1ec4ff" : "#f2f3f5",
+                  fontWeight: selected ? 600 : 400,
+                }}
               >
                 <span>{option.label}</span>
                 {selected && (
                   <Check
-                    className="h-4 w-4 text-[#0047ff]"
+                    className="h-4 w-4"
+                    style={{ color: "#1ec4ff" }}
                     strokeWidth={2.5}
                   />
                 )}
