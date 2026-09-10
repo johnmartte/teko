@@ -13,7 +13,8 @@
       "Bash(\"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\" clone https://github.com/greensock/gsap-skills \"C:\\\\Users\\\\omail\\\\.claude\\\\plugins\\\\marketplaces\\\\gsap-skills\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(claude /design-login)"
     ]
   }
 }
