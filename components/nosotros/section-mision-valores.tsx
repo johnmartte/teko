@@ -75,41 +75,49 @@ export default function SectionMisionValores() {
   return (
     <section
       ref={sectionRef}
-      className="mx-auto w-full max-w-[1240px] px-6 py-16 md:px-[80px] md:py-24"
+      className="px-6 py-16 md:px-[100px] md:py-24"
+      style={{ color: "#f2f3f5" }}
     >
-      <div className="mv-heading mb-14 max-w-[720px]">
-        <span className="mb-4 inline-block text-[13px] font-semibold uppercase tracking-wider text-[#0047ff]">
-          Lo que nos mueve
-        </span>
-        <h2 className="mb-4 text-[34px] font-extrabold tracking-[-0.06em] text-[#101828] dark:text-white md:text-[44px] md:leading-[52px]">
-          Construimos tecnología con propósito
-        </h2>
-        <p className="text-[16px] leading-[26px] text-[#7a8595] dark:text-[#a1a8b3]">
-          TEKO nació para cerrar la brecha entre ideas brillantes y productos
-          digitales funcionando. Cuatro principios guían cada proyecto.
-        </p>
-      </div>
+      <div className="mx-auto max-w-[1200px]">
+        <div className="mv-heading mb-14 max-w-[720px]">
+          <span className="mb-4 inline-block text-[13px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#1ec4ff" }}>
+            Lo que nos mueve
+          </span>
+          <h2 className="mb-4 text-[clamp(28px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.03em]">
+            Construimos tecnología con{" "}
+            <em style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400, color: "#bfe9ff" }}>propósito</em>
+          </h2>
+          <p className="text-[15.5px] font-light leading-[1.6]" style={{ color: "rgba(242,243,245,0.6)" }}>
+            TEKO nació para cerrar la brecha entre ideas brillantes y productos
+            digitales funcionando. Cuatro principios guían cada proyecto.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {valores.map((v, i) => {
-          const Icon = v.icon;
-          return (
-            <div
-              key={i}
-              className="valor-card flex flex-col rounded-[20px] border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#0047ff]/30 hover:shadow-lg"
-            >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#f4f7ff] dark:bg-[#0a0e1a] text-[#0047ff]">
-                <Icon className="h-6 w-6" strokeWidth={2} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {valores.map((v, i) => {
+            const Icon = v.icon;
+            return (
+              <div
+                key={i}
+                className="valor-card flex flex-col rounded-[18px] border p-6 transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  borderColor: "rgba(255,255,255,0.1)",
+                  background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+                }}
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl" style={{ background: "rgba(30,196,255,0.1)", color: "#1ec4ff" }}>
+                  <Icon className="h-6 w-6" strokeWidth={2} />
+                </div>
+                <h3 className="mb-2 text-[17px] font-semibold">
+                  {v.title}
+                </h3>
+                <p className="text-[13.5px] leading-[1.6]" style={{ color: "rgba(242,243,245,0.55)" }}>
+                  {v.description}
+                </p>
               </div>
-              <h3 className="mb-2 text-[18px] font-semibold text-[#101828] dark:text-white">
-                {v.title}
-              </h3>
-              <p className="text-[14px] leading-[22px] text-[#7a8595] dark:text-[#a1a8b3]">
-                {v.description}
-              </p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

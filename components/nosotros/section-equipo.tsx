@@ -73,57 +73,66 @@ export default function SectionEquipo() {
   return (
     <section
       ref={sectionRef}
-      className="mx-auto w-full max-w-[1240px] px-6 pb-24 pt-8 md:px-[80px] md:pb-32"
+      className="px-6 pb-24 pt-8 md:px-[100px] md:pb-32"
+      style={{ color: "#f2f3f5" }}
     >
-      <div className="team-heading mb-14 text-center">
-        <h2 className="mb-4 text-[34px] font-extrabold tracking-[-0.06em] text-[#101828] dark:text-white md:text-[44px] md:leading-[52px]">
-          El equipo detrás de TEKO
-        </h2>
-        <p className="mx-auto max-w-[640px] text-[16px] leading-[26px] text-[#7a8595] dark:text-[#a1a8b3]">
-          Personas reales obsesionadas con entregar productos que funcionan.
-        </p>
-      </div>
+      <div className="mx-auto max-w-[1200px]">
+        <div className="team-heading mb-14 text-center">
+          <h2 className="mb-4 text-[clamp(28px,4vw,44px)] font-semibold tracking-[-0.03em]">
+            El equipo detrás de TEKO
+          </h2>
+          <p className="mx-auto max-w-[640px] text-[15.5px] font-light leading-[1.6]" style={{ color: "rgba(242,243,245,0.6)" }}>
+            Personas reales obsesionadas con entregar productos que funcionan.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {team.map((m, i) => (
-          <div
-            key={i}
-            className="team-card overflow-hidden rounded-[24px] bg-[#f4f7ff] dark:bg-[#141a2b] p-1"
-          >
-            <div className={`relative h-[220px] rounded-[20px] bg-gradient-to-br ${m.gradient} flex items-center justify-center`}>
-              <span className="font-ppeditorialold text-[88px] font-normal italic text-white/90">
-                {m.initials}
-              </span>
-            </div>
-            <div className="p-6">
-              <h3 className="mb-1 text-[20px] font-semibold text-[#101828] dark:text-white">
-                {m.name}
-              </h3>
-              <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide text-[#0047ff]">
-                {m.role}
-              </p>
-              <p className="mb-5 text-[14px] leading-[22px] text-[#7a8595] dark:text-[#a1a8b3]">
-                {m.bio}
-              </p>
-              <div className="flex gap-2">
-                <a
-                  href="#"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-[#0a0e1a] text-[#7a8595] dark:text-[#a1a8b3] transition-colors hover:bg-[#0047ff] hover:text-white"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedinIn className="h-4 w-4" />
-                </a>
-                <a
-                  href="mailto:john.marte@unicaribe.edu.do"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-[#0a0e1a] text-[#7a8595] dark:text-[#a1a8b3] transition-colors hover:bg-[#0047ff] hover:text-white"
-                  aria-label="Email"
-                >
-                  <Mail className="h-4 w-4" />
-                </a>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {team.map((m, i) => (
+            <div
+              key={i}
+              className="team-card overflow-hidden rounded-[20px] border p-1"
+              style={{
+                borderColor: "rgba(255,255,255,0.1)",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+              }}
+            >
+              <div className={`relative h-[220px] rounded-[16px] bg-gradient-to-br ${m.gradient} flex items-center justify-center`}>
+                <span style={{ fontFamily: "'Instrument Serif', Georgia, serif" }} className="text-[88px] font-normal italic text-white/90">
+                  {m.initials}
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="mb-1 text-[20px] font-semibold">
+                  {m.name}
+                </h3>
+                <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide" style={{ color: "#1ec4ff" }}>
+                  {m.role}
+                </p>
+                <p className="mb-5 text-[14px] leading-[22px]" style={{ color: "rgba(242,243,245,0.55)" }}>
+                  {m.bio}
+                </p>
+                <div className="flex gap-2">
+                  <a
+                    href="#"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors hover:border-[#1ec4ff] hover:text-[#1ec4ff]"
+                    style={{ borderColor: "rgba(255,255,255,0.15)", color: "rgba(242,243,245,0.5)" }}
+                    aria-label="LinkedIn"
+                  >
+                    <FaLinkedinIn className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="mailto:john.marte@unicaribe.edu.do"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors hover:border-[#1ec4ff] hover:text-[#1ec4ff]"
+                    style={{ borderColor: "rgba(255,255,255,0.15)", color: "rgba(242,243,245,0.5)" }}
+                    aria-label="Email"
+                  >
+                    <Mail className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

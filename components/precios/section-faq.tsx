@@ -26,7 +26,11 @@ function FaqSkeleton() {
       {[1, 2, 3, 4].map((i) => (
         <div
           key={i}
-          className="rounded-[16px] border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] px-6 py-5"
+          className="rounded-[16px] border px-6 py-5"
+          style={{
+            borderColor: "rgba(255,255,255,0.1)",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+          }}
         >
           <div className="flex items-center justify-between gap-4">
             <div className="skeleton h-5 flex-1" />
@@ -105,12 +109,13 @@ export default function SectionFAQ() {
     <section
       ref={sectionRef}
       className="mx-auto w-full max-w-[960px] px-6 pb-24 pt-8 md:px-[80px] md:pb-32"
+      style={{ color: "#f2f3f5" }}
     >
       <div className="faq-heading mb-12 text-center">
-        <h2 className="mb-4 text-[34px] font-extrabold tracking-[-0.06em] text-[#101828] dark:text-white md:text-[40px] md:leading-[48px]">
+        <h2 className="mb-4 text-[clamp(28px,4vw,40px)] font-semibold tracking-[-0.03em]">
           Preguntas frecuentes
         </h2>
-        <p className="mx-auto max-w-[560px] text-[16px] leading-[26px] text-[#7a8595] dark:text-[#a1a8b3]">
+        <p className="mx-auto max-w-[560px] text-[15.5px] font-light leading-[1.6]" style={{ color: "rgba(242,243,245,0.6)" }}>
           Todo lo que necesitas saber antes de empezar con TEKO.
         </p>
       </div>
@@ -125,23 +130,27 @@ export default function SectionFAQ() {
             return (
               <div
                 key={faq.id}
-                className="faq-item overflow-hidden rounded-[16px] border border-[#e5e7eb] dark:border-white/10 bg-white dark:bg-[#141a2b] transition-colors hover:border-[#0047ff]/30"
+                className="faq-item overflow-hidden rounded-[16px] border transition-colors"
+                style={{
+                  borderColor: isOpen ? "rgba(30,196,255,0.3)" : "rgba(255,255,255,0.1)",
+                  background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+                }}
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                 >
-                  <span className="text-[16px] font-semibold text-[#101828] dark:text-white">
+                  <span className="text-[16px] font-semibold">
                     {faq.question}
                   </span>
 
                   <div
-                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-colors ${
-                      isOpen
-                        ? "bg-[#0047ff] text-white"
-                        : "bg-[#f4f7ff] dark:bg-[#0a0e1a] text-[#101828] dark:text-white"
-                    }`}
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-colors"
+                    style={{
+                      background: isOpen ? "#1ec4ff" : "rgba(255,255,255,0.08)",
+                      color: isOpen ? "#080a0f" : "#f2f3f5",
+                    }}
                   >
                     {isOpen ? (
                       <Minus className="h-4 w-4" strokeWidth={2.5} />
@@ -159,7 +168,7 @@ export default function SectionFAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-6 pb-5 text-[14px] leading-[22px] text-[#7a8595] dark:text-[#a1a8b3]">
+                    <p className="px-6 pb-5 text-[14px] leading-[22px]" style={{ color: "rgba(242,243,245,0.55)" }}>
                       {faq.answer}
                     </p>
                   </div>

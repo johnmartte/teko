@@ -13,21 +13,22 @@ export default function LegalContent({
   sections,
 }: LegalContentProps) {
   return (
-    <section className="mx-auto w-full max-w-[820px] px-6 py-14 md:px-[80px] md:py-20">
-      <p className="mb-10 text-[13px] text-[#7a8595] dark:text-[#a1a8b3]">
+    <section className="mx-auto w-full max-w-[820px] px-6 py-14 md:px-[80px] md:py-20" style={{ color: "#f2f3f5" }}>
+      <p className="mb-10 text-[13px]" style={{ color: "rgba(242,243,245,0.4)" }}>
         Última actualización: {lastUpdated}
       </p>
 
       <div className="space-y-10">
         {sections.map((s, i) => (
           <div key={i}>
-            <h2 className="mb-4 text-[20px] font-bold text-[#101828] dark:text-white">
+            <h2 className="mb-4 text-[20px] font-bold">
               {i + 1}. {s.title}
             </h2>
             {s.content.map((p, j) => (
               <p
                 key={j}
-                className="mb-3 text-[15px] leading-[26px] text-[#252b37] dark:text-[#c5cad3]"
+                className="mb-3 text-[15px] leading-[26px]"
+                style={{ color: "rgba(242,243,245,0.6)" }}
               >
                 {p}
               </p>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 
 const FOOTER_LINKS = [
   {
@@ -45,9 +46,9 @@ const FOOTER_LINKS = [
 ];
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://www.instagram.com/teko.dr/" },
-  { label: "LinkedIn", href: "#" },
-  { label: "GitHub", href: "#" },
+  { label: "Instagram", href: "https://www.instagram.com/teko.dr/", icon: FaInstagram },
+  { label: "LinkedIn", href: "#", icon: FaLinkedinIn },
+  { label: "YouTube", href: "#", icon: FaYoutube },
 ];
 
 export default function Footer() {
@@ -81,34 +82,34 @@ export default function Footer() {
               implementamos soluciones digitales a medida.
             </p>
 
-            {/* Social pills */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {SOCIAL_LINKS.map(({ label, href }) => (
+            {/* Social icons */}
+            <div className="flex items-center gap-3">
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="inline-flex h-8 items-center rounded-full px-4 text-xs font-medium transition-all duration-200"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-200"
                   style={{
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    color: "rgba(242,243,245,0.7)",
-                    background: "transparent",
+                    borderColor: "rgba(255,255,255,0.12)",
+                    color: "rgba(242,243,245,0.6)",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background =
-                      "rgba(255,255,255,0.07)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "rgba(30,196,255,0.4)";
                     (e.currentTarget as HTMLAnchorElement).style.color =
-                      "#f2f3f5";
+                      "#1ec4ff";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background =
-                      "transparent";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "rgba(255,255,255,0.12)";
                     (e.currentTarget as HTMLAnchorElement).style.color =
-                      "rgba(242,243,245,0.7)";
+                      "rgba(242,243,245,0.6)";
                   }}
+                  aria-label={label}
                 >
-                  {label}
+                  <Icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
@@ -168,7 +169,7 @@ export default function Footer() {
           className="flex flex-col items-center justify-between gap-4 pb-8 text-sm md:flex-row"
           style={{ color: "rgba(242,243,245,0.4)" }}
         >
-          <p>© 2026 TEKO. Todos los derechos reservados.</p>
+          <p>&copy; 2026 TEKO. Todos los derechos reservados.</p>
           <div className="flex flex-wrap justify-center gap-6">
             {[
               { label: "Política de Cookies", href: "/politica-de-cookies" },

@@ -58,25 +58,32 @@ export default function SectionStats() {
   return (
     <section
       ref={sectionRef}
-      className="mx-auto w-full max-w-[1240px] px-6 py-16 md:px-[80px] md:py-20"
+      className="px-6 py-16 md:px-[100px] md:py-20"
+      style={{ color: "#f2f3f5" }}
     >
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-10">
-        {stats.map((s, i) => (
-          <div
-            key={i}
-            className="stat-item rounded-[20px] bg-[#f4f7ff] dark:bg-[#141a2b] p-6 text-center md:p-8"
-          >
-            <div className="mb-2 text-[44px] font-extrabold leading-none tracking-tight text-[#0047ff] md:text-[56px]">
-              <span className="stat-number" data-value={s.value}>
-                0
-              </span>
-              {s.suffix}
+      <div className="mx-auto max-w-[1200px]">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {stats.map((s, i) => (
+            <div
+              key={i}
+              className="stat-item rounded-[18px] border p-6 text-center md:p-8"
+              style={{
+                borderColor: "rgba(255,255,255,0.1)",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+              }}
+            >
+              <div className="mb-2 text-[44px] font-extrabold leading-none tracking-tight md:text-[56px]" style={{ color: "#1ec4ff" }}>
+                <span className="stat-number" data-value={s.value}>
+                  0
+                </span>
+                {s.suffix}
+              </div>
+              <p className="text-[13px] font-medium md:text-[14px]" style={{ color: "rgba(242,243,245,0.55)" }}>
+                {s.label}
+              </p>
             </div>
-            <p className="text-[13px] font-medium text-[#7a8595] dark:text-[#a1a8b3] md:text-[14px]">
-              {s.label}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
