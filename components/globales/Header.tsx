@@ -3,28 +3,22 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "../ui/button";
-import LogoTeko from "@/public/LogoTeko.png";
-import Isologo from "@/public/Isologo.svg";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "./theme-toggle";
+
+const NAV_LINKS = [
+  { href: "/", label: "Inicio" },
+  { href: "/servicios", label: "Servicios" },
+  { href: "/portafolio", label: "Portafolio" },
+  { href: "/plataformas", label: "Plataformas" },
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/precios", label: "Precios" },
+];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isInnerRoute = pathname !== "/" && pathname !== null;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Lock scroll y fuerza compositing layer al abrir el menú móvil
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -38,140 +32,170 @@ export default function Header() {
 
   return (
     <>
-      {/* Backdrop blur cuando el menú móvil está abierto */}
+      {/* Mobile backdrop */}
       <div
         onClick={() => setIsMobileMenuOpen(false)}
         aria-hidden="true"
-        style={{
-          backdropFilter: isMobileMenuOpen ? "blur(20px) saturate(140%)" : "blur(0px)",
-          WebkitBackdropFilter: isMobileMenuOpen ? "blur(20px) saturate(140%)" : "blur(0px)",
-          transform: "translateZ(0)",
-          willChange: "backdrop-filter, opacity",
-        }}
-        className={`fixed inset-0 z-40 md:hidden bg-black/55 transition-all duration-500 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
+        style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}
       />
 
-    <header
-      className={`fixed left-0 top-0 z-50 w-full px-4 py-3 md:px-10 lg:px-16 transition-all duration-500 ${
-        isMobileMenuOpen ? "bg-transparent" : ""
-      }`}
-    >
-      <div className="flex items-center justify-between gap-4">
-        {/* Logo */}
-        <Link
-          href="/"
-          aria-label="Ir al inicio"
-          className="relative flex h-[54px] w-[157px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#c8d2e4] bg-white/80 px-3 shadow-[0_8px_24px_-10px_rgba(11,110,255,0.15)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_24px_-10px_rgba(30,196,255,0.35)]"
-          style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
-        >
-          <Image src={Isologo} alt="Logo TEKO" fill className="object-contain p-1 translate-y-[3px] dark:hidden" priority />
-          <Image src={LogoTeko} alt="Logo TEKO" fill className="hidden object-contain p-1 translate-y-[3px] dark:block" priority />
-        </Link>
-
-        {/* Desktop Nav — pill glass centrado */}
-        <nav
-          className="hidden md:flex items-center gap-1 rounded-full border border-[#e6eaf2] bg-white/80 backdrop-blur-xl px-2 py-2 shadow-[0_8px_32px_-12px_rgba(16,24,40,0.18)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_32px_-12px_rgba(30,196,255,0.25)]"
-          style={{ WebkitBackdropFilter: "blur(20px) saturate(140%)" }}
-        >
-          {[
-            { href: "/", label: "Inicio" },
-            { href: "/servicios", label: "Servicios" },
-            { href: "/portafolio", label: "Portafolio" },
-            { href: "/plataformas", label: "Plataformas" },
-            { href: "/nosotros", label: "Nosotros" },
-            { href: "/precios", label: "Precios" },
-            { href: "/contacto", label: "Contacto" },
-          ].map(({ href, label }) => {
-            const isActive =
-              href === "/" ? pathname === "/" : pathname?.startsWith(href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-[background-color,color,box-shadow] duration-200 ease-out ${
-                  isActive
-                    ? "bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] text-white shadow-[0_4px_18px_-4px_rgba(11,110,255,0.6)]"
-                    : "text-[#252b37] hover:text-[#0047ff] hover:bg-[#eef4ff] dark:text-white/85 dark:hover:text-white dark:hover:bg-white/10"
-                }`}
-              >
-                {label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right side: Portal + Contact + theme toggle */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
-          <ThemeToggle />
-          <Link
-            href="http://localhost:3002/login"
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-[#d5d7da] bg-white/80 px-5 text-[13px] font-semibold text-[#252b37] shadow-sm backdrop-blur-md transition-[background-color,transform] duration-200 ease-out hover:bg-[#f4f7ff] active:scale-[0.97] dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-          >
-            Portal Cliente
+      <header className="fixed left-0 top-0 z-50 w-full px-4 py-4 md:px-10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+          {/* Logo */}
+          <Link href="/" aria-label="Ir al inicio" className="shrink-0">
+            <Image
+              src="/Isologo-White.svg"
+              alt="TEKO"
+              width={38}
+              height={38}
+              priority
+            />
           </Link>
-          <Link
-            href="/contacto"
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-b from-[#1ec4ff] via-[#0b6eff] to-[#0047ff] px-5 text-[13px] font-semibold text-white shadow-[0_8px_24px_-6px_rgba(11,110,255,0.6)] transition-[box-shadow,filter,transform] duration-200 ease-out hover:shadow-[0_10px_30px_-6px_rgba(11,110,255,0.8)] hover:brightness-110 active:scale-[0.97]"
-          >
-            Contacto
-            <span aria-hidden="true">→</span>
-          </Link>
-        </div>
 
-        {/* Botón Menú Móvil */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle className="h-9 w-9" />
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-xl border border-[#d5d7da] bg-white/80 text-[#252b37] backdrop-blur-sm transition-all duration-200 hover:bg-[#f4f7ff] dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-            aria-label="Toggle menu"
+          {/* Desktop Nav pill */}
+          <nav
+            className="hidden md:flex items-center gap-1 rounded-full px-2 py-2"
+            style={{
+              background: "rgba(14,17,26,0.72)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
           >
-            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Menú Desplegable Móvil — glass panel */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isMobileMenuOpen ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
-        }`}
-      >
-        <div className="px-4 py-5 rounded-2xl bg-white/10 dark:bg-white/5 border border-white/20 backdrop-blur-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.4)]">
-          <nav className="flex flex-col gap-1">
-            {[
-              { href: "/servicios", label: "Servicios" },
-              { href: "/portafolio", label: "Portafolio" },
-              { href: "/plataformas", label: "Plataformas" },
-              { href: "/nosotros", label: "Nosotros" },
-              { href: "/precios", label: "Precios" },
-              { href: "/contacto", label: "Contacto" },
-              { href: "http://localhost:3002/login", label: "Portal Cliente" },
-            ].map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 px-4 py-3 rounded-xl text-base font-medium"
-              >
-                {label}
-              </Link>
-            ))}
+            {NAV_LINKS.map(({ href, label }) => {
+              const isActive =
+                href === "/" ? pathname === "/" : pathname?.startsWith(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className="relative flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all duration-200"
+                  style={{
+                    background: isActive
+                      ? "rgba(255,255,255,0.08)"
+                      : "transparent",
+                    color: isActive
+                      ? "#f2f3f5"
+                      : "rgba(242,243,245,0.7)",
+                  }}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
-          <div className="mt-4 pt-4 border-t border-white/15">
+
+          {/* Right side CTAs */}
+          <div className="hidden md:flex items-center gap-3 shrink-0">
+            <Link
+              href="/portal"
+              className="inline-flex h-10 items-center rounded-full px-5 text-[13px] font-semibold transition-all duration-200"
+              style={{
+                border: "1px solid rgba(255,255,255,0.18)",
+                color: "rgba(242,243,245,0.85)",
+                background: "rgba(255,255,255,0.05)",
+              }}
+            >
+              Portal Cliente
+            </Link>
             <Link
               href="/contacto"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex w-full items-center justify-center rounded-full py-3.5 text-sm font-semibold text-white bg-white/15 border border-white/30 hover:bg-white/25 backdrop-blur-sm transition-all duration-300"
+              className="inline-flex h-10 items-center gap-2 rounded-full px-5 text-[13px] font-semibold text-[#080a0f] transition-all duration-200 hover:brightness-90"
+              style={{ background: "#f2f3f5" }}
             >
-              Agenda una llamada
+              Agendar
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M2.5 7h9M7.5 3.5 11 7l-3.5 3.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
           </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl transition-all duration-200"
+            style={{
+              border: "1px solid rgba(255,255,255,0.15)",
+              background: "rgba(255,255,255,0.06)",
+              color: "#f2f3f5",
+            }}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
-      </div>
-    </header>
+
+        {/* Mobile dropdown */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+            isMobileMenuOpen ? "max-h-[520px] opacity-100 mt-3" : "max-h-0 opacity-0 mt-0"
+          }`}
+        >
+          <div
+            className="mx-auto max-w-7xl rounded-2xl px-4 py-5"
+            style={{
+              background: "rgba(14,17,26,0.92)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <nav className="flex flex-col gap-1">
+              {NAV_LINKS.map(({ href, label }) => {
+                const isActive =
+                  href === "/" ? pathname === "/" : pathname?.startsWith(href);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="px-4 py-3 rounded-xl text-base font-medium transition-all duration-200"
+                    style={{
+                      color: isActive ? "#f2f3f5" : "rgba(242,243,245,0.7)",
+                      background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                    }}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div
+              className="mt-4 pt-4"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
+            >
+              <Link
+                href="/contacto"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-[#080a0f] transition-all duration-200 hover:brightness-90"
+                style={{ background: "#f2f3f5" }}
+              >
+                Agendar una llamada
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M2.5 7h9M7.5 3.5 11 7l-3.5 3.5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
     </>
   );
 }

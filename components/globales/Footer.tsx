@@ -1,142 +1,146 @@
-'use client'
+"use client";
 
-import { Globe } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import LogoTeko from "@/public/LogoTeko.png";
-import Isologo from "@/public/Isologo.svg";
 
-import { FiGithub } from "react-icons/fi";
-import { FaLinkedinIn } from "react-icons/fa6";
-import { FaInstagram} from "react-icons/fa";
+const FOOTER_LINKS = [
+  {
+    title: "PRODUCTOS",
+    links: [
+      { label: "Plataformas Web", href: "/plataformas" },
+      { label: "Apps Móviles", href: "/portafolio" },
+      { label: "Sistemas", href: "/servicios" },
+      { label: "API & Backend", href: "/servicios" },
+      { label: "Integraciones", href: "/servicios" },
+    ],
+  },
+  {
+    title: "EMPRESA",
+    links: [
+      { label: "CRM", href: "/portafolio" },
+      { label: "Pagos", href: "/precios" },
+      { label: "Funciones", href: "/" },
+      { label: "Características", href: "/servicios" },
+      { label: "Blog", href: "/" },
+    ],
+  },
+  {
+    title: "RECURSOS",
+    links: [
+      { label: "Centro de Ayuda", href: "/contacto" },
+      { label: "Demo", href: "/" },
+      { label: "Estado del Servidor", href: "/" },
+      { label: "Partners", href: "/" },
+    ],
+  },
+  {
+    title: "NOSOTROS",
+    links: [
+      { label: "Sobre TEKO", href: "/nosotros" },
+      { label: "Contacto", href: "/contacto" },
+      { label: "Carreras", href: "/nosotros" },
+      { label: "Prensa", href: "/" },
+    ],
+  },
+];
+
+const SOCIAL_LINKS = [
+  { label: "Instagram", href: "https://www.instagram.com/teko.dr/" },
+  { label: "LinkedIn", href: "#" },
+  { label: "GitHub", href: "#" },
+];
 
 export default function Footer() {
-  const footerLinks = [
-    {
-      title: "PRODUCTOS",
-      links: [
-        { label: "Plataformas Web", href: "/plataformas", type:"page"},
-        { label: "Apps Móviles", href: "/portafolio", type: "page"},
-        { label: "Sistemas", href: "/servicios", type: "page"},
-        { label: "API & Backend", href: "/servicios", type: "page"},
-        { label: "Integraciones", href: "/servicios", type: "page"},
-      ],
-    },
-    {
-      title: "EMPRESA",
-      links: [ 
-        { label: "CRM", href: "/portafolio", type: "page"},
-        { label: "Pagos",href: "/precios", type: "page"},
-        { label: "Funciones", href: "/", type: "page"},
-        { label: "Características", href: "/servicios", type: "page"},
-        { label: "Blog", href: "/", type: "page"},
-      ],
-    },
-    {
-      title: "RECURSOS",
-      links: [
-        { label: "Centro de Ayuda", href: "/contacto", type: "page"},
-        { label: "Demo", href: "/", type: "page" },
-        { label: "Estado del Servidor", href: "/", type: "page"},
-        { label: "Partners", href: "/", type: "page"},
-      ],
-    },
-    {
-      title: "NOSOTROS",
-      links: [
-        { label: "Sobre TEKO", href: "/nosotros", type: "page"},
-        { label: "Contacto", href: "/contacto", type: "page"},
-        { label: "Carreras", href: "/nosotros", type: "page"},
-        { label: "Prensa", href: "/", type: "page"},
-      ],
-    },
-  ];
-
   return (
-    <footer className="relative overflow-hidden bg-[#f3f4f6] pt-16 pb-8 text-[#101828] border-t border-[#e5e7eb] dark:bg-[#0b1226] dark:text-white dark:border-white/10">
-      {/* Resplandor superior: la luz de marca entra por arriba */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0b6eff]/30 to-transparent dark:via-[#0b6eff]/70"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[640px] -translate-x-1/2 rounded-full bg-[#0b6eff]/5 blur-3xl dark:bg-[#0b6eff]/15"
-      />
-      <div className="relative mx-auto w-full px-6 md:px-12">
-        {/* Sección Superior: Grid principal */}
+    <footer
+      className="relative overflow-hidden pt-16 pb-0"
+      style={{
+        background: "#070910",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <div className="relative mx-auto w-full max-w-7xl px-6 md:px-12">
+        {/* Top section */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-6 lg:gap-8">
-          {/* Columna Izquierda (Brand & Descripción) - Ocupa 2 columnas en desktop */}
+          {/* Brand column */}
           <div className="lg:col-span-2">
-            {/* Logo */}
-            <div className="mb-6 flex items-center gap-2">
-              <div className="relative h-8 w-28">
-                <Image src={Isologo} alt="Logo TEKO" fill className="object-contain object-left dark:hidden" />
-                <Image src={LogoTeko} alt="Logo TEKO" fill className="hidden object-contain object-left dark:block" />
-              </div>
+            <div className="mb-6">
+              <Image
+                src="/Isologo-White.svg"
+                alt="TEKO"
+                width={36}
+                height={36}
+              />
             </div>
 
-            {/* Descripción */}
-            <p className="mb-8 max-w-sm text-sm leading-relaxed text-[#7a8595] dark:text-white/80">
+            <p
+              className="mb-8 max-w-xs text-sm leading-relaxed"
+              style={{ color: "rgba(242,243,245,0.55)" }}
+            >
               Software que transforma negocios. Diseñamos, desarrollamos e
               implementamos soluciones digitales a medida.
             </p>
 
-            {/* Redes Sociales */}
-            <div className="flex items-center gap-3">
-              <a
-                href="https://www.instagram.com/teko.dr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
-              >
-                <FaInstagram className="h-4 w-4" />
-              </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
-              >
-                <FaLinkedinIn className="h-4 w-4" />
-              </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
-              >
-                <FiGithub className="h-4 w-4" />
-              </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d5d7da] text-[#7a8595] transition-colors hover:bg-[#e5e7eb] hover:text-[#101828] dark:border-white/20 dark:text-white dark:hover:bg-white/20"
-              >
-                <Globe className="h-4 w-4" />
-              </a>
+            {/* Social pills */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {SOCIAL_LINKS.map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="inline-flex h-8 items-center rounded-full px-4 text-xs font-medium transition-all duration-200"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    color: "rgba(242,243,245,0.7)",
+                    background: "transparent",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background =
+                      "rgba(255,255,255,0.07)";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "#f2f3f5";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background =
+                      "transparent";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "rgba(242,243,245,0.7)";
+                  }}
+                >
+                  {label}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Columnas de Enlaces */}
-          {footerLinks.map((column, index) => (
-            <div key={index} className="lg:col-span-1">
-              <h4 className="mb-6 text-sm font-semibold tracking-wider text-[#101828] dark:text-white">
+          {/* Link columns */}
+          {FOOTER_LINKS.map((column) => (
+            <div key={column.title} className="lg:col-span-1">
+              <h4
+                className="mb-6 text-xs font-semibold tracking-widest"
+                style={{ color: "rgba(242,243,245,0.4)" }}
+              >
                 {column.title}
               </h4>
-              <ul className="space-y-4">
-                {column.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    {link.type === "page" ? (
-                      <Link
-                        href={link.href}
-                        className="text-sm text-[#7a8595] transition-colors hover:text-[#101828]"
-                      >
-                        {link.label}
-                      </Link>
-                    ) : (
-                    <a
-                      href="#"
-                      className="text-sm text-[#7a8595] transition-colors hover:text-[#101828] dark:text-white/80 dark:hover:text-white"
+              <ul className="space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm transition-colors duration-200"
+                      style={{ color: "rgba(242,243,245,0.6)" }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLAnchorElement).style.color =
+                          "#f2f3f5";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLAnchorElement).style.color =
+                          "rgba(242,243,245,0.6)";
+                      }}
                     >
                       {link.label}
-                    </a>
-                    )}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -144,30 +148,49 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Marca fantasma: la palabra cierra la página como firma */}
+        {/* Ghost text */}
         <p
           aria-hidden="true"
-          className="font-advercase pointer-events-none mt-14 -mb-4 select-none text-center text-[22vw] font-bold leading-[0.78] tracking-tight text-[#101828]/[0.04] lg:text-[17vw] dark:text-white/[0.045]"
+          className="pointer-events-none select-none mt-14 -mb-4 text-center font-bold leading-[0.78] tracking-tight"
+          style={{
+            fontSize: "clamp(90px, 20vw, 300px)",
+            color: "rgba(255,255,255,0.035)",
+          }}
         >
-          teko
+          teko.
         </p>
 
-        {/* Separador */}
-        <hr className="my-10 border-[#e5e7eb] dark:border-white/10" />
+        {/* Divider */}
+        <hr style={{ borderColor: "rgba(255,255,255,0.08)", margin: "2rem 0" }} />
 
-        {/* Sección Inferior: Copyright y Legales */}
-        <div className="flex flex-col items-center justify-between gap-4 text-sm text-[#7a8595] dark:text-white/60 md:flex-row">
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col items-center justify-between gap-4 pb-8 text-sm md:flex-row"
+          style={{ color: "rgba(242,243,245,0.4)" }}
+        >
           <p>© 2026 TEKO. Todos los derechos reservados.</p>
           <div className="flex flex-wrap justify-center gap-6">
-            <Link href="/politica-de-cookies" className="transition-colors hover:text-[#101828] dark:hover:text-white">
-              Política de Cookies
-            </Link>
-            <Link href="/politica-de-privacidad" className="transition-colors hover:text-[#101828] dark:hover:text-white">
-              Política de Privacidad
-            </Link>
-            <Link href="/terminos-y-condiciones" className="transition-colors hover:text-[#101828] dark:hover:text-white">
-              Términos y Condiciones
-            </Link>
+            {[
+              { label: "Política de Cookies", href: "/politica-de-cookies" },
+              { label: "Política de Privacidad", href: "/politica-de-privacidad" },
+              { label: "Términos y Condiciones", href: "/terminos-y-condiciones" },
+            ].map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                className="transition-colors duration-200"
+                style={{ color: "rgba(242,243,245,0.4)" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#f2f3f5";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color =
+                    "rgba(242,243,245,0.4)";
+                }}
+              >
+                {label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
