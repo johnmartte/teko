@@ -47,14 +47,20 @@ export default function Header() {
       <header className="fixed left-0 top-0 z-50 w-full px-4 py-4 md:px-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           {/* Logo */}
-          <Link href="/" aria-label="Ir al inicio" className="shrink-0">
+          <Link href="/" aria-label="Ir al inicio" className="shrink-0 flex items-center gap-3">
             <Image
               src="/Isologo-White.svg"
               alt="TEKO"
-              width={38}
-              height={38}
+              width={52}
+              height={52}
               priority
             />
+            <span
+              className="hidden sm:block text-[17px] font-semibold tracking-[-0.02em]"
+              style={{ color: "#f2f3f5" }}
+            >
+              teko
+            </span>
           </Link>
 
           {/* Desktop Nav pill */}

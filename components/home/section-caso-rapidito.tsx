@@ -35,7 +35,9 @@ export default function SectionCasoRapidito() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#b8f06a]" style={{ boxShadow: "0 0 12px #b8f06a" }} />
               Caso · Producto propio
             </p>
-            <Image src="/Rapidito-Logo.png" alt="Rapidito" width={184} height={46} className="mt-[26px] rounded-md" style={{ height: "46px", width: "auto" }} />
+            <div className="relative mt-[26px]" style={{ height: "46px", width: "184px" }}>
+              <Image src="/Rapidito-Logo.png" alt="Rapidito" fill className="object-contain object-left" />
+            </div>
             <h2 className="mt-6 text-[clamp(30px,3.4vw,46px)] font-semibold leading-[1.04] tracking-[-0.035em]" style={{ textWrap: "balance" }}>
               Tu carta, tu caja y tus pedidos en un solo lugar.
             </h2>
