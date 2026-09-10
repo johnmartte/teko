@@ -14,22 +14,61 @@ export default function SectionCasoRapidito() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
     const ctx = gsap.context(() => {
-      const el = sectionRef.current?.querySelector("[data-reveal]");
-      if (el) {
+      const els = sectionRef.current?.querySelectorAll("[data-reveal]");
+      if (!els) return;
+      els.forEach((el) => {
         const rect = (el as HTMLElement).getBoundingClientRect();
         if (rect.top < window.innerHeight * 0.9) return;
         gsap.set(el, { opacity: 0, y: 18 });
         gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", once: true } });
-      }
+      });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section ref={sectionRef} id="caso" className="relative z-[2] mx-auto max-w-[1200px] px-6 pt-[120px]" style={{ color: "#f2f3f5" }}>
-      <div data-reveal="" className="relative grid grid-cols-1 overflow-hidden rounded-[26px] border lg:grid-cols-2" style={{ borderColor: "rgba(184,240,106,0.22)", background: "radial-gradient(90% 90% at 100% 0%, #1f5c3f 0%, #0f2a1e 55%, #0b1a14 100%)" }}>
+
+      {/* Mobile: compact promo */}
+      <div data-reveal="" className="relative overflow-hidden rounded-[22px] border p-6 lg:hidden" style={{ borderColor: "rgba(184,240,106,0.22)", background: "radial-gradient(80% 80% at 50% 0%, #1f5c3f 0%, #0f2a1e 60%, #0b1a14 100%)" }}>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.08]" style={{
+          backgroundImage: "url('/Rapidito-Patron.png')",
+          backgroundSize: "180px",
+          maskImage: "radial-gradient(ellipse 80% 80% at 80% 20%, #000, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 80% 20%, #000, transparent 70%)",
+        }} />
+        <div className="relative flex flex-col items-start gap-4">
+          <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#b8f06a]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#b8f06a]" style={{ boxShadow: "0 0 10px #b8f06a" }} />
+            Caso · Producto propio
+          </p>
+          <div className="relative" style={{ height: "36px", width: "148px" }}>
+            <Image src="/Rapidito-Logo.png" alt="Rapidito" fill className="object-contain object-left" />
+          </div>
+          <p className="max-w-[48ch] text-[14px] font-light leading-[1.55]" style={{ color: "rgba(242,243,245,0.72)" }}>
+            Publica tu menú con un QR, cobra desde el mostrador y mira cada pedido pasar por la cocina. Sin comisión.
+          </p>
+          <div className="flex items-center gap-5 text-[13px]">
+            <span className="font-semibold text-[#b8f06a]">0% comisión</span>
+            <span style={{ color: "rgba(242,243,245,0.5)" }}>·</span>
+            <span style={{ color: "rgba(242,243,245,0.65)" }}>Menú QR</span>
+          </div>
+          <div className="flex flex-wrap gap-2.5">
+            <a href="https://rapidito.do" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#b8f06a] px-5 py-[11px] text-[13px] font-semibold text-[#0f2a1e] transition-colors hover:bg-[#cdf58f]">
+              Publicar mi carta
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M4 2h6v6" /></svg>
+            </a>
+            <a href="https://rapidito.do" target="_blank" rel="noopener noreferrer" className="rounded-full border px-5 py-[10px] text-[13px] font-medium transition-colors hover:bg-white/[0.08]" style={{ borderColor: "rgba(255,255,255,0.22)", color: "#f2f3f5" }}>
+              Ver carta real
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: full card with phone mockup */}
+      <div data-reveal="" className="relative hidden grid-cols-2 overflow-hidden rounded-[26px] border lg:grid" style={{ borderColor: "rgba(184,240,106,0.22)", background: "radial-gradient(90% 90% at 100% 0%, #1f5c3f 0%, #0f2a1e 55%, #0b1a14 100%)" }}>
         {/* Left: content */}
-        <div className="flex flex-col justify-between gap-10 p-8 md:p-[52px_48px]">
+        <div className="flex flex-col justify-between gap-10 p-[52px_48px]">
           <div>
             <p className="flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.08em] text-[#b8f06a]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#b8f06a]" style={{ boxShadow: "0 0 12px #b8f06a" }} />
@@ -70,7 +109,7 @@ export default function SectionCasoRapidito() {
         </div>
 
         {/* Right: phone mockup */}
-        <div className="relative hidden min-h-[520px] overflow-hidden lg:block">
+        <div className="relative min-h-[520px] overflow-hidden">
           <div aria-hidden="true" className="absolute inset-0 opacity-[0.14]" style={{
             backgroundImage: "url('/Rapidito-Patron.png')",
             backgroundSize: "240px",
@@ -79,7 +118,6 @@ export default function SectionCasoRapidito() {
           }} />
           <div className="absolute bottom-[-60px] left-1/2 h-[600px] w-[300px] -translate-x-1/2 overflow-hidden rounded-[44px] border p-3.5" style={{ borderColor: "rgba(255,255,255,0.22)", background: "#0b1a14", boxShadow: "0 60px 120px -30px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1)" }}>
             <div className="flex h-full flex-col overflow-hidden rounded-[32px] text-[#0f2a1e]" style={{ background: "#f6f7f2" }}>
-              {/* Status bar */}
               <div className="flex items-center justify-between px-[18px] pt-[18px] pb-3 text-[11px] text-[#0f2a1e]">
                 <span className="font-semibold">9:41</span>
                 <span className="h-4 w-[60px] rounded-full bg-[#0b1a14]" />
