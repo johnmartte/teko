@@ -69,8 +69,8 @@ export default function Footer() {
               <Image
                 src="/Isologo-White.svg"
                 alt="TEKO"
-                width={36}
-                height={36}
+                width={52}
+                height={52}
               />
             </div>
 

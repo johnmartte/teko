@@ -53,7 +53,7 @@ export default function Header() {
         >
           {/* Logo */}
           <Link href="/" aria-label="TEKO" className="mr-2 flex items-center">
-            <Image src="/Isologo-White.svg" alt="TEKO" width={80} height={20} className="block" style={{ height: "20px", width: "auto" }} priority />
+            <Image src="/Isologo-White.svg" alt="TEKO" width={100} height={26} className="block" style={{ height: "26px", width: "auto" }} priority />
           </Link>
 
           {/* Desktop nav links */}
