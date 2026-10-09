@@ -25,6 +25,8 @@ def _request(method: str, path: str, payload: dict | None = None) -> dict:
         headers={
             "Authorization": f"Bearer {settings.RESEND_API_KEY}",
             "Content-Type": "application/json",
+            # Cloudflare (delante de Resend) rechaza el User-Agent por defecto de urllib con el error 1010.
+            "User-Agent": "teko-backend/1.0",
         },
     )
 
