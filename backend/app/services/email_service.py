@@ -66,11 +66,23 @@ def thread_headers(original: EmailMessage | None) -> dict[str, str] | None:
 
 
 def with_signature(template, signature: str | None):
-    """Copia la plantilla cambiando su firma por la del buzón que envía."""
+    """Copia la plantilla cambiando su firma por la del buzón que envía.
+
+    La firma del buzón es texto de la persona que envía, así que reemplaza
+    también la tarjeta de firma de la plantilla (que es de otra persona).
+    """
     if template is None or not signature:
         return template
-    fields = ("name", "logo_url", "header_background", "accent_color", "footer_text", "social_links")
-    return SimpleNamespace(**{field: getattr(template, field) for field in fields}, signature=signature)
+    fields = (
+        "name", "logo_url", "header_background", "accent_color", "footer_text", "social_links",
+        "occasion", "kicker", "headline", "button_label", "button_url",
+    )
+    return SimpleNamespace(
+        **{field: getattr(template, field, None) for field in fields},
+        signature=signature,
+        signature_style="texto",
+        signature_card=None,
+    )
 
 
 def preview_email(db: Session, payload: EmailPreviewRequest) -> str:

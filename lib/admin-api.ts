@@ -66,7 +66,9 @@ export interface ContactRequest { id: number; name: string; email: string; compa
 export interface EmailMessage { id: number; direction: "inbound" | "outbound"; from_email: string; to_email: string; subject: string | null; snippet: string; status: string; is_read: boolean; has_attachments: boolean; created_at: string }
 export interface EmailMessageDetail extends EmailMessage { cc: string | null; bcc: string | null; reply_to: string | null; text_body: string | null; html_body: string | null; message_id: string | null; provider_id: string | null; error_message: string | null; updated_at: string }
 export interface SocialLink { label: string; url: string }
-export interface EmailTemplateInput { name: string; logo_url: string | null; header_background: string; accent_color: string; signature: string | null; footer_text: string | null; social_links: SocialLink[]; is_default: boolean }
+export type SignatureStyle = "texto" | "completa" | "oscura" | "compacta";
+export interface SignatureCard { name: string; title: string | null; phone: string | null; email: string | null; website: string | null; address: string | null; tagline: string | null }
+export interface EmailTemplateInput { name: string; logo_url: string | null; header_background: string; accent_color: string; occasion: string | null; kicker: string | null; headline: string | null; button_label: string | null; button_url: string | null; signature: string | null; signature_style: SignatureStyle; signature_card: SignatureCard | null; footer_text: string | null; social_links: SocialLink[]; is_default: boolean }
 export interface EmailTemplate extends EmailTemplateInput { id: number; created_at: string; updated_at: string }
 export interface Mailbox { id: number; address: string; display_name: string; signature: string | null; is_active: boolean; planner_user_id: string; planner_user_name: string; planner_user_email: string; created_at: string; updated_at: string; total_messages: number; unread_messages: number }
 export interface PlannerUser { id: string; name: string; email: string; role: string; job_title: string | null; mailbox_address: string | null }
