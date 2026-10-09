@@ -22,12 +22,16 @@ def get_by_provider_id(db: Session, provider_id: str) -> EmailMessage | None:
 def list_messages(
     db: Session,
     *,
+    general_only: bool = False,
     direction: str | None = None,
     search: str | None = None,
     limit: int = 100,
     offset: int = 0,
 ) -> list[EmailMessage]:
     query = db.query(EmailMessage)
+
+    if general_only:
+        query = query.filter(EmailMessage.is_general.is_(True))
 
     if direction:
         query = query.filter(EmailMessage.direction == direction)
@@ -54,7 +58,7 @@ def list_messages(
 def count_unread(db: Session) -> int:
     return (
         db.query(func.count(EmailMessage.id))
-        .filter(EmailMessage.direction == "inbound", EmailMessage.is_read.is_(False))
+        .filter(EmailMessage.direction == "inbound", EmailMessage.is_read.is_(False), EmailMessage.is_general.is_(True))
         .scalar()
         or 0
     )

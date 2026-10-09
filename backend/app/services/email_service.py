@@ -1,9 +1,12 @@
+from types import SimpleNamespace
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.models.email_message import EmailMessage
-from app.repositories import email_message_repository, email_template_repository
+from app.repositories import email_message_repository, email_template_repository, mailbox_repository
+from app.repositories.mailbox_repository import extract_addresses
 from app.schemas.email_message import EmailPreviewRequest, EmailSendRequest
 from app.services.email_renderer import render_email
 from app.services import resend_client
@@ -43,7 +46,7 @@ def _join_addresses(value) -> str:
     return str(value)
 
 
-def _resolve_template(db: Session, template_id: int | None):
+def resolve_template(db: Session, template_id: int | None):
     if template_id is None:
         return None
     template = email_template_repository.get_by_id(db, template_id)
@@ -52,10 +55,7 @@ def _resolve_template(db: Session, template_id: int | None):
     return template
 
 
-def _thread_headers(db: Session, reply_to_email_id: int | None) -> dict[str, str] | None:
-    if reply_to_email_id is None:
-        return None
-    original = email_message_repository.get_by_id(db, reply_to_email_id)
+def thread_headers(original: EmailMessage | None) -> dict[str, str] | None:
     if not original or not original.message_id:
         return None
     message_id = original.message_id.strip()
@@ -65,26 +65,32 @@ def _thread_headers(db: Session, reply_to_email_id: int | None) -> dict[str, str
     return {"In-Reply-To": message_id, "References": message_id}
 
 
+def with_signature(template, signature: str | None):
+    """Copia la plantilla cambiando su firma por la del buzón que envía."""
+    if template is None or not signature:
+        return template
+    fields = ("name", "logo_url", "header_background", "accent_color", "footer_text", "social_links")
+    return SimpleNamespace(**{field: getattr(template, field) for field in fields}, signature=signature)
+
+
 def preview_email(db: Session, payload: EmailPreviewRequest) -> str:
-    template = payload.template if payload.template is not None else _resolve_template(db, payload.template_id)
+    template = payload.template if payload.template is not None else resolve_template(db, payload.template_id)
     document, _ = render_email(body=payload.body, subject=payload.subject, template=template)
     return document
 
 
-def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
-    if not settings.RESEND_FROM_EMAIL:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Falta configurar RESEND_FROM_EMAIL en el servidor",
-        )
-
-    sender = (
-        f"{settings.RESEND_FROM_NAME} <{settings.RESEND_FROM_EMAIL}>"
-        if settings.RESEND_FROM_NAME
-        else settings.RESEND_FROM_EMAIL
-    )
-
-    template = _resolve_template(db, payload.template_id)
+def deliver_email(
+    db: Session,
+    *,
+    payload: EmailSendRequest,
+    sender_address: str,
+    sender_name: str | None,
+    template,
+    reply_original: EmailMessage | None,
+    is_general: bool,
+    admin_id: int | None,
+) -> EmailMessage:
+    sender = f"{sender_name} <{sender_address}>" if sender_name else sender_address
     html_body, text_body = render_email(body=payload.body, subject=payload.subject, template=template)
 
     recipients = [str(item) for item in payload.to]
@@ -100,7 +106,7 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
             text=text_body,
             cc=cc,
             bcc=bcc,
-            headers=_thread_headers(db, payload.reply_to_email_id),
+            headers=thread_headers(reply_original),
         )
     except ResendError as error:
         raise HTTPException(
@@ -111,7 +117,7 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
     message = EmailMessage(
         direction="outbound",
         provider_id=result.get("id"),
-        from_email=settings.RESEND_FROM_EMAIL,
+        from_email=sender_address,
         to_email=", ".join(recipients),
         cc=", ".join(cc) if cc else None,
         bcc=", ".join(bcc) if bcc else None,
@@ -120,10 +126,35 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
         html_body=html_body,
         status="sent",
         is_read=True,
-        sent_by_admin_id=admin.id,
+        is_general=is_general,
+        sent_by_admin_id=admin_id,
     )
 
     return email_message_repository.create(db, message)
+
+
+def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
+    if not settings.RESEND_FROM_EMAIL:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Falta configurar RESEND_FROM_EMAIL en el servidor",
+        )
+
+    reply_original = None
+    if payload.reply_to_email_id is not None:
+        candidate = email_message_repository.get_by_id(db, payload.reply_to_email_id)
+        reply_original = candidate if candidate and candidate.is_general else None
+
+    return deliver_email(
+        db,
+        payload=payload,
+        sender_address=settings.RESEND_FROM_EMAIL,
+        sender_name=settings.RESEND_FROM_NAME,
+        template=resolve_template(db, payload.template_id),
+        reply_original=reply_original,
+        is_general=True,
+        admin_id=admin.id,
+    )
 
 
 def handle_webhook_event(db: Session, event: dict) -> str:
@@ -193,13 +224,22 @@ def _store_received_email(db: Session, data: dict) -> str:
         has_attachments=bool(attachments),
     )
 
+    recipients = extract_addresses(message.to_email, message.cc, message.bcc)
+    mailboxes = mailbox_repository.active_by_addresses(db, recipients)
+    general_address = settings.RESEND_FROM_EMAIL.lower()
+    # Va a la bandeja del CMS si iba a la dirección general o a nadie con buzón.
+    message.is_general = not mailboxes or (bool(general_address) and general_address in recipients)
+
     email_message_repository.create(db, message)
+    for mailbox in mailboxes:
+        mailbox_repository.link_message(db, mailbox.id, message.id, is_read=False)
     return "received"
 
 
 def list_messages(db: Session, *, direction: str | None, search: str | None, limit: int, offset: int):
     return email_message_repository.list_messages(
         db,
+        general_only=True,
         direction=direction,
         search=search,
         limit=limit,
@@ -209,7 +249,7 @@ def list_messages(db: Session, *, direction: str | None, search: str | None, lim
 
 def get_message(db: Session, email_id: int) -> EmailMessage:
     message = email_message_repository.get_by_id(db, email_id)
-    if not message:
+    if not message or not message.is_general:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Correo no encontrado",

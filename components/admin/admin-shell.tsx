@@ -2,17 +2,19 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { BarChart3, BriefcaseBusiness, CircleDollarSign, FileQuestion, FolderKanban, LogOut, Mail, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
+import { AtSign, BarChart3, BriefcaseBusiness, CircleDollarSign, FileQuestion, FolderKanban, LogOut, Mail, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
 import { api, type AdminUser, type ContactRequest, type DashboardStats } from "@/lib/admin-api";
 import { useAdminAuth } from "./auth-provider";
 import { modules } from "./cms-config";
 import { EmailsModule } from "./emails-module";
+import { MailboxesModule } from "./mailboxes-module";
 import { RecordModule } from "./record-module";
 
 const nav = [
   { key: "dashboard", label: "Dashboard", icon: BarChart3 },
   { key: "contacts", label: "Solicitudes", icon: MessageSquareText },
   { key: "emails", label: "Correos", icon: Mail },
+  { key: "mailboxes", label: "Ad. de Correos", icon: AtSign },
   { key: "services", label: "Servicios", icon: BriefcaseBusiness },
   { key: "service-categories", label: "Categorias de servicios", icon: FolderKanban },
   { key: "faqs", label: "FAQs", icon: FileQuestion },
@@ -127,7 +129,7 @@ export function AdminShell() {
         </header>
 
         <main className="mx-auto max-w-7xl p-4 lg:p-8">
-          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "emails" ? <EmailsModule onUnreadChange={refreshUnread} /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
+          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "emails" ? <EmailsModule onUnreadChange={refreshUnread} /> : active === "mailboxes" ? <MailboxesModule /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
         </main>
       </div>
     </div>

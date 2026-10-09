@@ -21,6 +21,17 @@ class Settings(BaseSettings):
     RESEND_FROM_EMAIL: str = ""
     RESEND_FROM_NAME: str = "TEKO"
 
+    # Puente con TEKO Planner. Son dos claves distintas a propósito:
+    # PLANNER_BRIDGE_KEY la presenta el servidor del Planner al llamar a /planner/mail;
+    # PLANNER_API_KEY la presenta este backend al pedirle empleados a Laravel.
+    PLANNER_API_URL: str = "https://teko-planner-bk-production.up.railway.app/api"
+    PLANNER_API_KEY: str = ""
+    PLANNER_BRIDGE_KEY: str = ""
+
+    @property
+    def MAIL_DOMAIN(self) -> str:
+        return self.RESEND_FROM_EMAIL.rsplit("@", 1)[-1].lower() if "@" in self.RESEND_FROM_EMAIL else ""
+
     BACKEND_CORS_ORIGINS: Annotated[list[str], NoDecode] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",

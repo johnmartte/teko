@@ -38,6 +38,8 @@ class EmailMessage(Base):
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     is_read: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # False cuando el correo pertenece solo a buzones de empleados: el CMS no lo muestra.
+    is_general: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, index=True)
     has_attachments: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     sent_by_admin_id: Mapped[int | None] = mapped_column(
