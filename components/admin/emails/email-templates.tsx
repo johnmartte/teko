@@ -18,6 +18,24 @@ Gracias por escribirnos. Revisamos tu proyecto y te enviamos la **propuesta** co
 
 Si tienes dudas, responde a este correo y te contestamos el mismo día.`;
 
+const WHITE_LOGOS = ["/LogoTeko.png", "/teko-logo-white.png"];
+
+function luminance(hex: string) {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** Igual que el backend: el logo blanco de TEKO se cambia por el de color en cabeceras claras. */
+function headerLogo(logoUrl: string | null, background: string) {
+  if (!logoUrl || !HEX.test(background)) return { url: logoUrl, swapped: false };
+  const light = 1.05 / (luminance(background) + 0.05) < 4.5;
+  const white = WHITE_LOGOS.some((name) => logoUrl.split("?")[0].endsWith(name));
+  return light && white ? { url: "https://teko.do/email/teko-logo.png", swapped: true } : { url: logoUrl, swapped: false };
+}
+
 const EMPTY_CARD: SignatureCard = { name: "", title: null, phone: null, email: null, website: null, address: null, tagline: null };
 
 const TEKO_CARD: SignatureCard = {
@@ -346,6 +364,7 @@ export function TemplateEditor({ template, onSaved, onDeleted, onBack }: {
     set({ social_links: form.social_links.map((link, i) => (i === index ? { ...link, ...patch } : link)) });
 
   const style = form.signature_style;
+  const logo = headerLogo(form.logo_url, form.header_background);
 
   return (
     <div className="@container flex h-full min-h-0 flex-col">
@@ -410,11 +429,13 @@ export function TemplateEditor({ template, onSaved, onDeleted, onBack }: {
             <Field label="Nombre" hint="Solo lo ves tú, al elegir la plantilla.">
               <input value={form.name} onChange={(event) => set({ name: event.target.value })} className={inputClass} />
             </Field>
-            <Field label="Logo" hint="URL pública en PNG o JPG. Los SVG no se ven en Gmail. Sobre cabecera oscura usa el logo blanco.">
+            <Field label="Logo" hint={logo.swapped
+                ? "La cabecera es clara: en el correo se usa el logo de TEKO a color para que se vea."
+                : "URL pública en PNG o JPG. Los SVG no se ven en Gmail. Sobre cabecera oscura usa el logo blanco."}>
               <span className="flex items-center gap-2">
                 <span className="grid h-9 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border border-white/[0.08]" style={{ background: HEX.test(form.header_background) ? form.header_background : "#080a0f" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {form.logo_url && URL_OK.test(form.logo_url) ? <img src={form.logo_url} alt="" className="max-h-6 max-w-[52px] object-contain" /> : <span className="text-[10px] text-[rgba(242,243,245,0.4)]">Sin logo</span>}
+                  {logo.url && URL_OK.test(logo.url) ? <img src={logo.url} alt="" className="max-h-6 max-w-[52px] object-contain" /> : <span className="text-[10px] text-[rgba(242,243,245,0.4)]">Sin logo</span>}
                 </span>
                 <input value={form.logo_url ?? ""} onChange={(event) => set({ logo_url: event.target.value })} placeholder="https://" spellCheck={false} className={inputClass} />
               </span>

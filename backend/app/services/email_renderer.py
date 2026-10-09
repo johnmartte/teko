@@ -119,6 +119,17 @@ HEAD_STYLE = (
 )
 
 
+# Logos de TEKO con letras blancas: sobre una cabecera clara no se ven.
+WHITE_LOGOS = ("/LogoTeko.png", "/teko-logo-white.png")
+
+
+def header_logo(logo_url: str | None, header_background: str) -> str | None:
+    """Cambia el logo blanco de TEKO por la versión a color si la cabecera es clara."""
+    if logo_url and not _is_dark(header_background) and logo_url.split("?")[0].endswith(WHITE_LOGOS):
+        return f"{ASSETS}/teko-logo.png"
+    return logo_url
+
+
 def _is_dark(hex_color: str) -> bool:
     """Oscuro si el texto blanco se lee encima con contraste 4.5:1."""
     return 1.05 / (_relative_luminance(hex_color) + 0.05) >= 4.5
@@ -368,9 +379,10 @@ def render_email(*, body: str, subject: str | None, template) -> tuple[str, str]
     has_button = bool(button_label and button_url)
     has_hero = bool(kicker or headline or has_button)
 
-    if template.logo_url:
+    logo_url = header_logo(template.logo_url, header)
+    if logo_url:
         logo = (
-            f'<img src="{html.escape(template.logo_url)}" width="124" alt="{html.escape(template.name)}" '
+            f'<img src="{html.escape(logo_url)}" width="124" alt="{html.escape(template.name)}" '
             f'style="display:block;border:0;outline:none;width:124px;max-width:160px;height:auto;">'
         )
     else:
