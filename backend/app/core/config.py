@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-secret-change-me"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
+    RESEND_API_URL: str = "https://api.resend.com"
+    RESEND_API_KEY: str = ""
+    RESEND_WEBHOOK_SECRET: str = ""
+    RESEND_FROM_EMAIL: str = ""
+    RESEND_FROM_NAME: str = "TEKO"
+
     BACKEND_CORS_ORIGINS: Annotated[list[str], NoDecode] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",

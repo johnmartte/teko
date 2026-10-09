@@ -2,15 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { BarChart3, BriefcaseBusiness, CircleDollarSign, FileQuestion, FolderKanban, LogOut, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
+import { BarChart3, BriefcaseBusiness, CircleDollarSign, FileQuestion, FolderKanban, LogOut, Mail, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
 import { api, type AdminUser, type ContactRequest, type DashboardStats } from "@/lib/admin-api";
 import { useAdminAuth } from "./auth-provider";
 import { modules } from "./cms-config";
+import { EmailsModule } from "./emails-module";
 import { RecordModule } from "./record-module";
 
 const nav = [
   { key: "dashboard", label: "Dashboard", icon: BarChart3 },
   { key: "contacts", label: "Solicitudes", icon: MessageSquareText },
+  { key: "emails", label: "Correos", icon: Mail },
   { key: "services", label: "Servicios", icon: BriefcaseBusiness },
   { key: "service-categories", label: "Categorias de servicios", icon: FolderKanban },
   { key: "faqs", label: "FAQs", icon: FileQuestion },
@@ -25,6 +27,15 @@ export function AdminShell() {
   const { user, loading, login, logout } = useAdminAuth();
   const [active, setActive] = useState("dashboard");
   const [mobile, setMobile] = useState(false);
+  const [unread, setUnread] = useState(0);
+
+  const refreshUnread = useCallback(() => {
+    api<{ unread: number }>("/admin/emails/unread-count")
+      .then((result) => setUnread(result.unread))
+      .catch(() => setUnread(0));
+  }, []);
+
+  useEffect(() => { if (user) refreshUnread(); }, [user, refreshUnread]);
 
   if (loading) return (
     <div className="grid min-h-screen place-items-center" style={{ background: "#080a0f" }}>
@@ -64,7 +75,12 @@ export function AdminShell() {
               onMouseLeave={(e) => { if (active !== item.key) e.currentTarget.style.background = "transparent"; }}
             >
               <item.icon size={18} />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.key === "emails" && unread > 0 && (
+                <span className="rounded-full px-2 py-0.5 text-xs font-bold" style={{ background: "#1ec4ff", color: "#080a0f" }}>
+                  {unread}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -111,7 +127,7 @@ export function AdminShell() {
         </header>
 
         <main className="mx-auto max-w-7xl p-4 lg:p-8">
-          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
+          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "emails" ? <EmailsModule onUnreadChange={refreshUnread} /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
         </main>
       </div>
     </div>
