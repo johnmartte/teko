@@ -63,7 +63,10 @@ export async function login(email: string, password: string) {
 export interface AdminUser { id: number; email: string; full_name: string; role: string; is_active: boolean }
 export interface DashboardStats { contact_requests: number; new_requests: number; qualified_requests: number; active_services: number; active_projects: number; active_faqs: number; active_plans: number }
 export interface ContactRequest { id: number; name: string; email: string; company: string | null; phone: string | null; service: string | null; budget: string | null; message: string; status: string; created_at: string }
-export interface EmailMessage { id: number; direction: "inbound" | "outbound"; from_email: string; to_email: string; subject: string | null; status: string; is_read: boolean; has_attachments: boolean; created_at: string }
+export interface EmailMessage { id: number; direction: "inbound" | "outbound"; from_email: string; to_email: string; subject: string | null; snippet: string; status: string; is_read: boolean; has_attachments: boolean; created_at: string }
 export interface EmailMessageDetail extends EmailMessage { cc: string | null; bcc: string | null; reply_to: string | null; text_body: string | null; html_body: string | null; message_id: string | null; provider_id: string | null; error_message: string | null; updated_at: string }
+export interface SocialLink { label: string; url: string }
+export interface EmailTemplateInput { name: string; logo_url: string | null; header_background: string; accent_color: string; signature: string | null; footer_text: string | null; social_links: SocialLink[]; is_default: boolean }
+export interface EmailTemplate extends EmailTemplateInput { id: number; created_at: string; updated_at: string }
 export type RecordValue = string | number | boolean | null | Array<{ id?: number; text: string; sort_order: number }>;
 export type AdminRecord = { id: number; [key: string]: RecordValue };

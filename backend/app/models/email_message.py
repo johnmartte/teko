@@ -1,3 +1,5 @@
+import html
+import re
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
@@ -58,3 +60,12 @@ class EmailMessage(Base):
     )
 
     sent_by = relationship("AdminUser")
+
+    @property
+    def snippet(self) -> str:
+        if self.text_body:
+            source = self.text_body.replace("**", "")
+        else:
+            source = re.sub(r"<(style|script|head)[^>]*>.*?</\1>", " ", self.html_body or "", flags=re.S | re.I)
+            source = html.unescape(re.sub(r"<[^>]+>", " ", source))
+        return " ".join(source.split())[:180]

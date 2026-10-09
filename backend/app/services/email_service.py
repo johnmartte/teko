@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.models.email_message import EmailMessage
-from app.repositories import email_message_repository
-from app.schemas.email_message import EmailSendRequest
+from app.repositories import email_message_repository, email_template_repository
+from app.schemas.email_message import EmailPreviewRequest, EmailSendRequest
+from app.services.email_renderer import render_email
 from app.services import resend_client
 from app.services.resend_client import ResendError
 
@@ -42,13 +43,35 @@ def _join_addresses(value) -> str:
     return str(value)
 
 
-def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
-    if not payload.text and not payload.html:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="El correo necesita contenido en texto o HTML",
-        )
+def _resolve_template(db: Session, template_id: int | None):
+    if template_id is None:
+        return None
+    template = email_template_repository.get_by_id(db, template_id)
+    if not template:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Plantilla no encontrada")
+    return template
 
+
+def _thread_headers(db: Session, reply_to_email_id: int | None) -> dict[str, str] | None:
+    if reply_to_email_id is None:
+        return None
+    original = email_message_repository.get_by_id(db, reply_to_email_id)
+    if not original or not original.message_id:
+        return None
+    message_id = original.message_id.strip()
+    if not message_id.startswith("<"):
+        message_id = f"<{message_id}>"
+    # Con estas cabeceras Gmail y Outlook muestran la respuesta en el mismo hilo.
+    return {"In-Reply-To": message_id, "References": message_id}
+
+
+def preview_email(db: Session, payload: EmailPreviewRequest) -> str:
+    template = payload.template if payload.template is not None else _resolve_template(db, payload.template_id)
+    document, _ = render_email(body=payload.body, subject=payload.subject, template=template)
+    return document
+
+
+def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
     if not settings.RESEND_FROM_EMAIL:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -61,6 +84,9 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
         else settings.RESEND_FROM_EMAIL
     )
 
+    template = _resolve_template(db, payload.template_id)
+    html_body, text_body = render_email(body=payload.body, subject=payload.subject, template=template)
+
     recipients = [str(item) for item in payload.to]
     cc = [str(item) for item in payload.cc] if payload.cc else None
     bcc = [str(item) for item in payload.bcc] if payload.bcc else None
@@ -70,11 +96,11 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
             sender=sender,
             to=recipients,
             subject=payload.subject,
-            html=payload.html,
-            text=payload.text,
+            html=html_body,
+            text=text_body,
             cc=cc,
             bcc=bcc,
-            reply_to=str(payload.reply_to) if payload.reply_to else None,
+            headers=_thread_headers(db, payload.reply_to_email_id),
         )
     except ResendError as error:
         raise HTTPException(
@@ -89,10 +115,9 @@ def send_email(db: Session, admin, payload: EmailSendRequest) -> EmailMessage:
         to_email=", ".join(recipients),
         cc=", ".join(cc) if cc else None,
         bcc=", ".join(bcc) if bcc else None,
-        reply_to=str(payload.reply_to) if payload.reply_to else None,
         subject=payload.subject,
-        text_body=payload.text,
-        html_body=payload.html,
+        text_body=payload.body,
+        html_body=html_body,
         status="sent",
         is_read=True,
         sent_by_admin_id=admin.id,

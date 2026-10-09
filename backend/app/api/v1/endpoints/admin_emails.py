@@ -6,6 +6,8 @@ from app.schemas.email_message import (
     EmailInboxSummary,
     EmailMessageDetail,
     EmailMessageListItem,
+    EmailPreview,
+    EmailPreviewRequest,
     EmailReadUpdate,
     EmailSendRequest,
 )
@@ -42,6 +44,15 @@ def unread_count(
     current_admin=Depends(get_current_admin),
 ):
     return EmailInboxSummary(unread=email_service.count_unread(db))
+
+
+@router.post("/preview", response_model=EmailPreview)
+def preview_email(
+    payload: EmailPreviewRequest,
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return EmailPreview(html=email_service.preview_email(db, payload))
 
 
 @router.get("/{email_id}", response_model=EmailMessageDetail)

@@ -57,8 +57,12 @@ def send_email(
     cc: list[str] | None = None,
     bcc: list[str] | None = None,
     reply_to: str | None = None,
+    headers: dict[str, str] | None = None,
 ) -> dict:
     payload: dict = {"from": sender, "to": to, "subject": subject}
+
+    if headers:
+        payload["headers"] = headers
 
     if html:
         payload["html"] = html

@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, Field
 
+from app.schemas.email_template import EmailTemplateBase
+
 
 class EmailMessageListItem(BaseModel):
     id: int
@@ -9,6 +11,7 @@ class EmailMessageListItem(BaseModel):
     from_email: str
     to_email: str
     subject: str | None
+    snippet: str
     status: str
     is_read: bool
     has_attachments: bool
@@ -34,11 +37,22 @@ class EmailMessageDetail(EmailMessageListItem):
 class EmailSendRequest(BaseModel):
     to: list[EmailStr] = Field(min_length=1, max_length=50)
     subject: str = Field(min_length=1, max_length=500)
-    text: str | None = Field(default=None, max_length=100_000)
-    html: str | None = Field(default=None, max_length=200_000)
+    body: str = Field(min_length=1, max_length=100_000)
     cc: list[EmailStr] | None = Field(default=None, max_length=50)
     bcc: list[EmailStr] | None = Field(default=None, max_length=50)
-    reply_to: EmailStr | None = None
+    template_id: int | None = None
+    reply_to_email_id: int | None = None
+
+
+class EmailPreviewRequest(BaseModel):
+    subject: str | None = Field(default=None, max_length=500)
+    body: str = Field(default="", max_length=100_000)
+    template_id: int | None = None
+    template: EmailTemplateBase | None = None
+
+
+class EmailPreview(BaseModel):
+    html: str
 
 
 class EmailReadUpdate(BaseModel):
