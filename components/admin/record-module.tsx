@@ -240,14 +240,14 @@ function FieldInput({ field, value, options, onChange }: { field: Field; value: 
     <label className={`${field.type === "textarea" ? "sm:col-span-2 " : ""}text-sm font-medium`} style={{ color: "rgba(242,243,245,0.7)" }}>
       {field.label}
       {field.type === "textarea" ? (
-        <textarea required={field.required} rows={4} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} className={cls} style={style} />
+        <textarea required={field.required} rows={4} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} className={cls} style={style} />
       ) : field.type === "select" ? (
         <select required={field.required} value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} className={cls} style={style}>
           <option value="" disabled={field.required} style={{ background: "#0d1017" }}>{options ? "Selecciona una categoria" : "Selecciona una opcion"}</option>
           {selectOptions?.map((o) => <option key={o.value || "empty"} value={o.value} style={{ background: "#0d1017" }}>{o.label}</option>)}
         </select>
       ) : (
-        <input required={field.required} type={field.type ?? "text"} step={field.type === "number" ? "any" : undefined} value={value === null ? "" : String(value)} onChange={(e) => onChange(e.target.value)} className={cls} style={style} />
+        <input required={field.required} type={field.type ?? "text"} step={field.type === "number" ? "any" : undefined} value={value === null ? "" : String(value)} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} className={cls} style={style} />
       )}
     </label>
   );
