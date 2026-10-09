@@ -70,5 +70,7 @@ export interface EmailTemplateInput { name: string; logo_url: string | null; hea
 export interface EmailTemplate extends EmailTemplateInput { id: number; created_at: string; updated_at: string }
 export interface Mailbox { id: number; address: string; display_name: string; signature: string | null; is_active: boolean; planner_user_id: string; planner_user_name: string; planner_user_email: string; created_at: string; updated_at: string; total_messages: number; unread_messages: number }
 export interface PlannerUser { id: string; name: string; email: string; role: string; job_title: string | null; mailbox_address: string | null }
+export interface MailboxRequest { id: number; planner_user_id: string; planner_user_name: string; planner_user_email: string; status: "pending" | "approved" | "dismissed"; created_at: string; resolved_at: string | null; mailbox_id: number | null; mailbox_address: string | null }
+export interface AdminNotification { id: number; kind: string; title: string; body: string | null; module: string | null; ref_id: number | null; created_at: string; is_read: boolean }
 export type RecordValue = string | number | boolean | null | Array<{ id?: number; text: string; sort_order: number }>;
 export type AdminRecord = { id: number; [key: string]: RecordValue };

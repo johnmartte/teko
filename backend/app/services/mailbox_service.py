@@ -2,12 +2,12 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.models.mailbox import Mailbox
+from app.models.mailbox import Mailbox, MailboxRequest
 from app.repositories import email_message_repository, mailbox_repository
 from app.schemas.email_message import EmailMessageDetail, EmailMessageListItem, EmailPreviewRequest, EmailSendRequest
 from app.services.email_renderer import render_email
-from app.schemas.mailbox import MailboxCreate, MailboxRead, MailboxUpdate, OwnMailbox, PlannerUser
-from app.services import email_service, planner_client
+from app.schemas.mailbox import MailboxCreate, MailboxRead, MailboxRequestRead, MailboxUpdate, OwnMailAccess, OwnMailbox, PlannerUser
+from app.services import admin_notification_service, email_service, planner_client
 from app.services.planner_client import PlannerError
 
 
@@ -77,7 +77,9 @@ def create_mailbox(db: Session, payload: MailboxCreate) -> MailboxRead:
         planner_user_name=employee.name,
         planner_user_email=employee.email,
     )
-    return _read(mailbox_repository.save(db, mailbox), {})
+    mailbox = mailbox_repository.save(db, mailbox)
+    mailbox_repository.resolve_pending(db, mailbox.planner_user_id, "approved")
+    return _read(mailbox, {})
 
 
 def update_mailbox(db: Session, mailbox_id: int, payload: MailboxUpdate) -> MailboxRead:
@@ -92,7 +94,32 @@ def update_mailbox(db: Session, mailbox_id: int, payload: MailboxUpdate) -> Mail
     if "is_active" in changes and changes["is_active"] is not None:
         mailbox.is_active = changes["is_active"]
     mailbox = mailbox_repository.save(db, mailbox)
+    if mailbox.is_active:
+        mailbox_repository.resolve_pending(db, mailbox.planner_user_id, "approved")
     return _read(mailbox, mailbox_repository.counts(db))
+
+
+def _request_read(db: Session, request: MailboxRequest) -> MailboxRequestRead:
+    mailbox = mailbox_repository.get_by_planner_user(db, request.planner_user_id)
+    return MailboxRequestRead.model_validate(request).model_copy(update={
+        "mailbox_id": mailbox.id if mailbox else None,
+        "mailbox_address": mailbox.address if mailbox else None,
+    })
+
+
+def list_requests(db: Session, status_filter: str | None) -> list[MailboxRequestRead]:
+    return [_request_read(db, request) for request in mailbox_repository.list_requests(db, status_filter)]
+
+
+def dismiss_request(db: Session, request_id: int) -> MailboxRequestRead:
+    request = mailbox_repository.get_request(db, request_id)
+    if not request:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Solicitud no encontrada")
+    if request.status != "pending":
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Esa solicitud ya fue atendida")
+    mailbox_repository.resolve_pending(db, request.planner_user_id, "dismissed")
+    db.refresh(request)
+    return _request_read(db, request)
 
 
 # --- Bandeja del empleado (Planner) -----------------------------------------
@@ -165,3 +192,45 @@ def preview_for_mailbox(db: Session, mailbox: Mailbox, payload: EmailPreviewRequ
         body = f"{body.rstrip()}\n\n{mailbox.signature}"
     document, _ = render_email(body=body, subject=payload.subject, template=email_service.with_signature(base_template, mailbox.signature))
     return document
+
+
+# --- Solicitud de correo institucional (Planner) -----------------------------
+
+def own_access(db: Session, planner_user_id: str) -> OwnMailAccess:
+    mailbox = mailbox_repository.get_by_planner_user(db, planner_user_id)
+    if mailbox and mailbox.is_active:
+        return OwnMailAccess(enabled=True, address=mailbox.address)
+    request = mailbox_repository.latest_request(db, planner_user_id)
+    return OwnMailAccess(
+        enabled=False,
+        request_status=request.status if request else None,
+        requested_at=request.created_at if request else None,
+    )
+
+
+def request_mailbox(db: Session, *, planner_user_id: str, name: str, email: str, role: str) -> OwnMailAccess:
+    if role == "client":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="El correo institucional es solo para el equipo de TEKO")
+    mailbox = mailbox_repository.get_by_planner_user(db, planner_user_id)
+    if mailbox and mailbox.is_active:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Tu correo ya está habilitado")
+
+    # Pedirlo dos veces no vuelve a avisar: la solicitud pendiente sigue en pie.
+    if not mailbox_repository.pending_request(db, planner_user_id):
+        display = name or email or f"Usuario {planner_user_id}"
+        request = mailbox_repository.save_request(db, MailboxRequest(
+            planner_user_id=planner_user_id,
+            planner_user_name=display,
+            planner_user_email=email,
+            status="pending",
+        ))
+        verb = "rehabilite" if mailbox else "habilite"
+        admin_notification_service.notify_admins(
+            db,
+            kind="mailbox_request",
+            title=f"{display} solicita que se le {verb} su correo institucional",
+            body=email or None,
+            module="mailboxes",
+            ref_id=request.id,
+        )
+    return own_access(db, planner_user_id)

@@ -38,3 +38,18 @@ class MailboxMessage(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     message = relationship("EmailMessage")
+
+
+class MailboxRequest(Base):
+    """Un empleado del Planner pide su correo institucional desde la Bandeja."""
+
+    __tablename__ = "mailbox_requests"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    planner_user_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    planner_user_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    planner_user_email: Mapped[str] = mapped_column(String(320), nullable=False)
+    # pending → approved (se creó o habilitó su buzón) | dismissed (un admin la descartó)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending", index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

@@ -8,6 +8,7 @@ import { useAdminAuth } from "./auth-provider";
 import { modules } from "./cms-config";
 import { EmailsModule } from "./emails-module";
 import { MailboxesModule } from "./mailboxes-module";
+import { NotificationsBell } from "./notifications-bell";
 import { RecordModule } from "./record-module";
 
 const nav = [
@@ -30,6 +31,8 @@ export function AdminShell() {
   const [active, setActive] = useState("dashboard");
   const [mobile, setMobile] = useState(false);
   const [unread, setUnread] = useState(0);
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const [mailboxesKey, setMailboxesKey] = useState(0);
 
   const refreshUnread = useCallback(() => {
     api<{ unread: number }>("/admin/emails/unread-count")
@@ -37,7 +40,20 @@ export function AdminShell() {
       .catch(() => setUnread(0));
   }, []);
 
-  useEffect(() => { if (user) refreshUnread(); }, [user, refreshUnread]);
+  const refreshRequests = useCallback(() => {
+    api<unknown[]>("/admin/mailboxes/requests")
+      .then((list) => setPendingRequests(list.length))
+      .catch(() => setPendingRequests(0));
+  }, []);
+
+  useEffect(() => { if (user) { refreshUnread(); refreshRequests(); } }, [user, refreshUnread, refreshRequests]);
+
+  const openModule = useCallback((module: string) => {
+    // Abrir desde un aviso recarga el módulo para que muestre la solicitud nueva.
+    if (module === "mailboxes") setMailboxesKey((value) => value + 1);
+    setActive(module);
+    setMobile(false);
+  }, []);
 
   if (loading) return (
     <div className="grid min-h-screen place-items-center" style={{ background: "#080a0f" }}>
@@ -83,6 +99,11 @@ export function AdminShell() {
                   {unread}
                 </span>
               )}
+              {item.key === "mailboxes" && pendingRequests > 0 && (
+                <span title={`${pendingRequests} solicitudes de correo`} className="rounded-full px-2 py-0.5 text-xs font-bold" style={{ background: "#1ec4ff", color: "#080a0f" }}>
+                  {pendingRequests}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -118,6 +139,7 @@ export function AdminShell() {
             <p className="text-xs" style={{ color: "rgba(242,243,245,0.45)" }}>Contenido real de TEKO</p>
           </div>
           <div className="flex items-center gap-3">
+            <NotificationsBell onNavigate={openModule} onActivity={refreshRequests} />
             <div className="hidden text-right sm:block">
               <p className="text-sm font-semibold" style={{ color: "#f2f3f5" }}>{user.full_name}</p>
               <p className="text-xs" style={{ color: "rgba(242,243,245,0.45)" }}>{user.email}</p>
@@ -129,7 +151,7 @@ export function AdminShell() {
         </header>
 
         <main className="mx-auto max-w-7xl p-4 lg:p-8">
-          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "emails" ? <EmailsModule onUnreadChange={refreshUnread} /> : active === "mailboxes" ? <MailboxesModule /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
+          {active === "dashboard" ? <Dashboard /> : active === "contacts" ? <Contacts /> : active === "emails" ? <EmailsModule onUnreadChange={refreshUnread} /> : active === "mailboxes" ? <MailboxesModule key={mailboxesKey} onRequestsChange={refreshRequests} /> : active === "admins" ? <Admins current={user} /> : selectedModule ? <RecordModule config={selectedModule} /> : null}
         </main>
       </div>
     </div>

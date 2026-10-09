@@ -58,3 +58,29 @@ class OwnMailbox(BaseModel):
 
 class OwnMailboxUpdate(BaseModel):
     signature: str | None = Field(default=None, max_length=2_000)
+
+
+class MailboxRequestRead(BaseModel):
+    id: int
+    planner_user_id: str
+    planner_user_name: str
+    planner_user_email: str
+    status: str
+    created_at: datetime
+    resolved_at: datetime | None
+    # Buzón que ya existe para ese empleado (deshabilitado), para ofrecer "Habilitar".
+    mailbox_id: int | None = None
+    mailbox_address: str | None = None
+
+    model_config = {"from_attributes": True}
+
+
+class MailboxRequestUpdate(BaseModel):
+    status: str = Field(pattern="^dismissed$")
+
+
+class OwnMailAccess(BaseModel):
+    enabled: bool
+    address: str | None = None
+    request_status: str | None = None
+    requested_at: datetime | None = None

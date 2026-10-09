@@ -4,7 +4,7 @@ from sqlalchemy import case, func, or_
 from sqlalchemy.orm import Session
 
 from app.models.email_message import EmailMessage
-from app.models.mailbox import Mailbox, MailboxMessage
+from app.models.mailbox import Mailbox, MailboxMessage, MailboxRequest
 
 ADDRESS_RE = re.compile(r"[\w.+'-]+@[\w-]+(?:\.[\w-]+)+")
 
@@ -118,3 +118,48 @@ def set_link_read(db: Session, link: MailboxMessage, is_read: bool) -> MailboxMe
     db.commit()
     db.refresh(link)
     return link
+
+
+# --- Solicitudes de correo --------------------------------------------------
+
+def latest_request(db: Session, planner_user_id: str) -> MailboxRequest | None:
+    return (
+        db.query(MailboxRequest)
+        .filter(MailboxRequest.planner_user_id == planner_user_id)
+        .order_by(MailboxRequest.created_at.desc(), MailboxRequest.id.desc())
+        .first()
+    )
+
+
+def pending_request(db: Session, planner_user_id: str) -> MailboxRequest | None:
+    return (
+        db.query(MailboxRequest)
+        .filter(MailboxRequest.planner_user_id == planner_user_id, MailboxRequest.status == "pending")
+        .first()
+    )
+
+
+def list_requests(db: Session, status: str | None) -> list[MailboxRequest]:
+    query = db.query(MailboxRequest)
+    if status:
+        query = query.filter(MailboxRequest.status == status)
+    return query.order_by(MailboxRequest.created_at.desc(), MailboxRequest.id.desc()).limit(200).all()
+
+
+def get_request(db: Session, request_id: int) -> MailboxRequest | None:
+    return db.query(MailboxRequest).filter(MailboxRequest.id == request_id).first()
+
+
+def resolve_pending(db: Session, planner_user_id: str, status: str) -> None:
+    db.query(MailboxRequest).filter(
+        MailboxRequest.planner_user_id == planner_user_id,
+        MailboxRequest.status == "pending",
+    ).update({"status": status, "resolved_at": func.now()}, synchronize_session=False)
+    db.commit()
+
+
+def save_request(db: Session, request: MailboxRequest) -> MailboxRequest:
+    db.add(request)
+    db.commit()
+    db.refresh(request)
+    return request

@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.db.session import get_db
-from app.schemas.mailbox import MailboxCreate, MailboxRead, MailboxUpdate, MailDomain, PlannerUser
+from app.schemas.mailbox import MailboxCreate, MailboxRead, MailboxRequestRead, MailboxRequestUpdate, MailboxUpdate, MailDomain, PlannerUser
 from app.security.dependencies import get_current_admin
 from app.services import mailbox_service
 
@@ -26,6 +26,20 @@ def mail_domain(current_admin=Depends(get_current_admin)):
 @router.get("/planner-users", response_model=list[PlannerUser])
 def planner_users(db: Session = Depends(get_db), current_admin=Depends(get_current_admin)):
     return mailbox_service.planner_users(db)
+
+
+@router.get("/requests", response_model=list[MailboxRequestRead])
+def list_requests(
+    status: str | None = Query(default="pending", pattern="^(pending|approved|dismissed)$"),
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return mailbox_service.list_requests(db, status)
+
+
+@router.patch("/requests/{request_id}", response_model=MailboxRequestRead)
+def update_request(request_id: int, payload: MailboxRequestUpdate, db: Session = Depends(get_db), current_admin=Depends(get_current_admin)):
+    return mailbox_service.dismiss_request(db, request_id)
 
 
 @router.post("", response_model=MailboxRead, status_code=201)

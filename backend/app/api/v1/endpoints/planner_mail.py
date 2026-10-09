@@ -13,8 +13,8 @@ from app.schemas.email_message import (
     EmailSendRequest,
 )
 from app.schemas.email_template import EmailTemplateRead
-from app.schemas.mailbox import OwnMailbox, OwnMailboxUpdate
-from app.security.planner_bridge import get_planner_mailbox
+from app.schemas.mailbox import OwnMailAccess, OwnMailbox, OwnMailboxUpdate
+from app.security.planner_bridge import PlannerIdentity, get_planner_identity, get_planner_mailbox
 from app.services import email_template_service, mailbox_service
 from app.repositories import mailbox_repository
 
@@ -24,6 +24,16 @@ router = APIRouter(
     prefix="/planner/mail",
     tags=["Planner - Bandeja"],
 )
+
+
+@router.get("/access", response_model=OwnMailAccess)
+def access(db: Session = Depends(get_db), identity: PlannerIdentity = Depends(get_planner_identity)):
+    return mailbox_service.own_access(db, identity.user_id)
+
+
+@router.post("/request", response_model=OwnMailAccess)
+def request_mailbox(db: Session = Depends(get_db), identity: PlannerIdentity = Depends(get_planner_identity)):
+    return mailbox_service.request_mailbox(db, planner_user_id=identity.user_id, name=identity.name, email=identity.email, role=identity.role)
 
 
 @router.get("/mailbox", response_model=OwnMailbox)

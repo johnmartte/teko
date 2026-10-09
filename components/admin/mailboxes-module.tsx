@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Check, Copy, LoaderCircle, Pencil, Plus, Search, X } from "lucide-react";
-import { api, type Mailbox, type PlannerUser } from "@/lib/admin-api";
-import { Avatar, Serif } from "./emails/email-ui";
+import { Check, Copy, Hand, LoaderCircle, Pencil, Plus, Search, X } from "lucide-react";
+import { api, type Mailbox, type MailboxRequest, type PlannerUser } from "@/lib/admin-api";
+import { Avatar, Serif, formatListTime } from "./emails/email-ui";
 
 const inputClass = "h-10 w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-[14px] text-[#f2f3f5] outline-none transition-colors placeholder:text-[rgba(242,243,245,0.3)] focus:border-[rgba(30,196,255,0.5)]";
 
@@ -20,7 +20,7 @@ function Label({ children }: { children: React.ReactNode }) {
   return <span className="mb-1.5 block text-[12.5px] font-medium text-[rgba(242,243,245,0.72)]">{children}</span>;
 }
 
-function CreatePanel({ domain, onClose, onCreated }: { domain: string; onClose: () => void; onCreated: (mailbox: Mailbox) => void }) {
+function CreatePanel({ domain, preselectId, onClose, onCreated }: { domain: string; preselectId?: string | null; onClose: () => void; onCreated: (mailbox: Mailbox) => void }) {
   const [users, setUsers] = useState<PlannerUser[] | null>(null);
   const [usersError, setUsersError] = useState("");
   const [query, setQuery] = useState("");
@@ -31,15 +31,6 @@ function CreatePanel({ domain, onClose, onCreated }: { domain: string; onClose: 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    api<PlannerUser[]>("/admin/mailboxes/planner-users").then(setUsers).catch((e: Error) => setUsersError(e.message));
-  }, []);
-
-  const visible = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    return (users ?? []).filter((user) => !term || `${user.name} ${user.email} ${user.job_title ?? ""}`.toLowerCase().includes(term));
-  }, [users, query]);
-
   const choose = (user: PlannerUser) => {
     setSelected(user);
     setLocalPart(suggestLocalPart(user.name));
@@ -47,6 +38,22 @@ function CreatePanel({ domain, onClose, onCreated }: { domain: string; onClose: 
     setSignature(defaultSignature(user));
     setError("");
   };
+
+  useEffect(() => {
+    api<PlannerUser[]>("/admin/mailboxes/planner-users")
+      .then((list) => {
+        setUsers(list);
+        // Desde una solicitud: el empleado ya viene elegido.
+        const requested = preselectId ? list.find((user) => user.id === preselectId && !user.mailbox_address) : null;
+        if (requested) choose(requested);
+      })
+      .catch((e: Error) => setUsersError(e.message));
+  }, [preselectId]);
+
+  const visible = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    return (users ?? []).filter((user) => !term || `${user.name} ${user.email} ${user.job_title ?? ""}`.toLowerCase().includes(term));
+  }, [users, query]);
 
   const validLocal = /^[a-z0-9]+(?:[._-][a-z0-9]+)*$/.test(localPart);
 
@@ -237,18 +244,88 @@ function MailboxRow({ mailbox, onChanged, onCopy }: { mailbox: Mailbox; onChange
   );
 }
 
-export function MailboxesModule() {
+function RequestsPanel({ requests, onCreate, onResolved }: { requests: MailboxRequest[]; onCreate: (request: MailboxRequest) => void; onResolved: (message: string) => void }) {
+  const [busyId, setBusyId] = useState<number | null>(null);
+  const [error, setError] = useState("");
+
+  const run = async (request: MailboxRequest, action: "enable" | "dismiss") => {
+    setBusyId(request.id);
+    setError("");
+    try {
+      if (action === "enable" && request.mailbox_id) {
+        await api(`/admin/mailboxes/${request.mailbox_id}`, { method: "PATCH", body: JSON.stringify({ is_active: true }) });
+        onResolved(`${request.mailbox_address} habilitado para ${request.planner_user_name}.`);
+      } else {
+        await api(`/admin/mailboxes/requests/${request.id}`, { method: "PATCH", body: JSON.stringify({ status: "dismissed" }) });
+        onResolved(`Solicitud de ${request.planner_user_name} descartada.`);
+      }
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  return (
+    <section aria-label="Solicitudes de correo" className="mb-6 overflow-hidden rounded-2xl border border-[rgba(30,196,255,0.28)] bg-[rgba(30,196,255,0.04)]">
+      <div className="flex items-center gap-2.5 border-b border-[rgba(30,196,255,0.14)] px-4 py-3 sm:px-5">
+        <Hand size={15} className="text-[#1ec4ff]" />
+        <h2 className="text-[14px] font-semibold">Solicitudes de correo institucional</h2>
+        <span className="rounded-full bg-[#1ec4ff] px-2 py-0.5 text-[11px] font-bold text-[#080a0f]">{requests.length}</span>
+      </div>
+      {error && <p className="mx-5 mt-3 rounded-lg bg-[rgba(248,113,113,0.12)] px-3 py-2 text-[13px] text-[#f87171]">{error}</p>}
+      <div className="divide-y divide-white/[0.06]">
+        {requests.map((request) => (
+          <div key={request.id} className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3.5 sm:px-5">
+            <Avatar label={request.planner_user_name} size={34} highlight />
+            <div className="min-w-[200px] flex-1">
+              <p className="text-[14px] font-semibold text-[#f2f3f5]">{request.planner_user_name}</p>
+              <p className="text-[12.5px] text-[rgba(242,243,245,0.5)]">
+                {request.mailbox_address ? `Pide que le rehabiliten ${request.mailbox_address}` : "Pide su correo institucional"}
+                {request.planner_user_email && <> · {request.planner_user_email}</>}
+              </p>
+            </div>
+            <time dateTime={request.created_at} className="text-[12px] tabular-nums text-[rgba(242,243,245,0.45)]">{formatListTime(request.created_at)}</time>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                disabled={busyId !== null}
+                onClick={() => (request.mailbox_id ? run(request, "enable") : onCreate(request))}
+                className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-[#1ec4ff] px-3 text-[12.5px] font-semibold text-[#080a0f] transition-[filter] hover:brightness-110 disabled:opacity-50"
+              >
+                {busyId === request.id && request.mailbox_id ? <LoaderCircle size={13} className="animate-spin" /> : request.mailbox_id ? <Check size={13} /> : <Plus size={13} />}
+                {request.mailbox_id ? "Habilitar" : "Crear correo"}
+              </button>
+              <button
+                type="button"
+                disabled={busyId !== null}
+                onClick={() => run(request, "dismiss")}
+                className="h-8 rounded-lg px-3 text-[12.5px] font-medium text-[rgba(242,243,245,0.55)] hover:bg-white/[0.06] hover:text-[#f2f3f5] disabled:opacity-50"
+              >
+                Descartar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function MailboxesModule({ onRequestsChange }: { onRequestsChange?: () => void }) {
   const [mailboxes, setMailboxes] = useState<Mailbox[]>([]);
   const [domain, setDomain] = useState("");
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [preselectId, setPreselectId] = useState<string | null>(null);
+  const [requests, setRequests] = useState<MailboxRequest[]>([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
   const load = useCallback(() => {
-    Promise.all([api<Mailbox[]>("/admin/mailboxes"), api<{ domain: string }>("/admin/mailboxes/domain")])
-      .then(([list, info]) => { setMailboxes(list); setDomain(info.domain); setError(""); })
+    Promise.all([api<Mailbox[]>("/admin/mailboxes"), api<{ domain: string }>("/admin/mailboxes/domain"), api<MailboxRequest[]>("/admin/mailboxes/requests")])
+      .then(([list, info, pending]) => { setMailboxes(list); setDomain(info.domain); setRequests(pending); setError(""); })
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
@@ -268,6 +345,11 @@ export function MailboxesModule() {
 
   const active = mailboxes.filter((item) => item.is_active).length;
 
+  // Crear o habilitar un buzón atiende la solicitud en el servidor; se recarga para reflejarlo.
+  const refreshRequests = () => {
+    api<MailboxRequest[]>("/admin/mailboxes/requests").then(setRequests).catch(() => undefined).finally(() => onRequestsChange?.());
+  };
+
   const copy = (value: string) => {
     navigator.clipboard.writeText(value).then(() => setNotice(`Copiado: ${value}`)).catch(() => setNotice("No se pudo copiar."));
   };
@@ -283,17 +365,27 @@ export function MailboxesModule() {
           </p>
         </div>
         {!creating && (
-          <button type="button" onClick={() => setCreating(true)} className="inline-flex items-center gap-2 rounded-xl bg-[#1ec4ff] px-4 py-2.5 text-sm font-semibold text-[#080a0f] transition-[filter] hover:brightness-110">
+          <button type="button" onClick={() => { setPreselectId(null); setCreating(true); }} className="inline-flex items-center gap-2 rounded-xl bg-[#1ec4ff] px-4 py-2.5 text-sm font-semibold text-[#080a0f] transition-[filter] hover:brightness-110">
             <Plus size={16} />Nuevo correo
           </button>
         )}
       </div>
 
+      {requests.length > 0 && (
+        <RequestsPanel
+          requests={requests}
+          onCreate={(request) => { setPreselectId(request.planner_user_id); setCreating(true); }}
+          onResolved={(message) => { setNotice(message); load(); onRequestsChange?.(); }}
+        />
+      )}
+
       {creating && (
         <CreatePanel
+          key={preselectId ?? "new"}
           domain={domain}
+          preselectId={preselectId}
           onClose={() => setCreating(false)}
-          onCreated={(mailbox) => { setCreating(false); setMailboxes((current) => [mailbox, ...current]); setNotice(`${mailbox.address} creado y habilitado.`); }}
+          onCreated={(mailbox) => { setCreating(false); setMailboxes((current) => [mailbox, ...current]); setNotice(`${mailbox.address} creado y habilitado.`); refreshRequests(); }}
         />
       )}
 
@@ -328,7 +420,7 @@ export function MailboxesModule() {
                 key={`${mailbox.id}-${mailbox.updated_at}`}
                 mailbox={mailbox}
                 onCopy={copy}
-                onChanged={(updated, message) => { setMailboxes((current) => current.map((item) => (item.id === updated.id ? updated : item))); setNotice(message); }}
+                onChanged={(updated, message) => { setMailboxes((current) => current.map((item) => (item.id === updated.id ? updated : item))); setNotice(message); if (updated.is_active) refreshRequests(); }}
               />
             ))}
             {filtered.length === 0 && <p className="p-8 text-center text-[13px] text-[rgba(242,243,245,0.45)]">Nada coincide con “{search}”.</p>}
