@@ -1,3 +1,6 @@
+import logging
+from types import SimpleNamespace
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -10,6 +13,8 @@ from app.schemas.mailbox import MailboxCreate, MailboxRead, MailboxRequestRead, 
 from app.services import admin_notification_service, email_service, planner_client
 from app.services.planner_client import PlannerError
 
+logger = logging.getLogger(__name__)
+
 
 def _require_domain() -> str:
     domain = settings.MAIL_DOMAIN
@@ -21,6 +26,61 @@ def _require_domain() -> str:
 def _read(mailbox: Mailbox, counts: dict[int, tuple[int, int]]) -> MailboxRead:
     total, unread = counts.get(mailbox.id, (0, 0))
     return MailboxRead.model_validate(mailbox).model_copy(update={"total_messages": total, "unread_messages": unread})
+
+
+# --- Aviso de correo habilitado ----------------------------------------------
+
+def _enabled_notice_template() -> SimpleNamespace:
+    return SimpleNamespace(
+        name="TEKO",
+        logo_url="https://teko.do/email/teko-logo-white.png",
+        header_background="#0a0e1a",
+        accent_color="#0047ff",
+        occasion="Correo institucional",
+        kicker="TEKO Planner",
+        headline="Tu correo institucional está *listo*.",
+        button_label="Abrir mi Bandeja",
+        button_url=f"{settings.PLANNER_APP_URL.rstrip('/')}/bandeja",
+        signature="Equipo TEKO\nSanto Domingo, República Dominicana",
+        signature_style="texto",
+        signature_card=None,
+        footer_text="Recibes este correo porque se habilitó una cuenta de correo institucional a tu nombre en TEKO.",
+        social_links=[],
+    )
+
+
+def send_enabled_notice(db: Session, mailbox: Mailbox) -> bool:
+    """Avisa al correo personal del empleado que su correo institucional ya funciona.
+
+    Un fallo al enviar no deshace la habilitación: se registra y se informa al CMS.
+    """
+    recipient = (mailbox.planner_user_email or "").strip()
+    if not recipient or recipient.lower() == mailbox.address.lower() or not settings.RESEND_FROM_EMAIL:
+        return False
+    first_name = (mailbox.planner_user_name or mailbox.display_name).split()[0]
+    planner_url = settings.PLANNER_APP_URL.rstrip("/")
+    body = (
+        f"Hola {first_name},\n\n"
+        f"Tu correo institucional **{mailbox.address}** fue habilitado con éxito.\n\n"
+        f"Puedes ver los correos que recibas en la Bandeja entrando a TEKO Planner: {planner_url}/bandeja\n\n"
+        "Desde ahí también puedes responder y escribir correos nuevos con tu dirección institucional."
+    )
+    try:
+        email_service.deliver_email(
+            db,
+            payload=EmailSendRequest(to=[recipient], subject="Tu correo institucional fue habilitado", body=body),
+            sender_address=settings.RESEND_FROM_EMAIL,
+            sender_name=settings.RESEND_FROM_NAME,
+            template=_enabled_notice_template(),
+            reply_original=None,
+            is_general=True,
+            admin_id=None,
+        )
+    except Exception:  # noqa: BLE001 - el buzón ya quedó habilitado; solo falla el aviso
+        db.rollback()
+        logger.exception("No se pudo enviar el aviso de correo habilitado a %s", recipient)
+        return False
+    return True
 
 
 # --- Administración (CMS) ---------------------------------------------------
@@ -79,13 +139,15 @@ def create_mailbox(db: Session, payload: MailboxCreate) -> MailboxRead:
     )
     mailbox = mailbox_repository.save(db, mailbox)
     mailbox_repository.resolve_pending(db, mailbox.planner_user_id, "approved")
-    return _read(mailbox, {})
+    notice_sent = send_enabled_notice(db, mailbox)
+    return _read(mailbox, {}).model_copy(update={"notice_sent": notice_sent})
 
 
 def update_mailbox(db: Session, mailbox_id: int, payload: MailboxUpdate) -> MailboxRead:
     mailbox = mailbox_repository.get_by_id(db, mailbox_id)
     if not mailbox:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Buzón no encontrado")
+    was_active = mailbox.is_active
     changes = payload.model_dump(exclude_unset=True)
     if "display_name" in changes and changes["display_name"]:
         mailbox.display_name = changes["display_name"].strip()
@@ -96,7 +158,8 @@ def update_mailbox(db: Session, mailbox_id: int, payload: MailboxUpdate) -> Mail
     mailbox = mailbox_repository.save(db, mailbox)
     if mailbox.is_active:
         mailbox_repository.resolve_pending(db, mailbox.planner_user_id, "approved")
-    return _read(mailbox, mailbox_repository.counts(db))
+    notice_sent = send_enabled_notice(db, mailbox) if mailbox.is_active and not was_active else None
+    return _read(mailbox, mailbox_repository.counts(db)).model_copy(update={"notice_sent": notice_sent})
 
 
 def _request_read(db: Session, request: MailboxRequest) -> MailboxRequestRead:

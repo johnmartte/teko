@@ -177,7 +177,7 @@ function MailboxRow({ mailbox, onChanged, onCopy }: { mailbox: Mailbox; onChange
     setError("");
     try {
       const updated = await api<Mailbox>(`/admin/mailboxes/${mailbox.id}`, { method: "PATCH", body: JSON.stringify(body) });
-      onChanged(updated, message);
+      onChanged(updated, updated.is_active ? enabledMessage(updated, message) : message);
       setEditing(false);
       setConfirmOff(false);
     } catch (e) {
@@ -244,6 +244,13 @@ function MailboxRow({ mailbox, onChanged, onCopy }: { mailbox: Mailbox; onChange
   );
 }
 
+/** Complementa el mensaje al habilitar con el resultado del aviso al correo personal. */
+function enabledMessage(mailbox: Mailbox, base: string) {
+  if (mailbox.notice_sent === true) return `${base} Avisamos a ${mailbox.planner_user_email}.`;
+  if (mailbox.notice_sent === false) return `${base} No se pudo enviar el aviso a ${mailbox.planner_user_email}.`;
+  return base;
+}
+
 function RequestsPanel({ requests, onCreate, onResolved }: { requests: MailboxRequest[]; onCreate: (request: MailboxRequest) => void; onResolved: (message: string) => void }) {
   const [busyId, setBusyId] = useState<number | null>(null);
   const [error, setError] = useState("");
@@ -253,8 +260,8 @@ function RequestsPanel({ requests, onCreate, onResolved }: { requests: MailboxRe
     setError("");
     try {
       if (action === "enable" && request.mailbox_id) {
-        await api(`/admin/mailboxes/${request.mailbox_id}`, { method: "PATCH", body: JSON.stringify({ is_active: true }) });
-        onResolved(`${request.mailbox_address} habilitado para ${request.planner_user_name}.`);
+        const updated = await api<Mailbox>(`/admin/mailboxes/${request.mailbox_id}`, { method: "PATCH", body: JSON.stringify({ is_active: true }) });
+        onResolved(enabledMessage(updated, `${request.mailbox_address} habilitado para ${request.planner_user_name}.`));
       } else {
         await api(`/admin/mailboxes/requests/${request.id}`, { method: "PATCH", body: JSON.stringify({ status: "dismissed" }) });
         onResolved(`Solicitud de ${request.planner_user_name} descartada.`);
@@ -385,7 +392,7 @@ export function MailboxesModule({ onRequestsChange }: { onRequestsChange?: () =>
           domain={domain}
           preselectId={preselectId}
           onClose={() => setCreating(false)}
-          onCreated={(mailbox) => { setCreating(false); setMailboxes((current) => [mailbox, ...current]); setNotice(`${mailbox.address} creado y habilitado.`); refreshRequests(); }}
+          onCreated={(mailbox) => { setCreating(false); setMailboxes((current) => [mailbox, ...current]); setNotice(enabledMessage(mailbox, `${mailbox.address} creado y habilitado.`)); refreshRequests(); }}
         />
       )}
 

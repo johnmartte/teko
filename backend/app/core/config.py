@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     PLANNER_API_URL: str = "https://teko-planner-bk-production.up.railway.app/api"
     PLANNER_API_KEY: str = ""
     PLANNER_BRIDGE_KEY: str = ""
+    # Dirección pública del Planner; se enlaza en el aviso de correo habilitado.
+    PLANNER_APP_URL: str = "https://tplanner.teko.do"
 
     @property
     def MAIL_DOMAIN(self) -> str:

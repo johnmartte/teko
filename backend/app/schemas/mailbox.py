@@ -32,6 +32,8 @@ class MailboxRead(BaseModel):
     updated_at: datetime
     total_messages: int = 0
     unread_messages: int = 0
+    # Solo al habilitar: si se pudo enviar el aviso al correo personal del empleado.
+    notice_sent: bool | None = None
 
     model_config = {"from_attributes": True}
 
