@@ -66,3 +66,6 @@ venv/
 # Local SQLite (si algún día la usas)
 *.db
 *.sqlite3
+
+# Videos generados (HyperFrames) - no se suben al repo
+videos/
