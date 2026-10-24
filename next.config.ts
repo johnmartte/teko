@@ -7,6 +7,14 @@ import type { NextConfig } from "next";
 const BACKEND_ORIGIN = "https://teko-production-9928.up.railway.app";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/media/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

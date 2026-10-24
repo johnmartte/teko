@@ -54,7 +54,7 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   return (
     <footer
-      className="relative overflow-hidden pt-16 pb-0"
+      className="relative overflow-hidden pt-12 pb-0 md:pt-16"
       style={{
         background: "#070910",
         borderTop: "1px solid rgba(255,255,255,0.08)",
@@ -62,10 +62,10 @@ export default function Footer() {
     >
       <div className="relative mx-auto w-full max-w-7xl px-6 md:px-12">
         {/* Top section */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-6 lg:gap-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-9 lg:grid-cols-6 lg:gap-8">
           {/* Brand column */}
-          <div className="lg:col-span-2">
-            <div className="mb-6">
+          <div className="col-span-2 lg:col-span-2">
+            <div className="mb-4 md:mb-6">
               <Image
                 src="/Isologo-White.svg"
                 alt="TEKO"
@@ -75,7 +75,7 @@ export default function Footer() {
             </div>
 
             <p
-              className="mb-8 max-w-xs text-sm leading-relaxed"
+              className="mb-5 max-w-xs text-sm leading-relaxed md:mb-8"
               style={{ color: "rgba(242,243,245,0.55)" }}
             >
               Software que transforma negocios. Diseñamos, desarrollamos e
@@ -119,12 +119,12 @@ export default function Footer() {
           {FOOTER_LINKS.map((column) => (
             <div key={column.title} className="lg:col-span-1">
               <h4
-                className="mb-6 text-xs font-semibold tracking-widest"
+                className="mb-4 text-xs font-semibold tracking-widest md:mb-6"
                 style={{ color: "rgba(242,243,245,0.4)" }}
               >
                 {column.title}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5 md:space-y-3">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -152,9 +152,9 @@ export default function Footer() {
         {/* Ghost text */}
         <p
           aria-hidden="true"
-          className="pointer-events-none select-none mt-14 -mb-4 text-center font-bold leading-[0.78] tracking-tight"
+          className="pointer-events-none select-none mt-8 -mb-3 text-center font-bold leading-[0.78] tracking-tight md:mt-14 md:-mb-4"
           style={{
-            fontSize: "clamp(90px, 20vw, 300px)",
+            fontSize: "clamp(72px, 20vw, 300px)",
             color: "rgba(255,255,255,0.035)",
           }}
         >
@@ -162,15 +162,15 @@ export default function Footer() {
         </p>
 
         {/* Divider */}
-        <hr style={{ borderColor: "rgba(255,255,255,0.08)", margin: "2rem 0" }} />
+        <hr className="my-6 md:my-8" style={{ borderColor: "rgba(255,255,255,0.08)" }} />
 
         {/* Bottom bar */}
         <div
-          className="flex flex-col items-center justify-between gap-4 pb-8 text-sm md:flex-row"
+          className="flex flex-col items-center justify-between gap-3 pb-6 text-center text-[13px] md:flex-row md:gap-4 md:pb-8 md:text-sm"
           style={{ color: "rgba(242,243,245,0.4)" }}
         >
           <p>&copy; 2026 TEKO. Todos los derechos reservados.</p>
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 md:gap-6">
             {[
               { label: "Política de Cookies", href: "/politica-de-cookies" },
               { label: "Política de Privacidad", href: "/politica-de-privacidad" },

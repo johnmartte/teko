@@ -6,6 +6,7 @@ import { Mail, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ApiErrorToast from "@/components/ui/api-error-toast";
+import LazyVideo from "@/components/globales/lazy-video";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -140,6 +141,14 @@ export default function SectionContactoForm() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[380px_1fr] lg:gap-16">
           {/* Info lateral */}
           <aside className="contact-info">
+            <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-[20px] border" style={{ borderColor: "rgba(255,255,255,0.1)", background: "#0d1017" }}>
+              <LazyVideo src="/media/clips/reunion.mp4" poster="/media/clips/reunion.jpg" className="absolute inset-0 h-full w-full object-cover" />
+              <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,10,15,0) 40%, rgba(8,10,15,0.92) 100%)" }} />
+              <p className="absolute inset-x-5 bottom-5 text-[19px] font-semibold leading-[1.2] tracking-[-0.02em]">
+                La primera reunión es para{" "}
+                <em style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400, color: "#bfe9ff" }}>escucharte</em>.
+              </p>
+            </div>
             <div
               className="rounded-[20px] border p-6 md:p-8"
               style={{

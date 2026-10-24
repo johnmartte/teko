@@ -345,6 +345,20 @@ input:focus-visible,
     to { transform: translateX(-50%); }
 }
 
+@keyframes tk-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@keyframes tk-stage-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tk-road {
+    to { background-position: -88px 9px, 0 0; }
+}
+
 @keyframes tk-pulse {
     0%, 100% { opacity: .55; }
     50% { opacity: 1; }

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LazyVideo from "@/components/globales/lazy-video";
 import { prefersReducedMotion } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -34,6 +35,8 @@ export default function SectionAhorraTiempo() {
   return (
     <section ref={sectionRef} id="contacto" className="relative z-[2] mx-auto max-w-[1200px] px-6 py-[120px]" style={{ color: "#f2f3f5" }}>
       <div data-reveal="" className="relative overflow-hidden rounded-[28px] border" style={{ borderColor: "rgba(255,255,255,0.12)", background: "#0b0e16", padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
+        <LazyVideo src="/media/clips/equipo.mp4" poster="/media/clips/equipo.jpg" className="pointer-events-none absolute inset-0 h-full w-full object-cover" style={{ opacity: 0.55 }} />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(90deg, #0b0e16 18%, rgba(11,14,22,0.82) 50%, rgba(11,14,22,0.55) 100%)" }} />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(70% 60% at 50% 110%, rgba(30,120,255,0.35), transparent 70%)" }} />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{
           backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
