@@ -17,7 +17,9 @@
       "Bash(claude /design-login)",
       "Bash(npx next *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(xxd)",
+      "Bash(iconv -f UTF-16LE -t UTF-8 requirements.txt)"
     ]
   }
 }
