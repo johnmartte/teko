@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 // el navegador bloquea las llamadas directas. Para no tocar el backend,
 // proxeamos /api/v1/* desde el mismo origen (Next.js reenvía del lado del
 // servidor, donde no aplica CORS).
-const BACKEND_ORIGIN = "https://teko-production.up.railway.app";
+const BACKEND_ORIGIN = "https://teko-production-9928.up.railway.app";
 
 const nextConfig: NextConfig = {
   async rewrites() {
