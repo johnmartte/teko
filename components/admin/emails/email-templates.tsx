@@ -42,7 +42,7 @@ const TEKO_CARD: SignatureCard = {
   name: "Equipo TEKO",
   title: "Software que transforma negocios",
   phone: null,
-  email: "ayuda-cliente@teko.do",
+  email: "info@teko.do",
   website: "https://teko.do",
   address: "Santo Domingo, República Dominicana",
   tagline: "Software que *transforma*",

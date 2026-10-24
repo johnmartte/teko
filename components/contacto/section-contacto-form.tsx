@@ -160,7 +160,7 @@ export default function SectionContactoForm() {
 
               <div className="mb-8 flex flex-col gap-5">
                 <a
-                  href="mailto:john.marte@unicaribe.edu.do"
+                  href="mailto:info@teko.do"
                   className="flex items-start gap-3 transition-opacity hover:opacity-80"
                 >
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(30,196,255,0.15)" }}>
@@ -171,7 +171,7 @@ export default function SectionContactoForm() {
                       Email
                     </p>
                     <p className="break-all text-[13px] font-medium md:text-[14px]">
-                      ayuda-cliente@teko.do
+                      info@teko.do
                     </p>
                   </div>
                 </a>
@@ -211,7 +211,7 @@ export default function SectionContactoForm() {
                 <p className="text-[13px] leading-[20px]" style={{ color: "rgba(242,243,245,0.7)" }}>
                   ¿Prefieres una llamada?{" "}
                   <a
-                    href="mailto:john.marte@unicaribe.edu.do?subject=Agenda%20una%20llamada"
+                    href="mailto:info@teko.do?subject=Agenda%20una%20llamada"
                     className="font-semibold underline"
                     style={{ color: "#1ec4ff" }}
                   >
