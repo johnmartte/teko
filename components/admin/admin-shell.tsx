@@ -2,13 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { AtSign, BarChart3, BriefcaseBusiness, CircleDollarSign, FileQuestion, FolderKanban, LogOut, Mail, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
+import { AtSign, BarChart3, BriefcaseBusiness, CircleDollarSign, Eye, EyeOff, FileQuestion, Fingerprint, FolderKanban, LogOut, Mail, Menu, MessageSquareText, Search, Users, X } from "lucide-react";
 import { api, type AdminUser, type ContactRequest, type DashboardStats } from "@/lib/admin-api";
 import { useAdminAuth } from "./auth-provider";
 import { modules } from "./cms-config";
 import { EmailsModule } from "./emails-module";
 import { MailboxesModule } from "./mailboxes-module";
 import { NotificationsBell } from "./notifications-bell";
+import { PasskeysButton } from "./passkeys-button";
+import { isCancelled, usePasskeysSupported } from "@/lib/passkeys";
 import { RecordModule } from "./record-module";
 
 const nav = [
@@ -27,7 +29,7 @@ const nav = [
 ];
 
 export function AdminShell() {
-  const { user, loading, login, logout } = useAdminAuth();
+  const { user, loading, login, loginWithPasskey, logout } = useAdminAuth();
   const [active, setActive] = useState("dashboard");
   const [mobile, setMobile] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -61,7 +63,7 @@ export function AdminShell() {
     </div>
   );
 
-  if (!user) return <Login onLogin={login} />;
+  if (!user) return <Login onLogin={login} onPasskey={loginWithPasskey} />;
 
   const selectedModule = modules.find((item) => item.key === active);
 
@@ -139,6 +141,7 @@ export function AdminShell() {
             <p className="text-xs" style={{ color: "rgba(242,243,245,0.45)" }}>Contenido real de TEKO</p>
           </div>
           <div className="flex items-center gap-3">
+            <PasskeysButton />
             <NotificationsBell onNavigate={openModule} onActivity={refreshRequests} />
             <div className="hidden text-right sm:block">
               <p className="text-sm font-semibold" style={{ color: "#f2f3f5" }}>{user.full_name}</p>
@@ -158,17 +161,26 @@ export function AdminShell() {
   );
 }
 
-function Login({ onLogin }: { onLogin: (email: string, password: string) => Promise<void> }) {
+function Login({ onLogin, onPasskey }: { onLogin: (email: string, password: string, remember: boolean) => Promise<void>; onPasskey: (remember: boolean) => Promise<void> }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const passkeysSupported = usePasskeysSupported();
+
+  const passkey = async () => {
+    setBusy(true);
+    setError("");
+    try { await onPasskey(remember); } catch (err) { if (!isCancelled(err)) setError((err as Error).message); } finally { setBusy(false); }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     setError("");
-    try { await onLogin(email, password); } catch (err) { setError((err as Error).message); } finally { setBusy(false); }
+    try { await onLogin(email, password, remember); } catch (err) { setError((err as Error).message); } finally { setBusy(false); }
   };
 
   return (
@@ -222,18 +234,34 @@ function Login({ onLogin }: { onLogin: (email: string, password: string) => Prom
 
           <label className="mt-4 block text-sm font-medium">
             Contrasena
-            <input
-              required
-              minLength={8}
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none transition-all"
-              style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "#f2f3f5" }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(30,196,255,0.5)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(30,196,255,0.1)"; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
-            />
+            <div className="relative mt-2">
+              <input
+                required
+                minLength={8}
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border py-3 pl-4 pr-12 outline-none transition-all"
+                style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "#f2f3f5" }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(30,196,255,0.5)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(30,196,255,0.1)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label={showPassword ? "Ocultar contrasena" : "Ver contrasena"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+                style={{ color: "rgba(242,243,245,0.5)" }}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </label>
+
+          <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm" style={{ color: "rgba(242,243,245,0.7)" }}>
+            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="h-4 w-4 accent-[#1ec4ff]" />
+            Mantener sesion iniciada
           </label>
 
           <button
@@ -243,6 +271,23 @@ function Login({ onLogin }: { onLogin: (email: string, password: string) => Prom
           >
             {busy ? "Verificando..." : "Iniciar sesion"}
           </button>
+
+          {passkeysSupported && (
+            <>
+              <div className="my-4 flex items-center gap-3 text-xs" style={{ color: "rgba(242,243,245,0.4)" }}>
+                <span className="h-px flex-1 bg-current opacity-30" />o<span className="h-px flex-1 bg-current opacity-30" />
+              </div>
+              <button
+                type="button"
+                onClick={passkey}
+                disabled={busy}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border py-3 font-semibold transition-all hover:bg-white/5 disabled:opacity-60"
+                style={{ borderColor: "rgba(30,196,255,0.4)", color: "#1ec4ff" }}
+              >
+                <Fingerprint size={18} /> Entrar con Touch ID / passkey
+              </button>
+            </>
+          )}
         </form>
       </div>
     </main>

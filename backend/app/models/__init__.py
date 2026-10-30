@@ -6,9 +6,10 @@ from app.models.email_template import EmailTemplate
 from app.models.lead import Lead
 from app.models.mailbox import Mailbox, MailboxMessage, MailboxRequest
 from app.models.service import Service, ServiceCategory
+from app.models.admin_passkey import AdminPasskey
 from app.models.admin_user import AdminUser
 from app.models.faq import FAQ
 from app.models.plan import Plan, PlanFeature
 from app.models.portfolio import PortfolioCategory, PortfolioProject
 
-__all__ = ["AdminNotification", "AdminNotificationRead", "BudgetRange", "ContactRequest", "EmailMessage", "EmailTemplate", "Lead", "Mailbox", "MailboxMessage", "MailboxRequest", "Service", "ServiceCategory", "AdminUser", "FAQ", "Plan", "PlanFeature", "PortfolioCategory", "PortfolioProject"]
+__all__ = ["AdminNotification", "AdminNotificationRead", "BudgetRange", "ContactRequest", "EmailMessage", "EmailTemplate", "Lead", "Mailbox", "MailboxMessage", "MailboxRequest", "Service", "ServiceCategory", "AdminPasskey", "AdminUser", "FAQ", "Plan", "PlanFeature", "PortfolioCategory", "PortfolioProject"]

@@ -10,14 +10,21 @@ export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
 
+const TOKEN_KEY = "teko_admin_token";
+
+// Con "mantener sesión" el token vive en localStorage; si no, solo mientras dure la pestaña.
 export function getToken() {
-  return typeof window === "undefined" ? null : sessionStorage.getItem("teko_admin_token");
+  if (typeof window === "undefined") return null;
+  try { return sessionStorage.getItem(TOKEN_KEY) ?? localStorage.getItem(TOKEN_KEY); } catch { return null; }
 }
 
-export function setToken(token: string | null) {
+export function setToken(token: string | null, remember = false) {
   if (typeof window === "undefined") return;
-  if (token) sessionStorage.setItem("teko_admin_token", token);
-  else sessionStorage.removeItem("teko_admin_token");
+  try {
+    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    if (token) (remember ? localStorage : sessionStorage).setItem(TOKEN_KEY, token);
+  } catch { /* sin persistencia: la sesión dura lo que dure la página */ }
 }
 
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -47,11 +54,16 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   return response.status === 204 ? undefined as T : response.json() as Promise<T>;
 }
 
-export async function login(email: string, password: string) {
+export async function login(email: string, password: string, remember = false) {
   setToken(null);
   const body = new URLSearchParams({ username: email, password });
-  const result = await api<{ access_token: string }>("/auth/login", { method: "POST", body });
-  setToken(result.access_token);
+  const result = await api<{ access_token: string }>(`/auth/login?remember=${remember}`, { method: "POST", body });
+  return finishLogin(result.access_token, remember);
+}
+
+// Guarda el token y carga al administrador (contraseña o passkey).
+export async function finishLogin(accessToken: string, remember: boolean) {
+  setToken(accessToken, remember);
   try {
     return await api<AdminUser>("/auth/me");
   } catch (error) {

@@ -2,8 +2,9 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { api, getToken, login as requestLogin, setToken, type AdminUser } from "@/lib/admin-api";
+import { loginWithPasskeyCeremony } from "@/lib/passkeys";
 
-type AuthValue = { user: AdminUser | null; loading: boolean; login: (email: string, password: string) => Promise<void>; logout: () => void };
+type AuthValue = { user: AdminUser | null; loading: boolean; login: (email: string, password: string, remember: boolean) => Promise<void>; loginWithPasskey: (remember: boolean) => Promise<void>; logout: () => void };
 const AuthContext = createContext<AuthValue | null>(null);
 
 export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
@@ -19,8 +20,9 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     });
     return () => window.removeEventListener("teko:unauthorized", unauthorized);
   }, [logout]);
-  const login = async (email: string, password: string) => { setUser(await requestLogin(email, password)); };
-  return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>;
+  const login = async (email: string, password: string, remember: boolean) => { setUser(await requestLogin(email, password, remember)); };
+  const loginWithPasskey = async (remember: boolean) => { setUser(await loginWithPasskeyCeremony(remember)); };
+  return <AuthContext.Provider value={{ user, loading, login, loginWithPasskey, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAdminAuth() {

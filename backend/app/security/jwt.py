@@ -8,9 +8,9 @@ from app.core.config import settings
 ALGORITHM = "HS256"
 
 
-def create_access_token(subject: str) -> str:
+def create_access_token(subject: str, minutes: int | None = None) -> str:
     expire = datetime.now(timezone.utc) + timedelta(
-        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=minutes or settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
     payload = {
