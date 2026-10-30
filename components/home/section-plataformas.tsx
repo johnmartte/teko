@@ -9,12 +9,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const platforms = [
   {
-    name: "TEKO Manager",
+    name: "TEKO Social Manager",
     badge: "Redes sociales",
     desc: "Administra tus redes desde un solo lugar: programa publicaciones, analiza métricas y gestiona todas tus cuentas de forma centralizada.",
     features: ["Programación de publicaciones", "Analítica de redes", "Gestión multi-cuenta", "Calendario de contenido"],
     cta: "Ir a la plataforma",
-    href: "#",
+    href: "https://tekamp.teko.do/",
   },
   {
     name: "Portal de Clientes",
@@ -22,7 +22,7 @@ const platforms = [
     desc: "Tu panel para dar seguimiento al proyecto, revisar entregables, ver reuniones programadas y facturación en un solo lugar.",
     features: ["Seguimiento de proyectos", "Entregables y archivos", "Reuniones agendadas", "Facturación y pagos"],
     cta: "Entrar al portal",
-    href: "#",
+    href: "/en-construccion",
   },
 ];
 

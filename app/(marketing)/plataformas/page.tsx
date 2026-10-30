@@ -53,7 +53,7 @@ export default function PlataformasPage() {
         </div>
       </section>
 
-      {/* ── TEKO Manager ───────────────────────────────────── */}
+      {/* ── TEKO Social Manager ───────────────────────────────────── */}
       <section className="px-6 pt-16 md:px-[100px]">
         <div data-reveal="" className="relative mx-auto grid max-w-[1200px] grid-cols-1 overflow-hidden rounded-[26px] border lg:grid-cols-2" style={{ borderColor: "rgba(124,58,237,0.22)", background: "radial-gradient(90% 90% at 0% 0%, #2a1854 0%, #120d2a 55%, #0b0e16 100%)" }}>
           {/* Left */}
@@ -63,7 +63,7 @@ export default function PlataformasPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#c4b5fd]" style={{ boxShadow: "0 0 12px #a78bfa" }} />
                 Redes sociales
               </p>
-              <h2 className="mt-6 text-[clamp(30px,3.4vw,46px)] font-semibold leading-[1.04] tracking-[-0.035em]">TEKO Manager</h2>
+              <h2 className="mt-6 text-[clamp(30px,3.4vw,46px)] font-semibold leading-[1.04] tracking-[-0.035em]">TEKO Social Manager</h2>
               <p className="mt-[18px] max-w-[46ch] text-[15.5px] font-light leading-[1.55]" style={{ color: "rgba(242,243,245,0.78)" }}>
                 Administra tus redes desde un solo lugar: programa publicaciones, analiza métricas y gestiona todas tus cuentas de forma centralizada.
               </p>
@@ -75,7 +75,7 @@ export default function PlataformasPage() {
                 ))}
               </ul>
               <div className="mt-[26px] flex flex-wrap gap-3">
-                <a href="https://frontend-kappa-jet-50.vercel.app/login" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 rounded-full bg-[#a78bfa] px-[22px] py-[13px] text-sm font-semibold text-[#120d2a] transition-colors hover:bg-[#c4b5fd]">
+                <a href="https://tekamp.teko.do/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 rounded-full bg-[#a78bfa] px-[22px] py-[13px] text-sm font-semibold text-[#120d2a] transition-colors hover:bg-[#c4b5fd]">
                   Ir a la plataforma
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M4 2h6v6" /></svg>
                 </a>
@@ -149,7 +149,7 @@ export default function PlataformasPage() {
                 ))}
               </ul>
               <div className="mt-[26px] flex flex-wrap gap-3">
-                <a href="#" className="inline-flex items-center gap-2.5 rounded-full bg-[#60a5fa] px-[22px] py-[13px] text-sm font-semibold text-[#0a1630] transition-colors hover:bg-[#93c5fd]">
+                <a href="/en-construccion" className="inline-flex items-center gap-2.5 rounded-full bg-[#60a5fa] px-[22px] py-[13px] text-sm font-semibold text-[#0a1630] transition-colors hover:bg-[#93c5fd]">
                   Entrar al portal
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M4 2h6v6" /></svg>
                 </a>
@@ -232,7 +232,7 @@ export default function PlataformasPage() {
             <p className="max-w-[48ch] text-[14px] font-light leading-[1.55]" style={{ color: "rgba(242,243,245,0.72)" }}>
               La carta digital que entiende al restaurante criollo. Crea tu menú en minutos.
             </p>
-            <a href="https://rapidito.do" target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-2 rounded-full bg-[#b8f06a] px-5 py-[11px] text-[13px] font-semibold text-[#0f2a1e] transition-colors hover:bg-[#cdf58f]">
+            <a href="/en-construccion" className="mt-1 inline-flex items-center gap-2 rounded-full bg-[#b8f06a] px-5 py-[11px] text-[13px] font-semibold text-[#0f2a1e] transition-colors hover:bg-[#cdf58f]">
               Publicar mi carta
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M4 2h6v6" /></svg>
             </a>
@@ -264,7 +264,7 @@ export default function PlataformasPage() {
                 ))}
               </ul>
               <div className="mt-[26px] flex flex-wrap gap-3">
-                <a href="https://rapidito.do" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 rounded-full bg-[#b8f06a] px-[22px] py-[13px] text-sm font-semibold text-[#0f2a1e] transition-colors hover:bg-[#cdf58f]">
+                <a href="/en-construccion" className="inline-flex items-center gap-2.5 rounded-full bg-[#b8f06a] px-[22px] py-[13px] text-sm font-semibold text-[#0f2a1e] transition-colors hover:bg-[#cdf58f]">
                   Publicar mi carta
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M4 2h6v6" /></svg>
                 </a>
